@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ko" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 리터러시의 이해 - 김민서 포트폴리오</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    animation: {
+                        'pulse-slow': 'pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'tilt': 'tilt 10s infinite linear',
+                    },
+                    keyframes: {
+                        tilt: {
+                            '0%, 50%, 100%': { transform: 'rotate(0deg)' },
+                            '25%': { transform: 'rotate(1deg)' },
+                            '75%': { transform: 'rotate(-1deg)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@100;400;700&display=swap');
+        
+        body {
+            font-family: 'Pretendard', sans-serif;
+            scroll-behavior: smooth;
+            transition: background-color 0.5s ease;
+            overflow-x: hidden;
+        }
+
+        /* ✨ Animated Aurora Background */
+        .aurora-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            filter: blur(100px);
+            opacity: 0.5;
+            transition: opacity 0.5s ease;
+        }
+        
+        .dark .aurora-bg {
+            background: radial-gradient(circle at 20% 30%, #1e293b 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, #1e1b4b 0%, transparent 40%),
+                        radial-gradient(circle at 50% 50%, #312e81 0%, transparent 50%);
+        }
+
+        .light .aurora-bg {
+            background: radial-gradient(circle at 20% 30%, #e0f2fe 0%, transparent 40%),
+                        radial-gradient(circle at 80% 70%, #ede9fe 0%, transparent 40%),
+                        radial-gradient(circle at 50% 50%, #f0f9ff 0%, transparent 50%);
+        }
+
+        /* ✨ Shiny Glass Card */
+        .glass-card {
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dark .glass-card {
+            background: rgba(30, 41, 59, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        .light .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: scale(0);
+            transition: transform 0.6s ease-out;
+            pointer-events: none;
+        }
+
+        .glass-card:hover::before {
+            transform: scale(1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: #60a5fa;
+            box-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+        }
+
+        /* ✨ Gradient Text & Animation */
+        .gradient-text {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shine 4s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ✨ Mouse Follower */
+        #cursor-glow {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: -1;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-50">
+
+    <div id="cursor-glow"></div>
+    <div class="aurora-bg"></div>
+
+    <!-- Theme Toggle Button -->
+    <div class="fixed top-6 right-6 z-[100]">
+        <button onclick="toggleTheme()" class="group p-4 rounded-2xl glass-card flex items-center justify-center w-14 h-14 hover:rotate-12 transition-all">
+            <i id="themeIcon" class="fas fa-moon text-xl text-blue-500 dark:text-yellow-400 group-hover:scale-125 transition-transform"></i>
+        </button>
+    </div>
+
+    <!-- Hero Section -->
+    <header class="min-h-screen flex flex-col items-center justify-center relative px-6 overflow-hidden">
+        <div class="z-10 text-center">
+            <div class="inline-block px-4 py-1 mb-6 rounded-full glass-card text-blue-600 dark:text-blue-400 text-xs font-bold tracking-widest uppercase animate-bounce">
+                Sparkling Academic Portfolio
+            </div>
+            <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tighter">
+                AI 리터러시의 <br>
+                <span class="gradient-text">확실한 이해</span>
+            </h1>
+            <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto text-xl leading-relaxed mb-12 opacity-80">
+                데이터의 파도 속에서 인공지능이라는 빛을 찾아내어,<br>
+                우리 사회를 위한 따뜻한 이야기를 빚어냅니다.
+            </p>
+            <div class="flex gap-4 justify-center">
+                <a href="#projects" class="group relative px-10 py-4 bg-blue-600 hover:bg-blue-500 text-white transition-all rounded-2xl font-bold shadow-2xl overflow-hidden">
+                    <span class="relative z-10">포트폴리오 탐험하기</span>
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Animated Background Elements -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full pointer-events-none">
+            <div class="absolute top-10 left-10 w-32 h-32 bg-blue-500/20 rounded-full blur-3xl animate-pulse-slow"></div>
+            <div class="absolute bottom-20 right-20 w-48 h-48 bg-purple-500/20 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+        </div>
+    </header>
+
+    <!-- Goal Cards -->
+    <section class="py-20 relative">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="p-10 rounded-[2.5rem] glass-card group hover:bg-blue-600/5">
+                    <div class="w-16 h-16 rounded-2xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 text-3xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-magic"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">AI 마법</h3>
+                    <p class="text-slate-500 dark:text-slate-400 leading-relaxed">복잡한 기술을 도구로 삼아 상상을 현실로 만드는 법을 익힙니다.</p>
+                </div>
+                <div class="p-10 rounded-[2.5rem] glass-card group hover:bg-purple-600/5">
+                    <div class="w-16 h-16 rounded-2xl bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400 text-3xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-fingerprint"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">데이터 흔적</h3>
+                    <p class="text-slate-500 dark:text-slate-400 leading-relaxed">숫자 뒤에 숨겨진 인간의 삶과 사회의 흐름을 날카롭게 포착합니다.</p>
+                </div>
+                <div class="p-10 rounded-[2.5rem] glass-card group hover:bg-indigo-600/5">
+                    <div class="w-16 h-16 rounded-2xl bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-3xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-4">울림 있는 가치</h3>
+                    <p class="text-slate-500 dark:text-slate-400 leading-relaxed">분석된 진실을 가장 따뜻한 목소리로 세상에 전달합니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Grid -->
+    <section id="projects" class="py-32">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-6">
+                <div class="scroll-reveal">
+                    <h2 class="text-5xl font-bold mb-4 tracking-tight">Main <span class="gradient-text">Archives</span></h2>
+                    <p class="text-slate-500 dark:text-slate-400">10개의 과제로 증명하는 성장의 발자취</p>
+                </div>
+                <div class="h-[1px] flex-grow mx-8 bg-gradient-to-r from-blue-500/50 to-transparent hidden md:block"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="cardContainer">
+                <!-- Dynamic Content -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section class="py-32">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="relative group">
+                <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-[3rem] blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                <div class="relative glass-card p-12 rounded-[3rem] flex flex-col md:flex-row items-center gap-12">
+                    <div class="relative">
+                        <div class="w-56 h-56 rounded-3xl bg-slate-200 dark:bg-slate-700 overflow-hidden shadow-2xl rotate-3 group-hover:rotate-0 transition-transform duration-500">
+                             <div class="w-full h-full bg-gradient-to-br from-blue-400 to-indigo-600 flex items-center justify-center text-white text-7xl">
+                                <i class="fas fa-smile-beam"></i>
+                             </div>
+                        </div>
+                        <div class="absolute -bottom-4 -right-4 w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center text-2xl shadow-xl animate-bounce">👑</div>
+                    </div>
+                    <div class="flex-1 text-center md:text-left">
+                        <h3 class="text-blue-600 dark:text-blue-400 font-bold mb-2 flex items-center justify-center md:justify-start gap-2">
+                             <span class="w-2 h-2 rounded-full bg-current animate-ping"></span>
+                             Social Welfare Visionary
+                        </h3>
+                        <h2 class="text-5xl font-bold mb-6">김민서</h2>
+                        <div class="flex flex-wrap justify-center md:justify-start gap-3 mb-8">
+                            <span class="px-4 py-2 rounded-xl bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 font-medium border border-blue-200 dark:border-blue-800">#사회복지학과_24학번</span>
+                            <span class="px-4 py-2 rounded-xl bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 font-bold border border-purple-200 dark:border-purple-800">#학생회장</span>
+                        </div>
+                        <p class="text-xl text-slate-600 dark:text-slate-400 italic mb-8 leading-relaxed">
+                            "인공지능의 차가운 데이터에 <br class="hidden md:block"> 따뜻한 사람의 온기를 더하고 싶습니다."
+                        </p>
+                        <div class="flex justify-center md:justify-start gap-4">
+                            <button class="px-6 py-3 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold hover:scale-105 transition-transform shadow-xl">Contact Me</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-20 text-center relative">
+        <div class="h-[1px] w-1/4 mx-auto bg-gradient-to-r from-transparent via-slate-300 dark:via-slate-700 to-transparent mb-10"></div>
+        <p class="text-slate-400 dark:text-slate-600 text-sm tracking-widest font-light">
+            DESIGNED WITH ✨ BY MINSEO KIM | 2024
+        </p>
+    </footer>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 z-[200] flex items-center justify-center p-6 hidden">
+        <div class="absolute inset-0 bg-slate-950/40 backdrop-blur-xl" onclick="closeModal()"></div>
+        <div class="bg-white dark:bg-slate-900 w-full max-w-3xl rounded-[2.5rem] p-10 relative z-[210] border border-white/20 shadow-[0_0_50px_rgba(0,0,0,0.3)] scale-95 opacity-0 transition-all duration-300" id="modalBox">
+            <button onclick="closeModal()" class="absolute top-8 right-8 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"><i class="fas fa-times text-2xl"></i></button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // ✨ Cursor Glow Effect
+        const cursor = document.getElementById('cursor-glow');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Theme Toggle Logic
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('themeIcon');
+            const isDark = html.classList.toggle('dark');
+            html.classList.toggle('light', !isDark);
+            
+            icon.classList.replace(isDark ? 'fa-sun' : 'fa-moon', isDark ? 'fa-moon' : 'fa-sun');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // Project Data
+        const tasks = [
+            { 
+                id: 1, 
+                title: "AI의 이해", 
+                detailTitle: "AI란 무엇인가? NotebookLM 실습",
+                icon: "fa-robot", 
+                color: "from-blue-400 to-cyan-400",
+                longDesc: "구글 노트북LM(NotebookLM)을 활용하여 AI의 정의, 역사, 그리고 생성형 AI의 핵심 개념을 체계적으로 정리했습니다. 방대한 자료를 업로드하여 AI의 발전 과정을 분석하고 나만의 지식 베이스를 구축하는 실습을 진행했습니다.",
+                link: "./02/index.html"
+            },
+            { id: 2, title: "데이터 탐색의 시작", icon: "fa-search", color: "from-purple-400 to-pink-400" },
+            { id: 3, title: "정제의 기술", icon: "fa-filter", color: "from-green-400 to-emerald-400" },
+            { id: 4, title: "시각적 상상력", icon: "fa-paint-brush", color: "from-orange-400 to-red-400" },
+            { id: 5, title: "숫자의 목소리", icon: "fa-chart-bar", color: "from-indigo-400 to-blue-400" },
+            { id: 6, title: "스토리의 탄생", icon: "fa-book-open", color: "from-pink-400 to-rose-400" },
+            { id: 7, title: "인포그래픽 설계", icon: "fa-project-diagram", color: "from-cyan-400 to-teal-400" },
+            { id: 8, title: "기술의 윤리", icon: "fa-balance-scale", color: "from-amber-400 to-yellow-400" },
+            { id: 9, title: "사회 문제 해결사", icon: "fa-hands-helping", color: "from-violet-400 to-purple-400" },
+            { id: 10, title: "최종 마스터피스", icon: "fa-star", color: "from-yellow-400 to-orange-400" }
+        ];
+
+        const container = document.getElementById('cardContainer');
+        tasks.forEach((task, i) => {
+            const card = document.createElement('div');
+            card.className = 'glass-card p-8 rounded-[2rem] scroll-reveal group cursor-pointer';
+            card.innerHTML = `
+                <div class="relative z-10">
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br ${task.color} flex items-center justify-center text-white text-xl shadow-lg shadow-current/20 group-hover:rotate-12 transition-transform">
+                            <i class="fas ${task.icon}"></i>
+                        </div>
+                        <span class="text-3xl font-black opacity-5 text-slate-900 dark:text-white">0${task.id}</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 group-hover:text-blue-500 transition-colors">과제 ${task.id}</h3>
+                    <p class="text-lg font-semibold dark:text-slate-200 mb-4">${task.title}</p>
+                    <div class="w-full h-1 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r ${task.color} w-0 group-hover:w-full transition-all duration-700"></div>
+                    </div>
+                </div>
+                <div class="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <i class="fas fa-external-link-alt text-xs text-slate-400"></i>
+                </div>
+            `;
+            card.onclick = () => openModal(task);
+            container.appendChild(card);
+        });
+
+        // Animations & Modal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
+
+        function openModal(task) {
+            const modal = document.getElementById('modal');
+            const modalBox = document.getElementById('modalBox');
+            const content = document.getElementById('modalContent');
+            
+            // Custom text for Task 1
+            const description = task.longDesc || `이 과제에서는 인공지능 리터러시를 바탕으로 데이터를 수집하고 정제하며, 사회복지적 가치를 더해 하나의 의미 있는 콘텐츠로 완성했습니다.`;
+            const subTitle = task.detailTitle || task.title;
+            const targetLink = task.link || "#";
+
+            content.innerHTML = `
+                <div class="flex items-center gap-4 mb-8">
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br ${task.color} flex items-center justify-center text-white text-3xl">
+                        <i class="fas ${task.icon}"></i>
+                    </div>
+                    <div>
+                        <p class="text-blue-500 font-bold uppercase tracking-widest text-sm">Assignment ${task.id}</p>
+                        <h2 class="text-4xl font-bold dark:text-white">${subTitle}</h2>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="rounded-3xl overflow-hidden aspect-video bg-slate-100 dark:bg-slate-800 flex items-center justify-center border border-slate-200 dark:border-slate-700 relative">
+                        <i class="fas ${task.icon} text-6xl opacity-20"></i>
+                        ${task.id === 1 ? '<div class="absolute inset-0 flex items-center justify-center font-bold text-slate-400">NotebookLM Workspace</div>' : ''}
+                    </div>
+                    <div class="flex flex-col justify-center">
+                        <p class="text-xl text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                            ${description}
+                        </p>
+                        <div class="flex gap-4">
+                            <a href="${targetLink}" class="flex-1 py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-xl shadow-blue-500/20 hover:scale-105 transition-transform text-center">결과물 보러가기</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalBox.classList.remove('scale-95', 'opacity-0');
+                modalBox.classList.add('scale-100', 'opacity-100');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modalBox = document.getElementById('modalBox');
+            modalBox.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                document.getElementById('modal').classList.add('hidden');
+            }, 300);
+            document.body.style.overflow = 'auto';
+        }
+
+        // Init Theme
+        if (localStorage.getItem('theme') === 'light') toggleTheme();
+    </script>
+</body>
+</html>
