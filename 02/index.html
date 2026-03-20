@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 이해: 예술가와 심판</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;800&display=swap');
+
+        :root {
+            --sky-blue: #bae6fd;
+            --sky-blue-dark: #0ea5e9;
+            --bg-light: #f8fafc;
+            --bg-dark: #0f172a;
+            --text-light: #1e293b;
+            --text-dark: #f1f5f9;
+        }
+
+        body {
+            font-family: 'Pretendard', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .dark {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+
+        .light {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .active-slide {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .btn-sky {
+            background-color: var(--sky-blue-dark);
+            color: white;
+            transition: all 0.2s;
+        }
+
+        .btn-sky:hover {
+            background-color: #0284c7;
+            transform: scale(1.05);
+        }
+
+        .btn-outline-sky {
+            border: 2px solid var(--sky-blue-dark);
+            color: var(--sky-blue-dark);
+            transition: all 0.2s;
+        }
+
+        .btn-outline-sky:hover {
+            background-color: var(--sky-blue-dark);
+            color: white;
+        }
+
+        .btn-indigo {
+            background-color: #6366f1;
+            color: white;
+            transition: all 0.2s;
+        }
+
+        .btn-indigo:hover {
+            background-color: #4f46e5;
+            transform: scale(1.05);
+        }
+
+        .card {
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid rgba(14, 165, 233, 0.2);
+            border-radius: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            width: 50px;
+            height: 26px;
+            background: #cbd5e1;
+            border-radius: 15px;
+            position: relative;
+            transition: background 0.3s;
+        }
+
+        .theme-toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: left 0.3s;
+        }
+
+        .dark .theme-toggle {
+            background: var(--sky-blue-dark);
+        }
+
+        .dark .theme-toggle::after {
+            left: 27px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background-color: white;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 90vh;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .dark .modal-content {
+            background-color: #1e293b;
+            color: #f1f5f9;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #94a3b8;
+            z-index: 1010;
+        }
+
+        /* Video Player Simulation */
+        .video-container {
+            aspect-ratio: 16 / 9;
+            background: #000;
+            width: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            overflow: hidden;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 50%);
+            pointer-events: none;
+        }
+
+        .video-content {
+            text-align: center;
+            z-index: 5;
+            padding: 2rem;
+        }
+
+        .play-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: #38bdf8;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        /* Infographic Timeline in Modal */
+        .infographic-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            padding: 2rem;
+            overflow-y: auto;
+            max-height: 50vh;
+        }
+
+        .info-step {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+        }
+
+        .info-year {
+            font-weight: 800;
+            color: var(--sky-blue-dark);
+            font-size: 1.25rem;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        .info-detail {
+            flex: 1;
+            padding-bottom: 2rem;
+            border-left: 2px solid #e2e8f0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .info-detail::before {
+            content: '';
+            position: absolute;
+            left: -9px;
+            top: 8px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: var(--sky-blue-dark);
+            border: 3px solid white;
+        }
+
+        .dark .info-detail::before {
+            border-color: #1e293b;
+        }
+    </style>
+</head>
+<body class="light">
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 w-full z-50 p-6 flex justify-between items-center bg-opacity-80 backdrop-blur-md">
+        <div class="text-2xl font-extrabold tracking-tight">
+            <span class="text-sky-500">AI</span> 이해
+        </div>
+        <div class="flex items-center gap-4">
+            <i class="fas fa-sun text-yellow-500"></i>
+            <div class="theme-toggle" onclick="toggleTheme()"></div>
+            <i class="fas fa-moon text-indigo-400"></i>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="min-h-screen flex items-center justify-center p-4">
+        
+        <!-- Slide 0: Welcome -->
+        <section id="slide-0" class="slide active-slide max-w-5xl text-center">
+            <div class="mb-8">
+                <i class="fas fa-brain text-7xl text-sky-500 mb-6"></i>
+                <h1 class="text-5xl font-extrabold mb-4 leading-tight">인공지능,<br>어디까지 알고 있나요?</h1>
+                <p class="text-xl opacity-80 mb-10">1950년부터 2026년까지의 진화, 그리고 두 가지 지능의 얼굴을 알아봅니다.</p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button onclick="nextSlide()" class="btn-sky px-8 py-4 rounded-xl font-bold text-lg shadow-lg">
+                        시작하기 <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                    <button onclick="downloadSlides()" class="btn-outline-sky px-8 py-4 rounded-xl font-bold text-lg shadow-md bg-white dark:bg-transparent">
+                        <i class="fas fa-download mr-2"></i> 슬라이드 다운로드
+                    </button>
+                    <button onclick="openVideoModal()" class="btn-indigo px-8 py-4 rounded-xl font-bold text-lg shadow-lg">
+                        <i class="fas fa-play-circle mr-2"></i> 동영상 보기
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 1: Two Faces of AI -->
+        <section id="slide-1" class="slide max-w-5xl">
+            <h2 class="text-3xl font-bold mb-8 text-center">AI의 두 가지 얼굴</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card p-8">
+                    <div class="text-sky-500 text-4xl mb-4"><i class="fas fa-palette"></i></div>
+                    <h3 class="text-2xl font-bold mb-4">생성형 AI (예술가)</h3>
+                    <p class="opacity-80 mb-4">데이터의 패턴을 학습하여 텍스트, 이미지, 오디오 등 세상에 없던 새로운 콘텐츠를 **창조**합니다.</p>
+                    <ul class="space-y-2 text-sm">
+                        <li><i class="fas fa-check text-sky-400 mr-2"></i> 새로운 결과물 생성</li>
+                        <li><i class="fas fa-check text-sky-400 mr-2"></i> 높은 창의적 가치</li>
+                        <li><i class="fas fa-check text-sky-400 mr-2"></i> 예: ChatGPT, Midjourney</li>
+                    </ul>
+                </div>
+                <div class="card p-8">
+                    <div class="text-indigo-500 text-4xl mb-4"><i class="fas fa-gavel"></i></div>
+                    <h3 class="text-2xl font-bold mb-4">판별형 AI (심판)</h3>
+                    <p class="opacity-80 mb-4">주어진 데이터가 무엇인지 분류하고 예측하여 정답을 가려내는 **정확성**을 책임집니다.</p>
+                    <ul class="space-y-2 text-sm">
+                        <li><i class="fas fa-check text-indigo-400 mr-2"></i> 데이터 분류 및 레이블링</li>
+                        <li><i class="fas fa-check text-indigo-400 mr-2"></i> 의사결정 최적화</li>
+                        <li><i class="fas fa-check text-indigo-400 mr-2"></i> 예: 스팸 필터, 얼굴 인식</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-12 flex justify-center gap-4">
+                <button onclick="prevSlide()" class="border border-sky-500 px-6 py-2 rounded-full font-bold">이전</button>
+                <button onclick="nextSlide()" class="btn-sky px-6 py-2 rounded-full font-bold">다음 단계</button>
+            </div>
+        </section>
+
+        <!-- Slide 2: Evolution History -->
+        <section id="slide-2" class="slide max-w-4xl">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+                <h2 class="text-3xl font-bold text-center md:text-left">AI 레벨업 연대기</h2>
+                <button onclick="openModal()" class="bg-sky-100 dark:bg-sky-900/30 text-sky-600 dark:text-sky-400 px-4 py-2 rounded-lg font-bold flex items-center gap-2 hover:bg-sky-200 transition-colors">
+                    <i class="fas fa-chart-line"></i> 인포그래픽으로 보기
+                </button>
+            </div>
+            <div class="space-y-6 relative border-l-2 border-sky-300 ml-4 pl-8">
+                <div class="relative">
+                    <div class="absolute -left-10 w-4 h-4 rounded-full bg-sky-500 top-2"></div>
+                    <h4 class="font-bold text-sky-600">Level 1: 태동기 (1950s)</h4>
+                    <p class="text-sm opacity-80">앨런 튜링의 질문과 기호주의 인공지능의 등장.</p>
+                </div>
+                <div class="relative">
+                    <div class="absolute -left-10 w-4 h-4 rounded-full bg-sky-400 top-2"></div>
+                    <h4 class="font-bold text-sky-500">Level 2: 산업화 (1980s)</h4>
+                    <p class="text-sm opacity-80">머신러닝의 부상과 전문가 시스템 도입.</p>
+                </div>
+                <div class="relative">
+                    <div class="absolute -left-10 w-4 h-4 rounded-full bg-sky-300 top-2"></div>
+                    <h4 class="font-bold text-sky-400">Level 3: 폭발기 (2010s)</h4>
+                    <p class="text-sm opacity-80">딥러닝 혁명, 알파고, 그리고 트랜스포머 아키텍처.</p>
+                </div>
+                <div class="relative">
+                    <div class="absolute -left-10 w-4 h-4 rounded-full bg-sky-200 top-2"></div>
+                    <h4 class="font-bold text-sky-300">Level 4: 에이전틱 시대 (2025s+)</h4>
+                    <p class="text-sm opacity-80">스스로 계획하고 실행하는 자율적 AI 에이전트.</p>
+                </div>
+            </div>
+            <div class="mt-12 flex justify-center gap-4">
+                <button onclick="prevSlide()" class="border border-sky-500 px-6 py-2 rounded-full font-bold">이전</button>
+                <button onclick="nextSlide()" class="btn-sky px-6 py-2 rounded-full font-bold">다음 단계</button>
+            </div>
+        </section>
+
+        <!-- Slide 3: Business Impact -->
+        <section id="slide-3" class="slide max-w-5xl">
+            <h2 class="text-3xl font-bold mb-8 text-center">AI가 만드는 변화 (ROI)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-lg border-t-4 border-sky-400">
+                    <h4 class="font-bold text-lg mb-2">고객 서비스</h4>
+                    <p class="text-3xl font-black text-sky-500 mb-2">70%↑</p>
+                    <p class="text-sm opacity-70">티어-1 자동화를 통한 효율성 개선</p>
+                </div>
+                <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-lg border-t-4 border-sky-400">
+                    <h4 class="font-bold text-lg mb-2">마케팅 비용</h4>
+                    <p class="text-3xl font-black text-sky-500 mb-2">90%↓</p>
+                    <p class="text-sm opacity-70">비주얼 자산 생성 시간 및 비용 절감</p>
+                </div>
+                <div class="p-6 bg-white dark:bg-slate-800 rounded-2xl shadow-lg border-t-4 border-sky-400">
+                    <h4 class="font-bold text-lg mb-2">개발 생산성</h4>
+                    <p class="text-3xl font-black text-sky-500 mb-2">55%↑</p>
+                    <p class="text-sm opacity-70">AI 코딩 어시스턴트 활용 결과</p>
+                </div>
+            </div>
+            <div class="mt-12 text-center">
+                <p class="mb-6 opacity-80 italic">"AI는 단순한 도구를 넘어 비즈니스의 새로운 파트너입니다."</p>
+                <button onclick="prevSlide()" class="border border-sky-500 px-6 py-2 rounded-full font-bold">이전</button>
+                <button onclick="resetSlides()" class="btn-sky px-6 py-2 rounded-full font-bold ml-4">처음으로</button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Infographic Modal -->
+    <div id="infographic-modal" class="modal" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <span class="close-modal" onclick="closeModal()"><i class="fas fa-times"></i></span>
+            <div class="text-center p-8 border-b border-gray-100 dark:border-slate-700">
+                <h2 class="text-3xl font-extrabold mb-2 text-sky-500">AI 히스토리 인포그래픽</h2>
+                <p class="opacity-60">인간의 상상에서 자율적인 지능으로의 70년 여정</p>
+            </div>
+            
+            <div class="infographic-timeline">
+                <div class="info-step">
+                    <div class="info-year">1950s</div>
+                    <div class="info-detail">
+                        <h5 class="font-bold text-xl mb-1">기호주의 & 튜링 테스트</h5>
+                        <p class="opacity-70 text-sm">인간 지능을 '규칙'으로 정의하려 노력한 시기. 앨런 튜링이 지능의 기준을 제시했습니다.</p>
+                    </div>
+                </div>
+                <div class="info-step">
+                    <div class="info-year">1980s</div>
+                    <div class="info-detail">
+                        <h5 class="font-bold text-xl mb-1">머신러닝 & 전문가 시스템</h5>
+                        <p class="opacity-70 text-sm">데이터에서 스스로 학습하는 알고리즘이 부각되고, 특정 분야 전문가를 대체하는 시스템이 기업에 도입되었습니다.</p>
+                    </div>
+                </div>
+                <div class="info-step">
+                    <div class="info-year">2010s</div>
+                    <div class="info-detail">
+                        <h5 class="font-bold text-xl mb-1">딥러닝 & 트랜스포머</h5>
+                        <p class="opacity-70 text-sm">방대한 데이터와 GPU 연산으로 인간 수준의 인식을 달성. 알파고와 트랜스포머 아키텍처가 세상을 바꿨습니다.</p>
+                    </div>
+                </div>
+                <div class="info-step">
+                    <div class="info-year">2022s</div>
+                    <div class="info-detail">
+                        <h5 class="font-bold text-xl mb-1">대중화된 생성형 AI</h5>
+                        <p class="opacity-70 text-sm">ChatGPT의 등장으로 누구나 AI를 사용하는 시대. 창조하는 예술가 AI의 폭발적 성장.</p>
+                    </div>
+                </div>
+                <div class="info-step">
+                    <div class="info-year">2025s+</div>
+                    <div class="info-detail" style="border-left-color: transparent;">
+                        <h5 class="font-bold text-xl mb-1">에이전틱 AI (Agentic AI)</h5>
+                        <p class="opacity-70 text-sm">스스로 과업을 완수하는 자율적 동반자.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-6 flex justify-center bg-gray-50 dark:bg-slate-800/50">
+                <button onclick="closeModal()" class="btn-sky px-10 py-2 rounded-full font-bold">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="video-modal" class="modal" onclick="closeVideoModal()">
+        <div class="modal-content overflow-hidden" onclick="event.stopPropagation()">
+            <span class="close-modal text-white" onclick="closeVideoModal()"><i class="fas fa-times"></i></span>
+            
+            <div class="video-container">
+                <div class="video-overlay"></div>
+                <div id="video-player-content" class="video-content">
+                    <i id="video-icon" class="fas fa-film text-6xl text-sky-400 mb-6 animate-pulse"></i>
+                    <h2 id="video-title" class="text-3xl font-bold mb-4">AI_완전_정복__튜링부터_트랜스포머까지</h2>
+                    <p id="video-status" class="text-sky-200 font-mono tracking-widest">준비 중...</p>
+                </div>
+                <div id="video-progress" class="play-progress"></div>
+                
+                <!-- Video Controls Mock -->
+                <div class="absolute bottom-4 left-0 w-full px-6 flex items-center gap-4 text-white opacity-80">
+                    <i class="fas fa-pause cursor-pointer"></i>
+                    <i class="fas fa-step-forward cursor-pointer text-xs"></i>
+                    <span class="text-xs font-mono ml-auto">01:45 / 03:20</span>
+                    <i class="fas fa-volume-up"></i>
+                    <i class="fas fa-expand"></i>
+                </div>
+            </div>
+            
+            <div class="p-6 bg-slate-900 text-slate-300">
+                <h4 class="font-bold text-white mb-2">파일 정보</h4>
+                <p class="text-sm">이 영상은 인공지능의 70년 역사를 3분 요약한 압축 가이드입니다. 튜링 기계부터 최신 트랜스포머 아키텍처까지의 핵심 마일스톤을 다룹니다.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Progress -->
+    <footer class="fixed bottom-0 w-full p-6">
+        <div class="max-w-md mx-auto h-2 bg-gray-300 dark:bg-gray-700 rounded-full overflow-hidden">
+            <div id="progress-bar" class="h-full bg-sky-500 transition-all duration-300" style="width: 25%;"></div>
+        </div>
+    </footer>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 4;
+        let videoInterval;
+
+        function toggleTheme() {
+            const body = document.body;
+            if (body.classList.contains('light')) {
+                body.classList.replace('light', 'dark');
+            } else {
+                body.classList.replace('dark', 'light');
+            }
+        }
+
+        function updateProgress() {
+            const bar = document.getElementById('progress-bar');
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            bar.style.width = `${progress}%`;
+        }
+
+        function showSlide(index) {
+            document.querySelectorAll('.slide').forEach((s, i) => {
+                s.classList.toggle('active-slide', i === index);
+            });
+            currentSlide = index;
+            updateProgress();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        function resetSlides() {
+            showSlide(0);
+        }
+
+        // Modal Functions
+        function openModal() {
+            document.getElementById('infographic-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('infographic-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Video Modal Functions
+        function openVideoModal() {
+            const modal = document.getElementById('video-modal');
+            const progress = document.getElementById('video-progress');
+            const status = document.getElementById('video-status');
+            const icon = document.getElementById('video-icon');
+            
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Simulation Start
+            let p = 0;
+            status.innerText = "파일 재생 중...";
+            icon.className = "fas fa-spinner fa-spin text-6xl text-sky-400 mb-6";
+            
+            setTimeout(() => {
+                icon.className = "fas fa-play text-6xl text-sky-400 mb-6";
+                videoInterval = setInterval(() => {
+                    p += 0.5;
+                    progress.style.width = p + "%";
+                    if(p >= 100) clearInterval(videoInterval);
+                }, 50);
+            }, 1000);
+        }
+
+        function closeVideoModal() {
+            document.getElementById('video-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            clearInterval(videoInterval);
+            document.getElementById('video-progress').style.width = "0%";
+        }
+
+        // Slide Download Logic
+        function downloadSlides() {
+            const slideDeckContent = `
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>AI 70년 레벨업 연대기</title>
+    <style>
+        body { margin: 0; padding: 20px; background: #0f172a; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; gap: 40px; }
+        .slide { width: 1200px; height: 675px; background: #020617; border-radius: 12px; color: #f8fafc; padding: 60px; box-sizing: border-box; position: relative; border: 1px solid #38bdf8; }
+        h1 { font-size: 70px; color: #38bdf8; margin-top: 50px; }
+        h2 { font-size: 40px; border-left: 8px solid #38bdf8; padding-left: 20px; }
+        p { font-size: 24px; color: #94a3b8; }
+    </style>
+</head>
+<body>
+    <div class="slide"><h1>AI 70년<br>레벨업 연대기</h1><p>인간의 흉내에서 주도적 파트너로 진화한 인공지능의 역사</p></div>
+</body>
+</html>`;
+            const blob = new Blob([slideDeckContent], { type: 'text/html' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'AI_레벨업_연대기.html';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Initialize progress
+        updateProgress();
+    </script>
+</body>
+</html>
