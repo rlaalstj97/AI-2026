@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>부산광역시 인구 구조 변화 및 고령화 실태 분석 (2020-2024)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #F8FAFC;
+            color: #0F172A;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 40vh;
+            max-height: 450px;
+            min-height: 300px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+        }
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="antialiased pb-20">
+
+    <!-- 
+        선택된 컬러 팔레트: Vibrant Contrast Palette (Deep Blue #1E3A8A, Vibrant Orange #F97316, Teal #14B8A6, Slate #334155)
+        
+        네러티브 및 구조 계획:
+        1. 도입부: 부산의 인구 데드크로스 현상 요약 (KPI 텍스트 카드)
+        2. 변화 추이 (Change): 2020-2024 전체 인구 감소 vs 고령 인구 증가 라인 차트
+        3. 지역별 비교 (Compare): 16개 구군별 고령화 점유율 변화 바 차트
+        4. 심층 분석 (Focus): 최고령 지역(영도구)과 최연소 지역(강서구)의 도넛 차트 비교
+        5. 결론: 시사점 및 정책 제언 텍스트
+        
+        시각화 선택 요약:
+        - KPI: HTML/CSS 타이포그래피 (목적: 핵심 수치 전달, NO SVG)
+        - 인구 추이: Chart.js 듀얼 축 라인 차트 (목적: 시계열 변화 및 역전 현상 강조, NO SVG)
+        - 지역별 고령화율: Chart.js 그룹 바 차트 (목적: 16개 구군 2020 vs 2024 비교, NO SVG)
+        - 심층 비교: Chart.js 도넛 차트 (목적: 극단적 비율 비교, NO SVG)
+        
+        명시적 확인: 본 출력물에는 Mermaid JS 및 SVG 그래픽이 전혀 사용되지 않았습니다. 모든 차트는 Canvas 기반의 Chart.js로 렌더링되며, 아이콘 및 레이아웃은 구조화된 HTML과 Tailwind CSS만으로 구현되었습니다.
+    -->
+
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center space-x-4">
+                    <a href="../index.html" class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-gray-700 hover:bg-blue-800 hover:text-white transition-all duration-300 shadow-sm" title="홈으로 이동">
+                        <span class="text-xl">🏠</span>
+                    </a>
+                    <div class="flex-shrink-0 flex items-center">
+                        <span class="text-xl font-black tracking-tighter text-blue-900">DATA<span class="text-orange-500">BUSAN</span></span>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#overview" class="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">현황 요약</a>
+                    <a href="#trends" class="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">인구 추이</a>
+                    <a href="#regional" class="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">지역별 심층분석</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10">
+        
+        <header class="mb-16 text-center">
+            <h1 class="text-3xl md:text-5xl font-black mb-4 tracking-tight text-gray-900">
+                부산광역시 인구 구조 <span class="bg-gradient-to-r from-blue-700 to-teal-500 text-gradient">변화 및 고령화</span> 실태
+            </h1>
+            <p class="text-lg text-gray-500 max-w-3xl mx-auto font-light">
+                2020년부터 2024년까지의 통계 데이터를 바탕으로 부산의 전체 인구 감소와 폭발적인 고령층 증가라는 이중적 위기를 진단합니다.
+            </p>
+        </header>
+
+        <section id="overview" class="mb-20">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold border-l-4 border-orange-500 pl-3 mb-2">핵심 지표 (Key Metrics)</h2>
+                <p class="text-gray-600">지난 5년간 부산 인구 구조의 가장 극적인 변화를 나타내는 3대 지표입니다.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-card rounded-2xl p-6 border-t-4 border-blue-800 flex flex-col justify-center items-center text-center">
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-2">총인구 감소액 (5년)</h3>
+                    <div class="text-4xl font-black text-blue-900 mb-2">- 91,760 <span class="text-xl font-medium">명</span></div>
+                    <p class="text-sm text-gray-500">2020년 334만 명에서 2024년 325만 명으로 지속 하락 (약 -2.74%)</p>
+                </div>
+                
+                <div class="glass-card rounded-2xl p-6 border-t-4 border-orange-500 flex flex-col justify-center items-center text-center transform md:-translate-y-4">
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-2">고령 인구 증가액 (5년)</h3>
+                    <div class="text-4xl font-black text-orange-600 mb-2">+ 128,277 <span class="text-xl font-medium">명</span></div>
+                    <p class="text-sm text-gray-500">동기간 60세 이상 인구는 89.2만 명에서 102만 명으로 급증 (약 +14.38%)</p>
+                </div>
+                
+                <div class="glass-card rounded-2xl p-6 border-t-4 border-teal-500 flex flex-col justify-center items-center text-center">
+                    <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-widest mb-2">시민 3명 중 1명</h3>
+                    <div class="text-4xl font-black text-teal-600 mb-2">31.33 <span class="text-xl font-medium">%</span></div>
+                    <p class="text-sm text-gray-500">2024년 기준 부산 총인구 대비 60세 이상 비율 (2020년 대비 4.69%p 상승)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="trends" class="mb-20">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold border-l-4 border-blue-800 pl-3 mb-2">인구 구조의 역전 (The Dead Cross)</h2>
+                <p class="text-gray-600">전체 인구 곡선과 고령 인구 곡선의 상반된 궤적은 부산의 급격한 인구 구조 재편을 시각적으로 증명합니다.</p>
+            </div>
+            
+            <div class="glass-card rounded-3xl p-6 md:p-8">
+                <div class="w-full">
+                    <div class="chart-container">
+                        <canvas id="trendChart"></canvas>
+                    </div>
+                </div>
+                <div class="mt-6 bg-blue-50 rounded-xl p-4 text-sm text-blue-900 leading-relaxed">
+                    <strong class="font-bold">차트 분석:</strong> 파란색 선은 지속적으로 하락하는 총인구를, 주황색 선은 가파르게 상승하는 60세 이상 인구를 나타냅니다. 특히 2024년 고령 인구는 최초로 100만 명을 돌파하며, 총인구 감소 속도보다 고령 인구 증가 속도가 훨씬 더 가파름을 확인할 수 있습니다.
+                </div>
+            </div>
+        </section>
+
+        <section id="regional" class="mb-20">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold border-l-4 border-teal-500 pl-3 mb-2">16개 구·군 고령화 속도 비교</h2>
+                <p class="text-gray-600">부산 전역에서 예외 없이 고령화 비율이 상승하고 있으며, 원도심의 초고령화와 외곽의 가파른 추격 현상이 동시에 발생하고 있습니다.</p>
+            </div>
+            
+            <div class="glass-card rounded-3xl p-6 md:p-8">
+                <div class="w-full">
+                    <div class="chart-container" style="height: 50vh; max-height: 600px;">
+                        <canvas id="regionalChart"></canvas>
+                    </div>
+                </div>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                        <h4 class="font-bold text-gray-800 mb-1">초고령화 진입 지역</h4>
+                        <p class="text-sm text-gray-600">영도구는 41.96%로 압도적인 1위를 기록 중이며, 중구, 동구, 서구 등 원도심 지역이 36%를 상회하며 부산의 고령화를 주도하고 있습니다.</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                        <h4 class="font-bold text-gray-800 mb-1">고령화 급가속 지역</h4>
+                        <p class="text-sm text-gray-600">사상구(+6.88%p)와 북구(+6.08%p)는 지난 5년간 비중 상승폭이 가장 커, 신규 주거 단지에서 점차 고령 중심 거주지로 전이되고 있음을 보여줍니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20">
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold border-l-4 border-orange-400 pl-3 mb-2">극단적 인구 지형 (Extremes)</h2>
+                <p class="text-gray-600">가장 늙은 도시와 가장 젊은 도시의 인구 분포 비교입니다.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass-card rounded-3xl p-6 flex flex-col items-center">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6">최고령 비율: 영도구</h3>
+                    <div class="w-full" style="max-width: 300px;">
+                        <canvas id="yeongdoChart"></canvas>
+                    </div>
+                    <p class="mt-6 text-center text-sm text-gray-600">
+                        인구 10명 중 4명 이상이 60세 이상입니다. 원도심 공동화 및 청년 유출의 가장 극단적인 결과를 보여주는 행정구역입니다.
+                    </p>
+                </div>
+                
+                <div class="glass-card rounded-3xl p-6 flex flex-col items-center">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6">최저령 비율: 강서구</h3>
+                    <div class="w-full" style="max-width: 300px;">
+                        <canvas id="gangseoChart"></canvas>
+                    </div>
+                    <p class="mt-6 text-center text-sm text-gray-600">
+                        신도시 개발로 청년층 유입이 있어 17.10%로 부산 내 가장 젊은 구입니다. 그러나 이곳 역시 5년 새 고령 인구가 29.7% 증가하며 빠르게 늙어가고 있습니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-20 glass-card rounded-3xl p-8 bg-gradient-to-br from-slate-800 to-blue-900 text-white">
+            <h2 class="text-2xl font-bold mb-6 flex items-center">
+                <span class="mr-3 text-2xl">💡</span> 정책적 시사점 (Implications)
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="font-bold text-orange-400 mb-2 text-lg">1. 에이지 프렌들리 인프라의 전면화</h3>
+                    <p class="text-slate-300 font-light text-sm leading-relaxed mb-4">
+                        특정 구군에 국한된 복지가 아닌, 전 시적인 노인 친화 도시 설계가 필요합니다. 대중교통, 의료 시설, 주거 환경의 기준을 '생산가능인구'에서 '시니어' 중심으로 재편해야 합니다.
+                    </p>
+                    <h3 class="font-bold text-teal-400 mb-2 text-lg">2. 원도심 소멸 방지 '압축 도시' 모델</h3>
+                    <p class="text-slate-300 font-light text-sm leading-relaxed">
+                        영도구, 중구 등은 빈집 증가와 고립 노인 문제가 심화될 수 있습니다. 흩어진 거주지를 도심 핵심 구역으로 모으고 집중적인 케어 서비스를 제공하는 콤팩트 시티(Compact City) 전략이 시급합니다.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-blue-300 mb-2 text-lg">3. 신도심의 숨은 고령화 대비</h3>
+                    <p class="text-slate-300 font-light text-sm leading-relaxed mb-4">
+                        기장군, 강서구 등 인구가 유입되는 곳조차 고령 인구 증가 속도가 20%를 상회합니다. 젊은 도시라는 착시에 빠져 시니어 인프라 투자를 늦춰서는 안 됩니다.
+                    </p>
+                    <h3 class="font-bold text-white mb-2 text-lg">4. 시니어 노동력의 재발견</h3>
+                    <p class="text-slate-300 font-light text-sm leading-relaxed">
+                        102만 명의 60세 이상 인구를 단순 복지 수혜자가 아닌 지역 경제의 새로운 활력으로 삼아야 합니다. 양질의 시니어 일자리 창출과 재교육이 곧 도시 경쟁력이 되는 시점입니다.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-100 py-8 border-t border-gray-200 text-center">
+        <p class="text-gray-500 text-sm">데이터 출처: 통계청 인구총조사 (2020-2024)</p>
+        <p class="text-gray-400 text-xs mt-2">Generated for Data Visualization Analysis</p>
+    </footer>
+
+    <script>
+        // 전역 설정: 라벨 래핑 함수 (16자 제한 로직 구현)
+        function wrapLabel(labelStr, limit = 16) {
+            if (labelStr.length <= limit) return labelStr;
+            const words = labelStr.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + words[i].length + 1 <= limit) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        // 공통 툴팁 콜백 설정
+        const commonTooltipConfig = {
+            callbacks: {
+                title: function(tooltipItems) {
+                    const item = tooltipItems[0];
+                    let label = item.chart.data.labels[item.dataIndex];
+                    if (Array.isArray(label)) {
+                        return label.join(' ');
+                    } else {
+                        return label;
+                    }
+                }
+            }
+        };
+
+        // 데이터 로드 및 차트 렌더링
+        window.addEventListener('DOMContentLoaded', () => {
+            
+            Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
+            Chart.defaults.color = '#475569';
+
+            // 1. 추이 라인 차트 (총인구 vs 고령인구)
+            const ctxTrend = document.getElementById('trendChart').getContext('2d');
+            new Chart(ctxTrend, {
+                type: 'line',
+                data: {
+                    labels: ['2020년', '2021년', '2022년', '2023년', '2024년'],
+                    datasets: [
+                        {
+                            label: '총인구 (명)',
+                            data: [3349016, 3324335, 3295760, 3279604, 3257256],
+                            borderColor: '#1E3A8A', // Deep Blue
+                            backgroundColor: 'rgba(30, 58, 138, 0.1)',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#1E3A8A',
+                            pointRadius: 5,
+                            yAxisID: 'y',
+                            fill: true,
+                            tension: 0.3
+                        },
+                        {
+                            label: '60세 이상 인구 (명)',
+                            data: [892277, 934024, 965387, 997993, 1020554],
+                            borderColor: '#F97316', // Vibrant Orange
+                            backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#F97316',
+                            pointRadius: 5,
+                            yAxisID: 'y1',
+                            fill: true,
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        tooltip: commonTooltipConfig,
+                        legend: { position: 'top' }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: { display: true, text: '총인구' },
+                            min: 3200000,
+                            max: 3400000
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: { display: true, text: '고령 인구' },
+                            min: 850000,
+                            max: 1050000,
+                            grid: { drawOnChartArea: false }
+                        }
+                    }
+                }
+            });
+
+            // 2. 지역별 비교 바 차트 (2020 vs 2024 비율)
+            const rawRegionsData = [
+                {name: '영도구 부산광역시', r20: 36.31, r24: 41.96},
+                {name: '중구 부산광역시', r20: 33.62, r24: 37.88},
+                {name: '동구 부산광역시', r20: 33.74, r24: 37.01},
+                {name: '서구 부산광역시', r20: 32.54, r24: 36.65},
+                {name: '금정구 부산광역시', r20: 28.53, r24: 34.21},
+                {name: '사하구 부산광역시', r20: 27.27, r24: 33.15},
+                {name: '해운대구 부산광역시', r20: 26.75, r24: 32.61},
+                {name: '사상구 부산광역시', r20: 25.32, r24: 32.20},
+                {name: '수영구 부산광역시', r20: 27.42, r24: 31.97},
+                {name: '남구 부산광역시', r20: 26.68, r24: 31.38},
+                {name: '북구 부산광역시', r20: 24.96, r24: 31.04},
+                {name: '부산진구 부산광역시', r20: 26.46, r24: 30.86},
+                {name: '연제구 부산광역시', r20: 26.31, r24: 30.53},
+                {name: '동래구 부산광역시', r20: 25.12, r24: 30.48},
+                {name: '기장군 부산광역시', r20: 18.06, r24: 22.91},
+                {name: '강서구 부산광역시', r20: 14.12, r24: 17.10}
+            ];
+
+            const regionLabels = rawRegionsData.map(d => wrapLabel(d.name));
+            const data2020 = rawRegionsData.map(d => d.r20);
+            const data2024 = rawRegionsData.map(d => d.r24);
+
+            const ctxRegional = document.getElementById('regionalChart').getContext('2d');
+            new Chart(ctxRegional, {
+                type: 'bar',
+                data: {
+                    labels: regionLabels,
+                    datasets: [
+                        {
+                            label: '2020년 60세 이상 비율 (%)',
+                            data: data2020,
+                            backgroundColor: '#94A3B8', // Slate 400
+                            borderRadius: 4
+                        },
+                        {
+                            label: '2024년 60세 이상 비율 (%)',
+                            data: data2024,
+                            backgroundColor: '#14B8A6', // Teal
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: commonTooltipConfig,
+                        legend: { position: 'top' }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 45,
+                            title: { display: true, text: '인구 비율 (%)' }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 3. 도넛 차트 (최고령 영도구)
+            const ctxYeongdo = document.getElementById('yeongdoChart').getContext('2d');
+            new Chart(ctxYeongdo, {
+                type: 'doughnut',
+                data: {
+                    labels: ['60세 이상 인구', '나머지 인구'],
+                    datasets: [{
+                        data: [41.96, 58.04],
+                        backgroundColor: ['#F97316', '#E2E8F0'], // Orange vs light slate
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        tooltip: commonTooltipConfig,
+                        legend: { position: 'bottom' }
+                    }
+                },
+                plugins: [{
+                    id: 'textCenter1',
+                    beforeDraw: function(chart) {
+                        var width = chart.width, height = chart.height, ctx = chart.ctx;
+                        ctx.restore();
+                        var fontSize = (height / 114).toFixed(2);
+                        ctx.font = "bold " + fontSize + "em Noto Sans KR";
+                        ctx.textBaseline = "middle";
+                        ctx.fillStyle = "#F97316";
+                        var text = "41.96%", textX = Math.round((width - ctx.measureText(text).width) / 2), textY = height / 2.2;
+                        ctx.fillText(text, textX, textY);
+                        ctx.save();
+                    }
+                }]
+            });
+
+            // 4. 도넛 차트 (최저령 강서구)
+            const ctxGangseo = document.getElementById('gangseoChart').getContext('2d');
+            new Chart(ctxGangseo, {
+                type: 'doughnut',
+                data: {
+                    labels: ['60세 이상 인구', '나머지 인구'],
+                    datasets: [{
+                        data: [17.10, 82.90],
+                        backgroundColor: ['#14B8A6', '#E2E8F0'], // Teal vs light slate
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        tooltip: commonTooltipConfig,
+                        legend: { position: 'bottom' }
+                    }
+                },
+                plugins: [{
+                    id: 'textCenter2',
+                    beforeDraw: function(chart) {
+                        var width = chart.width, height = chart.height, ctx = chart.ctx;
+                        ctx.restore();
+                        var fontSize = (height / 114).toFixed(2);
+                        ctx.font = "bold " + fontSize + "em Noto Sans KR";
+                        ctx.textBaseline = "middle";
+                        ctx.fillStyle = "#14B8A6";
+                        var text = "17.10%", textX = Math.round((width - ctx.measureText(text).width) / 2), textY = height / 2.2;
+                        ctx.fillText(text, textX, textY);
+                        ctx.save();
+                    }
+                }]
+            });
+
+        });
+    </script>
+</body>
+</html>
