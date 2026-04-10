@@ -49,6 +49,22 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
     </style>
 </head>
 <body class="bg-slate-50">
@@ -57,7 +73,6 @@
     <nav class="sticky top-0 z-50 bg-white/70 backdrop-blur-md border-b border-slate-200">
         <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-4">
-                <!-- Home Button -->
                 <button onclick="scrollToTop()" class="p-2 hover:bg-slate-100 rounded-full transition group" aria-label="Home">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-slate-600 group-hover:text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -85,28 +100,64 @@
             우리가 매일 사용하는 브라우저 뒤편의 복잡한 메커니즘을 탐구합니다.
         </p>
         <div class="flex flex-col items-center space-y-4">
-            <!-- Primary Action -->
             <a href="#rendering" class="px-12 py-3.5 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-200 w-full md:w-auto text-center">
                 기술 심화보기
             </a>
             
-            <!-- Secondary Actions -->
-            <div class="flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-4 w-full md:w-auto">
-                <button class="flex items-center justify-center px-8 py-3 bg-white text-rose-600 border border-rose-100 font-bold rounded-xl hover:bg-rose-50 transition shadow-sm">
+            <!-- Action Buttons -->
+            <div class="flex flex-wrap justify-center gap-3 w-full md:w-auto">
+                <button class="flex items-center justify-center px-6 py-3 bg-white text-rose-600 border border-rose-100 font-bold rounded-xl hover:bg-rose-50 transition shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
                     </svg>
                     동영상 보기
                 </button>
-                <button class="flex items-center justify-center px-8 py-3 bg-white text-emerald-600 border border-emerald-100 font-bold rounded-xl hover:bg-emerald-50 transition shadow-sm">
+                <button onclick="toggleModal('infographicModal', true)" class="flex items-center justify-center px-6 py-3 bg-white text-emerald-600 border border-emerald-100 font-bold rounded-xl hover:bg-emerald-50 transition shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
                     인포그래픽 보기
                 </button>
+                <button onclick="toggleModal('slideModal', true)" class="flex items-center justify-center px-6 py-3 bg-white text-indigo-600 border border-indigo-100 font-bold rounded-xl hover:bg-indigo-50 transition shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                    </svg>
+                    슬라이드 보기
+                </button>
             </div>
         </div>
     </header>
+
+    <!-- Infographic Modal -->
+    <div id="infographicModal" class="modal-overlay" onclick="toggleModal('infographicModal', false)">
+        <div class="relative max-w-5xl w-full bg-white rounded-2xl overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
+            <button onclick="toggleModal('infographicModal', false)" class="absolute top-4 right-4 z-10 p-2 bg-black/10 hover:bg-black/20 rounded-full transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <div class="p-1">
+                <img src="./04/mssss.png" alt="웹 기술 인포그래픽" class="w-full h-auto block" onerror="this.parentElement.innerHTML='<div class=\'p-20 text-center text-slate-400\'>이미지를 불러올 수 없습니다.<br>(경로: ./04/mssss.png)</div>'">
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide PDF Modal -->
+    <div id="slideModal" class="modal-overlay" onclick="toggleModal('slideModal', false)">
+        <div class="relative max-w-6xl w-full h-[85vh] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between p-4 border-b border-slate-100">
+                <h3 class="font-bold text-slate-700">Web Ecosystem Blueprint</h3>
+                <button onclick="toggleModal('slideModal', false)" class="p-2 hover:bg-slate-100 rounded-full transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div class="flex-1 bg-slate-100">
+                <iframe src="./04/Web_Ecosystem_Blueprint.pdf" class="w-full h-full border-none"></iframe>
+            </div>
+        </div>
+    </div>
 
     <!-- 1. Basics Section -->
     <section id="intro" class="max-w-6xl mx-auto px-6 py-20">
@@ -172,17 +223,15 @@
                     <div>
                         <span class="text-blue-600 font-bold">1989 - 2004</span>
                         <h4 class="text-2xl font-bold mt-2 mb-4">정적 정보의 시대</h4>
-                        <p class="text-slate-600 leading-relaxed mb-6">
-                            사용자는 정보를 읽기만(Read-only) 할 수 있었습니다. 기업이나 기관이 제공하는 텍스트 위주의 페이지가 주를 이루었으며, 팀 버너스리의 제안으로 시작된 초기 형태입니다.
-                        </p>
-                        <ul class="space-y-2 text-sm font-medium">
-                            <li class="flex items-center">✅ HTML, CGI 중심</li>
-                            <li class="flex items-center">✅ 단순한 텍스트와 하이퍼링크</li>
-                            <li class="flex items-center">✅ 브라우저 전쟁 (IE vs Netscape)</li>
+                        <p class="text-slate-600 leading-relaxed mb-6">사용자는 정보를 읽기만 할 수 있었습니다. 기업이나 기관이 제공하는 텍스트 위주의 페이지가 주를 이루었습니다.</p>
+                        <ul class="space-y-2 text-sm font-medium text-slate-500">
+                            <li>✅ HTML, CGI 중심</li>
+                            <li>✅ 단순한 텍스트와 하이퍼링크</li>
+                            <li>✅ 브라우저 전쟁 (IE vs Netscape)</li>
                         </ul>
                     </div>
-                    <div class="bg-slate-50 p-6 rounded-2xl border border-dashed border-slate-300">
-                        <p class="text-center italic text-slate-400">"문서를 웹에 올리는 것 자체가 혁명이던 시절"</p>
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-dashed border-slate-300 text-center">
+                        <p class="italic text-slate-400">"문서를 웹에 올리는 것 자체가 혁명이던 시절"</p>
                     </div>
                 </div>
             </div>
@@ -192,17 +241,15 @@
                     <div>
                         <span class="text-purple-600 font-bold">2004 - 현재</span>
                         <h4 class="text-2xl font-bold mt-2 mb-4">참여와 공유의 플랫폼</h4>
-                        <p class="text-slate-600 leading-relaxed mb-6">
-                            사용자가 직접 콘텐츠를 생성(Read-Write)합니다. SNS, 유튜브, 클라우드 기술이 폭발적으로 성장하며 동적인 상호작용이 핵심이 되었습니다.
-                        </p>
-                        <ul class="space-y-2 text-sm font-medium">
-                            <li class="flex items-center">✅ AJAX, JSON 기반 비동기 통신</li>
-                            <li class="flex items-center">✅ 스마트폰 보급과 모바일 퍼스트</li>
-                            <li class="flex items-center">✅ 고성능 크롬(V8 엔진)의 등장</li>
+                        <p class="text-slate-600 leading-relaxed mb-6">사용자가 직접 콘텐츠를 생성합니다. SNS, 유튜브, 클라우드 기술이 폭발적으로 성장했습니다.</p>
+                        <ul class="space-y-2 text-sm font-medium text-slate-500">
+                            <li>✅ AJAX, JSON 기반 비동기 통신</li>
+                            <li>✅ 스마트폰 보급과 모바일 퍼스트</li>
+                            <li>✅ 고성능 크롬(V8 엔진)의 등장</li>
                         </ul>
                     </div>
-                    <div class="bg-blue-50 p-6 rounded-2xl border border-dashed border-blue-200">
-                        <p class="text-center font-bold text-blue-600">"소통하고 참여하는 소셜 네트워크 서비스"</p>
+                    <div class="bg-blue-50 p-6 rounded-2xl border border-dashed border-blue-200 text-center">
+                        <p class="font-bold text-blue-600">"소통하고 참여하는 소셜 네트워크 서비스"</p>
                     </div>
                 </div>
             </div>
@@ -212,99 +259,52 @@
                     <div>
                         <span class="text-emerald-600 font-bold">2026 전망</span>
                         <h4 class="text-2xl font-bold mt-2 mb-4">지능형 & 몰입형 웹</h4>
-                        <p class="text-slate-600 leading-relaxed mb-6">
-                            단순한 화면을 넘어 AI가 인터페이스를 자동 생성하고, 탈중앙화된 데이터 처리와 XR(확장 현실)을 통한 몰입 경험이 가능해집니다.
-                        </p>
-                        <ul class="space-y-2 text-sm font-medium">
-                            <li class="flex items-center">✅ 생성형 AI 기반 지능형 UI</li>
-                            <li class="flex items-center">✅ 블록체인 기반 탈중앙화(Web3)</li>
-                            <li class="flex items-center">✅ 웹 4.0: 주변 지능(Ambient Intelligence)</li>
+                        <p class="text-slate-600 leading-relaxed mb-6">AI가 인터페이스를 자동 생성하고, XR을 통한 몰입 경험이 가능해집니다.</p>
+                        <ul class="space-y-2 text-sm font-medium text-slate-500">
+                            <li>✅ 생성형 AI 기반 지능형 UI</li>
+                            <li>✅ 블록체인 기반 탈중앙화(Web3)</li>
+                            <li>✅ 웹 4.0: 주변 지능(Ambient Intelligence)</li>
                         </ul>
                     </div>
-                    <div class="bg-emerald-50 p-6 rounded-2xl border border-dashed border-emerald-200">
-                        <p class="text-center font-bold text-emerald-600">"디지털과 현실이 융합된 메타버스 웹"</p>
+                    <div class="bg-emerald-50 p-6 rounded-2xl border border-dashed border-emerald-200 text-center">
+                        <p class="font-bold text-emerald-600">"디지털과 현실이 융합된 메타버스 웹"</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 3. Critical Rendering Path (Interactive) -->
+    <!-- 3. CRP Section -->
     <section id="rendering" class="py-20 px-6 max-w-6xl mx-auto">
         <h3 class="text-3xl font-bold text-center mb-6">브라우저 렌더링 파이프라인 (CRP)</h3>
-        <p class="text-center text-slate-500 mb-16">화면에 웹페이지가 그려지기까지의 5단계 과정</p>
+        <p class="text-center text-slate-500 mb-16">화면에 웹페이지가 그려지기까지의 과정</p>
 
         <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
             <div class="crp-step p-6 bg-white border border-slate-200 rounded-2xl text-center">
                 <div class="w-12 h-12 bg-blue-100 text-blue-600 flex items-center justify-center rounded-full mx-auto mb-4 font-bold">1</div>
-                <h5 class="font-bold mb-2">Parsing</h5>
-                <p class="text-xs text-slate-500">HTML→DOM<br>CSS→CSSOM 변환</p>
+                <h5 class="font-bold mb-2 text-sm">Parsing</h5>
             </div>
             <div class="crp-step p-6 bg-white border border-slate-200 rounded-2xl text-center">
                 <div class="w-12 h-12 bg-blue-100 text-blue-600 flex items-center justify-center rounded-full mx-auto mb-4 font-bold">2</div>
-                <h5 class="font-bold mb-2">Render Tree</h5>
-                <p class="text-xs text-slate-500">DOM + CSSOM 결합<br>(실제 노드 구성)</p>
+                <h5 class="font-bold mb-2 text-sm">Render Tree</h5>
             </div>
             <div class="crp-step p-6 bg-white border border-slate-200 rounded-2xl text-center">
                 <div class="w-12 h-12 bg-blue-100 text-blue-600 flex items-center justify-center rounded-full mx-auto mb-4 font-bold">3</div>
-                <h5 class="font-bold mb-2">Layout</h5>
-                <p class="text-xs text-slate-500">기하학적 위치와<br>크기(px) 계산</p>
+                <h5 class="font-bold mb-2 text-sm">Layout</h5>
             </div>
             <div class="crp-step p-6 bg-white border border-slate-200 rounded-2xl text-center">
                 <div class="w-12 h-12 bg-blue-100 text-blue-600 flex items-center justify-center rounded-full mx-auto mb-4 font-bold">4</div>
-                <h5 class="font-bold mb-2">Paint</h5>
-                <p class="text-xs text-slate-500">색상, 텍스트 등<br>픽셀 단위 시각화</p>
+                <h5 class="font-bold mb-2 text-sm">Paint</h5>
             </div>
             <div class="crp-step p-6 bg-white border border-slate-200 rounded-2xl text-center">
                 <div class="w-12 h-12 bg-blue-100 text-blue-600 flex items-center justify-center rounded-full mx-auto mb-4 font-bold">5</div>
-                <h5 class="font-bold mb-2">Composite</h5>
-                <p class="text-xs text-slate-500">레이어를 합쳐<br>최종 화면 출력</p>
-            </div>
-        </div>
-
-        <div class="mt-12 p-6 bg-slate-800 text-slate-200 rounded-2xl">
-            <h5 class="font-bold mb-3 flex items-center">
-                <span class="mr-2">💡</span> 최적화 포인트: JavaScript의 블로킹
-            </h5>
-            <p class="text-sm leading-relaxed opacity-80">
-                JavaScript는 렌더링 파이프라인을 중단시킬 수 있습니다. <code class="bg-slate-700 px-1.5 rounded">async</code>나 <code class="bg-slate-700 px-1.5 rounded">defer</code> 속성을 사용하여 초기 로딩 속도를 개선하는 것이 아키텍트의 핵심 역량입니다.
-            </p>
-        </div>
-    </section>
-
-    <!-- 4. Future Trends (2026) -->
-    <section id="future" class="py-20 px-6 bg-gradient-to-b from-slate-50 to-white">
-        <div class="max-w-4xl mx-auto">
-            <h3 class="text-3xl font-bold text-center mb-12">2026 웹 개발의 뉴 노멀</h3>
-            
-            <div class="space-y-8">
-                <div class="flex flex-col md:flex-row gap-8 items-center bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-                    <div class="text-5xl">🤖</div>
-                    <div>
-                        <h4 class="text-xl font-bold mb-2">AI-Centric Development</h4>
-                        <p class="text-slate-600 text-sm">인터페이스 자체가 사용자의 맥락에 따라 실시간으로 생성되는 지능형 UI 시대입니다. 정적 구조가 아닌 동적 컴포넌트 생성이 주류가 됩니다.</p>
-                    </div>
-                </div>
-                <div class="flex flex-col md:flex-row gap-8 items-center bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-                    <div class="text-5xl">🕶️</div>
-                    <div>
-                        <h4 class="text-xl font-bold mb-2">몰입형 웹 4.0</h4>
-                        <p class="text-slate-600 text-sm">디지털 객체가 실제 환경과 유기적으로 통합되는 XR 기술이 표준이 됩니다. 모바일을 넘어 '공간' 자체가 인터페이스가 됩니다.</p>
-                    </div>
-                </div>
-                <div class="flex flex-col md:flex-row gap-8 items-center bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-                    <div class="text-5xl">⚡</div>
-                    <div>
-                        <h4 class="text-xl font-bold mb-2">하이브리드 렌더링</h4>
-                        <p class="text-slate-600 text-sm">성능과 SEO 두 마리 토끼를 잡기 위해 SSR, SSG, ISR을 지능적으로 혼합하는 메타 프레임워크가 아키텍처의 중심이 됩니다.</p>
-                    </div>
-                </div>
+                <h5 class="font-bold mb-2 text-sm">Composite</h5>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-400 py-12 px-6">
+    <footer class="bg-slate-900 text-slate-400 py-12 px-6 mt-20">
         <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 items-center">
             <div>
                 <h4 class="text-white font-bold text-xl mb-4">WebTech 2026</h4>
@@ -312,7 +312,6 @@
             </div>
             <div class="text-right text-xs">
                 <p>© 2026 기술 보고서: 웹 기술의 진화</p>
-                <p class="mt-2 text-slate-500">Based on Living Standard by WHATWG & W3C</p>
             </div>
         </div>
     </footer>
@@ -332,6 +331,25 @@
             activeBtn.classList.remove('text-slate-500');
             activeBtn.classList.add('bg-white', 'shadow-sm', 'text-blue-600');
         }
+
+        function toggleModal(modalId, show) {
+            const modal = document.getElementById(modalId);
+            if (show) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            } else {
+                modal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                toggleModal('infographicModal', false);
+                toggleModal('slideModal', false);
+            }
+        });
 
         window.onload = () => {
             showTab('web1');
