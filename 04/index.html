@@ -84,6 +84,31 @@
             pointer-events: none;
         }
 
+        /* Home Button Styles */
+        .home-btn {
+            position: fixed;
+            top: 15px;
+            left: 20px;
+            z-index: 100;
+            background: white;
+            color: var(--dark-pink);
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(255, 143, 163, 0.2);
+            transition: all 0.3s ease;
+            border: 1px solid var(--primary-pink);
+        }
+
+        .home-btn:hover {
+            background: var(--dark-pink);
+            color: white;
+            transform: scale(1.1);
+        }
+
         /* Modal Styles */
         .modal {
             display: none;
@@ -93,44 +118,51 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.9);
+            background-color: rgba(0,0,0,0.95);
             backdrop-filter: blur(10px);
         }
 
         .modal-content {
             margin: auto;
             display: block;
-            max-width: 90%;
-            max-height: 85%;
+            max-width: 95%;
+            max-height: 90vh;
             position: relative;
             top: 50%;
             transform: translateY(-50%);
-            border-radius: 12px;
-            border: 4px solid white;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
         }
 
-        .video-container {
+        .video-container, .pdf-container {
             position: relative;
             top: 50%;
             transform: translateY(-50%);
-            max-width: 800px;
+            max-width: 1000px;
             margin: auto;
             width: 90%;
+            height: 80vh;
             z-index: 2050;
         }
 
+        .video-container {
+            height: auto;
+            max-width: 800px;
+        }
+
         .close-modal {
-            position: absolute;
+            position: fixed;
             top: 20px;
             right: 35px;
             color: white;
             font-size: 60px;
             font-weight: bold;
             cursor: pointer;
-            z-index: 3000; /* 최상단으로 설정 */
+            z-index: 3000;
             transition: color 0.3s, transform 0.2s;
             line-height: 1;
             user-select: none;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
 
         .close-modal:hover {
@@ -170,15 +202,20 @@
 <body>
     <div id="sparkle-container"></div>
 
+    <!-- Home Button -->
+    <a href="../index.html" class="home-btn" title="홈으로 이동">
+        <i class="fa-solid fa-house"></i>
+    </a>
+
     <!-- Image Modal -->
-    <div id="imageModal" class="modal">
-        <span class="close-modal" onclick="closeImageModal()">&times;</span>
-        <img class="modal-content" src="web_info.jpg" alt="웹 기술 인포그래픽">
+    <div id="imageModal" class="modal" onclick="closeImageModal()">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" src="./web_info.png" alt="웹 기술 인포그래픽" onerror="this.src='https://placehold.co/1200x800?text=Web+Tech+Infographic'">
     </div>
 
     <!-- Video Modal -->
     <div id="videoModal" class="modal">
-        <span class="close-modal" id="videoCloseBtn">&times;</span>
+        <span class="close-modal" id="videoCloseBtn" onclick="closeVideoModal()">&times;</span>
         <div class="video-container">
             <video id="webVideo" controls class="w-full rounded-xl shadow-2xl border-4 border-white">
                 <source src="./web (1).mp4" type="video/mp4">
@@ -187,10 +224,19 @@
         </div>
     </div>
 
+    <!-- PDF Modal (슬라이드 보기 전용) -->
+    <div id="pdfModal" class="modal">
+        <span class="close-modal" onclick="closePdfModal()">&times;</span>
+        <div class="pdf-container">
+            <iframe id="pdfFrame" src="./The_2026_Web_Blueprint.pdf" class="w-full h-full rounded-xl shadow-2xl border-4 border-white"></iframe>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-pink-100">
         <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-2xl font-bold text-[#ff8fa3]" style="font-family: 'Dancing Script', cursive;">Web Tech ✨</div>
+            <!-- Adjusted Left Padding for Logo to accommodate Home Button -->
+            <div class="text-2xl font-bold text-[#ff8fa3] ml-12" style="font-family: 'Dancing Script', cursive;">Web Tech ✨</div>
             <div class="hidden md:flex space-x-6 text-sm">
                 <a href="#intro" class="nav-link">소개</a>
                 <a href="#infra" class="nav-link">기초해설</a>
@@ -218,8 +264,8 @@
                     <i class="fa-solid fa-circle-play"></i>
                     <span>동영상 보기</span>
                 </button>
-                <button onclick="openImageModal()" class="px-8 py-3 bg-amber-400 text-white rounded-full font-bold shadow-md flex items-center space-x-2 hover:scale-105 transition-transform w-full sm:w-auto justify-center">
-                    <i class="fa-solid fa-file-powerpoint"></i>
+                <button onclick="openPdfModal()" class="px-8 py-3 bg-amber-400 text-white rounded-full font-bold shadow-md flex items-center space-x-2 hover:scale-105 transition-transform w-full sm:w-auto justify-center">
+                    <i class="fa-solid fa-file-pdf"></i>
                     <span>슬라이드 보기</span>
                 </button>
             </div>
@@ -270,7 +316,7 @@
                     <div class="glass-card p-8 bg-white border-b-4 border-pink-300">
                         <h3 class="text-2xl font-bold text-pink-500 mb-4">HTML</h3>
                         <p class="text-xs text-pink-400 mb-4 font-mono">Hypertext Markup Language</p>
-                        <p class="text-gray-600">웹 페이지의 <b>'구조와 내용'</b>을 기술합니다. 텍스트, 이미지, 링크 등을 논리적으로 배치합니다.</p>
+                        <p class="text-gray-600">웹 페이지의 <b>'뼈대'</b>를 정의합니다. 텍스트, 이미지, 링크 등을 논리적으로 배치합니다.</p>
                     </div>
                 </div>
             </div>
@@ -405,15 +451,14 @@
         // Video Modal Functions
         const videoModal = document.getElementById('videoModal');
         const webVideo = document.getElementById('webVideo');
-        const videoCloseBtn = document.getElementById('videoCloseBtn');
+        let videoPlayPromise = null;
 
         function openVideoModal() {
             videoModal.style.display = "block";
             document.body.style.overflow = "hidden";
-            // 비동기 재생 에러 방지 처리
-            const playPromise = webVideo.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(error => console.log("자동 재생 방지됨"));
+            videoPlayPromise = webVideo.play();
+            if (videoPlayPromise !== undefined) {
+                videoPlayPromise.catch(error => console.log("자동 재생 방지됨"));
             }
         }
 
@@ -424,17 +469,21 @@
             document.body.style.overflow = "auto";
         }
 
-        // 이벤트 리스너 명시적 등록 (더 안정적임)
-        videoCloseBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // 이벤트 버블링 방지
-            closeVideoModal();
-        });
+        // PDF Modal Functions
+        function openPdfModal() {
+            document.getElementById('pdfModal').style.display = "block";
+            document.body.style.overflow = "hidden";
+        }
+        function closePdfModal() {
+            document.getElementById('pdfModal').style.display = "none";
+            document.body.style.overflow = "auto";
+        }
 
-        // 모달 외각 클릭 시 닫기
-        window.addEventListener('click', (event) => {
+        window.onclick = function(event) {
             if (event.target == videoModal) closeVideoModal();
             if (event.target == document.getElementById('imageModal')) closeImageModal();
-        });
+            if (event.target == document.getElementById('pdfModal')) closePdfModal();
+        }
 
         const details = {
             dns: { title: "DNS Lookup", content: "도메인 주소를 IP 주소로 변환하여 서버를 찾습니다." },
