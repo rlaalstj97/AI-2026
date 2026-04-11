@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 스토리: 마음을 잇는 사회복지사</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700;900&display=swap');
+
+        :root {
+            --primary-yellow: #FFD700;
+            --accent-orange: #FF8C00;
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(255, 215, 0, 0.3);
+            --text-main: #1e293b;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: #fffdf0; 
+            color: var(--text-main);
+            overflow-x: hidden;
+            margin: 0;
+            cursor: crosshair;
+        }
+
+        .liquid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at top left, #ffffff, #fffdf0);
+            overflow: hidden;
+        }
+
+        .blob {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.3) 0%, rgba(255, 140, 0, 0.15) 100%);
+            filter: blur(60px);
+            border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%;
+            animation: move 25s infinite alternate ease-in-out;
+        }
+
+        @keyframes move {
+            0% { transform: translate(-15%, -15%) rotate(0deg) scale(1); }
+            50% { transform: translate(15%, 10%) rotate(180deg) scale(1.1); }
+            100% { transform: translate(-5%, 20%) rotate(360deg) scale(1); }
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 2px solid var(--glass-border);
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(255, 215, 0, 0.1);
+        }
+
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fffdf0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-yellow);
+            border-radius: 10px;
+        }
+
+        .highlight {
+            color: var(--accent-orange);
+            font-weight: 700;
+        }
+
+        .btn-yellow {
+            background: var(--primary-yellow);
+            color: #000;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-yellow:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
+            background: #ffe135;
+        }
+
+        h1, h2, h3 {
+            color: #1e293b;
+        }
+
+        .profile-tag {
+            background: rgba(255, 215, 0, 0.2);
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-weight: 600;
+            color: var(--accent-orange);
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+
+        .profile-frame {
+            position: relative;
+            transition: transform 0.5s ease;
+        }
+        .profile-frame:hover {
+            transform: scale(1.03);
+        }
+
+        .insight-card {
+            border-left: 4px solid var(--primary-yellow);
+            padding-left: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Modal Styles */
+        #modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="liquid-bg">
+        <div class="blob" style="top: -5%; left: -5%;"></div>
+        <div class="blob" style="bottom: 10%; right: -10%; animation-delay: -7s; width: 700px; height: 700px; background: linear-gradient(135deg, rgba(255, 230, 0, 0.25), rgba(255, 100, 0, 0.1));"></div>
+        <div class="blob" style="top: 40%; left: 30%; animation-duration: 15s; width: 300px; height: 300px; opacity: 0.5;"></div>
+    </div>
+
+    <!-- Modal Overlay -->
+    <div id="modal-overlay">
+        <div class="modal-content text-center">
+            <button onclick="closeModal()" class="absolute top-4 right-6 text-2xl font-bold text-slate-400 hover:text-slate-600">&times;</button>
+            <h3 class="text-3xl font-black mb-6">4차 산업혁명 <span class="highlight">사회복지 인포그래픽</span></h3>
+            <div class="space-y-6 text-left">
+                <div class="bg-yellow-50 p-5 rounded-2xl border-l-4 border-yellow-400 shadow-sm">
+                    <p class="font-bold text-lg mb-1">🤖 AI 대체 가능성 최하위군</p>
+                    <p class="text-slate-600 text-sm">감정과 공감이 필요한 사회복지직은 자동화 고위험군에서 제외되는 대표적 직종입니다.</p>
+                </div>
+                <div class="bg-orange-50 p-5 rounded-2xl border-l-4 border-orange-400 shadow-sm">
+                    <p class="font-bold text-lg mb-1">📈 일자리 성장률 1위</p>
+                    <p class="text-slate-600 text-sm">고령화 사회 진입으로 인해 향후 10년간 가장 많은 일자리가 창출될 분야로 손꼽힙니다.</p>
+                </div>
+                <div class="bg-blue-50 p-5 rounded-2xl border-l-4 border-blue-400 shadow-sm">
+                    <p class="font-bold text-lg mb-1">💻 테크-케어 융합</p>
+                    <p class="text-slate-600 text-sm">스마트 기기를 활용한 원격 돌봄 등 기술을 다루는 '스마트 사회복지사'의 가치가 상승합니다.</p>
+                </div>
+            </div>
+            <!-- 버튼 텍스트 변경: 확인했습니다 -> 인포그래픽 보기 -->
+            <button onclick="closeModal()" class="mt-8 btn-yellow w-full">인포그래픽 보기</button>
+        </div>
+    </div>
+
+    <!-- 1. Intro Section -->
+    <section id="intro" class="visible">
+        <div class="text-center">
+            <h1 class="text-6xl md:text-8xl font-black mb-6 tracking-tighter">
+                PEOPLE <span class="highlight">CONNECT</span>
+            </h1>
+            <p class="text-xl md:text-2xl font-medium text-slate-600 mb-10">
+                마음을 잇고 세상을 밝히는 사회복지와 나의 스토리
+            </p>
+            <a href="#about" class="btn-yellow">스토리 시작하기</a>
+        </div>
+    </section>
+
+    <!-- 2. About Author -->
+    <section id="about">
+        <div class="glass-card max-w-4xl w-full p-10 md:p-16">
+            <h2 class="text-4xl font-bold mb-8">About <span class="highlight">Author</span></h2>
+            <div class="grid md:grid-cols-2 gap-10 items-center">
+                <div class="space-y-4">
+                    <div class="space-y-2">
+                        <div class="profile-tag">이름</div>
+                        <p class="text-2xl font-bold text-slate-800">김민서</p>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="profile-tag">나이</div>
+                        <p class="text-2xl font-bold text-slate-800">22살</p>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="profile-tag">소속</div>
+                        <p class="text-xl font-bold text-slate-800">부산대학교 사회복지학과 24학번</p>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="profile-tag">활동</div>
+                        <p class="text-xl font-bold text-slate-800">2026학년도 부산대 사회복지학과 학생회장</p>
+                    </div>
+                    <p class="mt-6 text-slate-600 leading-relaxed pt-4 border-t border-yellow-200/50">
+                        전공의 가치를 현장에서 실천하며, 학과 구성원들의 목소리를 대변하는 리더로서 활동하고 있습니다.
+                    </p>
+                </div>
+                <div class="flex items-center justify-center">
+                    <div class="profile-frame">
+                        <div class="absolute inset-0 bg-yellow-400 rounded-3xl blur-2xl opacity-20"></div>
+                        <div class="w-64 h-80 rounded-3xl border-4 border-white overflow-hidden shadow-2xl relative z-10 bg-white">
+                            <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=400" alt="김민서 님 프로필 사진" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. 경험과 강점의 연결고리 -->
+    <section id="connection">
+        <div class="max-w-6xl w-full">
+            <h2 class="text-4xl font-bold mb-12 text-center">경험과 강점의 <span class="highlight">연결고리</span></h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass-card p-8 flex flex-col h-full">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 bg-yellow-400 rounded-2xl flex items-center justify-center text-2xl">🧸</div>
+                        <h3 class="text-2xl font-bold">아동을 향한 따뜻한 시선</h3>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed flex-grow">
+                        지역아동센터 하계 근로를 통해 아이들과 함께하며 보람을 느꼈고, 이는 진로를 아동복지 분야로 구체화하는 계기가 되었습니다. <strong>아동가족학과 부전공</strong> 선택은 이러한 관심을 전문성으로 승화시키기 위한 노력입니다.
+                    </p>
+                </div>
+                <div class="glass-card p-8 flex flex-col h-full">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 bg-orange-400 rounded-2xl flex items-center justify-center text-2xl">📢</div>
+                        <h3 class="text-2xl font-bold">소통하고 기획하는 리더십</h3>
+                    </div>
+                    <p class="text-slate-600 leading-relaxed flex-grow">
+                        과학생회장 활동은 단순한 직책을 넘어, <strong>클라이언트와 신뢰를 형성할 소통 역량</strong>을 기르는 과정입니다. 현장에서 프로그램을 정교하게 설계하는 밑거름이 됩니다.
+                    </p>
+                </div>
+                <div class="glass-card p-8 md:col-span-2">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 bg-blue-400 rounded-2xl flex items-center justify-center text-2xl">✨</div>
+                        <h3 class="text-2xl font-bold">부드러운 화합과 책임감</h3>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <p class="text-slate-600 leading-relaxed">
+                            날카롭지 않고 부드러운 성격은 다양한 이해관계자가 협력하는 복지 현장에서 자연스러운 <strong>화합</strong>을 이끌어내는 힘이 됩니다.
+                        </p>
+                        <p class="text-slate-600 leading-relaxed border-l-2 border-slate-200 pl-6">
+                            자리에 걸맞은 사람이 되기 위해 노력하는 <strong>책임감</strong>과 성실함은 사회복지사로서의 핵심 가치입니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. 나의 진로와 비전 -->
+    <section id="vision">
+        <div class="max-w-5xl w-full">
+            <div class="glass-card p-12 relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-8 opacity-10 text-9xl">🌱</div>
+                <h2 class="text-4xl font-bold mb-10">나의 <span class="highlight">진로와 비전</span></h2>
+                <div class="space-y-8 relative z-10">
+                    <div class="bg-white/60 p-6 rounded-2xl">
+                        <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                            <span class="text-orange-500">Q.</span> 어떤 경험이 당신을 움직였나요?
+                        </h3>
+                        <p class="text-slate-700 leading-relaxed italic">
+                            "지역아동센터에서 만난 아이들의 밝은 미소 뒤에 숨겨진 정서적 상처를 보았습니다. 위기 상황에서 전문적으로 도움을 주지 못했던 아쉬움은 저를 더 공부하게 만들었습니다."
+                        </p>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="space-y-4">
+                            <h4 class="font-bold text-lg text-slate-800">목표 지점</h4>
+                            <ul class="space-y-2 text-slate-600">
+                                <li class="flex items-center gap-2">✔ 지역아동센터 사회복지사</li>
+                                <li class="flex items-center gap-2">✔ 아동복지 전문 기관 전문가</li>
+                                <li class="flex items-center gap-2">✔ 가족 기능 회복 지원 전문가</li>
+                            </ul>
+                        </div>
+                        <div class="space-y-4">
+                            <h4 class="font-bold text-lg text-slate-800">핵심 역량</h4>
+                            <p class="text-slate-600">아동의 정서와 행동을 깊이 이해하고 실질적인 개입을 수행할 수 있는 전문적인 지식과 따뜻한 공감 능력</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. 전공 철학 -->
+    <section id="major-def">
+        <div class="max-w-4xl w-full text-center">
+            <div class="mb-6 inline-block bg-white/80 px-4 py-1 rounded-full text-sm font-bold text-orange-500 border border-orange-100 uppercase tracking-widest">Philosophy</div>
+            <h2 class="text-4xl md:text-5xl font-black mb-10 leading-tight">
+                사람임이 한없이 자랑스러운 <br><span class="highlight">세상을 만들기 위해 노력하는 것</span>
+            </h2>
+            <div class="glass-card p-10 text-xl leading-relaxed text-slate-700 italic">
+                "그것이 바로 <span class="font-bold text-slate-900">사회복지</span>입니다."
+                <p class="mt-4 text-base not-italic text-slate-500">사회복지학은 사람의 문제를 이해하고 해결하는 실천 중심 학문입니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. 4차 산업혁명 사회복지 취업 전망 -->
+    <section id="employment-prospect">
+        <div class="max-w-6xl w-full">
+            <div class="glass-card p-12 bg-gradient-to-br from-yellow-50 to-white overflow-hidden relative">
+                <div class="flex flex-col md:flex-row items-center gap-10">
+                    <div class="flex-1 space-y-6">
+                        <div class="profile-tag">Trends</div>
+                        <h2 class="text-4xl font-black leading-tight">4차 산업혁명 시대, <br><span class="highlight">사회복지 취업 전망</span>은?</h2>
+                        <p class="text-lg text-slate-600 leading-relaxed">
+                            기술이 발전할수록 역설적으로 인간적인 손길이 필요한 복지 분야의 가치는 더욱 높아지고 있습니다. 부산대학교 사회복지학도로서 준비하는 미래는 단순한 일자리를 넘어 사회의 지속 가능성을 만드는 일입니다.
+                        </p>
+                        <button onclick="openModal()" class="btn-yellow flex items-center gap-3">
+                            📊 더보기
+                        </button>
+                    </div>
+                    <div class="flex-1 grid grid-cols-2 gap-4">
+                        <div class="p-6 bg-white rounded-2xl shadow-sm text-center">
+                            <p class="text-3xl font-black text-orange-500 mb-1">Top 1</p>
+                            <p class="text-sm font-bold text-slate-500">미래 유망 직종</p>
+                        </div>
+                        <div class="p-6 bg-white rounded-2xl shadow-sm text-center">
+                            <p class="text-3xl font-black text-yellow-500 mb-1">0%</p>
+                            <p class="text-sm font-bold text-slate-500">AI 대체 위험</p>
+                        </div>
+                        <div class="p-6 bg-white rounded-2xl shadow-sm text-center col-span-2">
+                            <p class="text-3xl font-black text-slate-800 mb-1">98.2만</p>
+                            <p class="text-sm font-bold text-slate-500">향후 10년 신규 일자리 수요</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. AI와 사회복지 인사이트 -->
+    <section id="ai-insight">
+        <div class="max-w-6xl w-full">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-black mb-4">AI가 복지를 <span class="highlight">'진짜' 사람 중심</span>으로 바꾼다?</h2>
+                <p class="text-slate-500 italic">우리가 몰랐던 5가지 반전의 지형도</p>
+            </div>
+
+            <div class="grid gap-8">
+                <div class="glass-card p-10 insight-card">
+                    <h3 class="text-2xl font-bold mb-4 text-slate-800">1. 서류는 AI가, 마음은 사람이</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        앱시트(AppSheet)를 활용한 행정 자동화는 업무 시간을 7시간에서 1시간으로 단축시킵니다. 이는 사회복지사가 <span class="highlight">현장의 시간</span>을 되찾는 일입니다.
+                    </p>
+                </div>
+                <div class="glass-card p-10 insight-card" style="border-color: #fbbf24;">
+                    <h3 class="text-2xl font-bold mb-4 text-slate-800">2. 사후 대응에서 '사전 예방'으로</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        생성형 AI는 맥락을 기억하며 안부를 묻습니다. 기술이 관심을 대신하는 것이 아니라 <strong>24시간 촘촘한 안전망</strong>이 되어줍니다.
+                    </p>
+                </div>
+                <div class="glass-card p-10 insight-card" style="border-color: #f59e0b;">
+                    <h3 class="text-2xl font-bold mb-4 text-slate-800">3. 로봇은 기계가 아니라 '친구'다</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        소셜 로봇은 고령자의 외로움을 감소시킵니다. 어르신들에게 기술은 이제 차가운 기계가 아닌 <strong>자신과 함께하는 존재</strong>입니다.
+                    </p>
+                </div>
+                <div class="glass-card p-10 insight-card" style="border-color: #ea580c;">
+                    <h3 class="text-2xl font-bold mb-4 text-slate-800">4. 98만 명의 인력 공백, 필수 파트너 AI</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        복지 수요 폭증 속에서 AI는 복지사가 더 가치 있는 <strong>전문직으로 거듭나게 돕는 파트너</strong>입니다.
+                    </p>
+                </div>
+                <div class="glass-card p-10 insight-card" style="border-color: #c2410c;">
+                    <h3 class="text-2xl font-bold mb-4 text-slate-800">5. 새로운 이름: '케어 테크 코디네이터'</h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        기술을 인간의 존엄성에 맞게 조정하는 <strong>케어 테크 코디네이터</strong>로서 인간 사회복지사의 역할은 더욱 중요해집니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. 결론 -->
+    <section id="conclusion">
+        <div class="text-center max-w-3xl">
+            <h2 class="text-5xl font-black mb-10 leading-tight">기술의 온도가 <br><span class="highlight">우리 공동체를 데울 때</span></h2>
+            <div class="glass-card p-10 mb-12 bg-orange-50/50">
+                <p class="text-xl text-slate-700 leading-relaxed">
+                    "당신은 AI가 전하는 안부 전화 한 통에서 기계의 차가움을 느낄까요, 아니면 우리 사회의 세심한 배려를 느낄까요?"
+                </p>
+            </div>
+            <p class="text-lg text-slate-600">
+                기술의 온도가 사각지대를 따뜻하게 데우는 미래, <br>
+                그 풍경을 김민서가 함께 만들어가겠습니다.
+            </p>
+        </div>
+    </section>
+
+    <footer class="py-12 text-center text-slate-400 text-sm font-medium">
+        © 2024 Social Work Portfolio - 김민서 (Minseo Kim)
+    </footer>
+
+    <script>
+        // Modal Logic
+        const modal = document.getElementById('modal-overlay');
+        function openModal() { modal.style.display = 'flex'; }
+        function closeModal() { modal.style.display = 'none'; }
+        window.onclick = function(event) { if (event.target == modal) closeModal(); }
+
+        // Particle System
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 8 + 2;
+                this.speedX = Math.random() * 8 - 4;
+                this.speedY = Math.random() * 8 - 4;
+                this.color = '#FFD700'; 
+                this.opacity = 1;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.2) this.size -= 0.1;
+                this.opacity -= 0.015;
+            }
+            draw() {
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        window.addEventListener('click', (e) => {
+            if (e.target.tagName !== 'BUTTON') {
+                for (let i = 0; i < 15; i++) {
+                    particles.push(new Particle(e.clientX, e.clientY));
+                }
+            }
+        });
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].opacity <= 0) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // Scroll Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('section').forEach(section => observer.observe(section));
+    </script>
+</body>
+</html>
