@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>웹 기술의 이해 - 기초부터 전략까지</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-pink: #ffe4e9;
+            --accent-pink: #ffb6c1;
+            --dark-pink: #ff8fa3;
+            --sparkle-color: #ffd700;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #fffafb;
+            color: #4a4a4a;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .pink-gradient {
+            background: linear-gradient(135deg, var(--primary-pink) 0%, #ffffff 100%);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 182, 193, 0.3);
+            border-radius: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 143, 163, 0.2);
+        }
+
+        .sparkle {
+            position: absolute;
+            background: radial-gradient(circle, white 20%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .nav-link {
+            position: relative;
+            color: var(--dark-pink);
+            font-weight: 700;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--dark-pink);
+            transition: width 0.3s;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        #sparkle-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 85%;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 12px;
+            border: 4px solid white;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Report Section Styling */
+        .report-header {
+            border-bottom: 2px solid var(--primary-pink);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+        }
+
+        .report-section-title {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .report-section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 80%;
+            background: var(--dark-pink);
+            border-radius: 2px;
+        }
+
+        .strategy-box {
+            border-left: 4px solid var(--accent-pink);
+            background: rgba(255, 228, 233, 0.2);
+        }
+
+        table thead tr {
+            background-color: var(--primary-pink);
+        }
+
+        .highlight-text {
+            color: var(--dark-pink);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div id="sparkle-container"></div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal" onclick="closeModal()">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="img01" src="web_info.jpg" alt="웹 기술 인포그래픽">
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-pink-100">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-[#ff8fa3]" style="font-family: 'Dancing Script', cursive;">Web Tech ✨</div>
+            <div class="hidden md:flex space-x-6 text-sm">
+                <a href="#intro" class="nav-link">소개</a>
+                <a href="#infra" class="nav-link">기초해설</a>
+                <a href="#pillars" class="nav-link">3대기둥</a>
+                <a href="#journey" class="nav-link">동작원리</a>
+                <a href="#report-intro" class="nav-link">전략보고서</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="intro" class="pt-32 pb-20 px-6 pink-gradient">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="inline-block bg-white px-4 py-1 rounded-full text-pink-500 font-bold mb-4 shadow-sm">기초 개념부터 수석 전략가 가이드까지</div>
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 text-gray-800 leading-tight">
+                디지털 우주를 잇는<br><span class="text-pink-400">웹 기술의 이해</span> ✨
+            </h1>
+            
+            <button onclick="openModal()" class="mb-8 px-8 py-3 bg-white border-2 border-pink-300 text-pink-500 rounded-full font-bold shadow-md flex items-center justify-center mx-auto space-x-2 hover:scale-105 transition-transform">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <span>인포그래픽으로 보기</span>
+            </button>
+
+            <p class="text-lg text-gray-600 mb-8 leading-relaxed max-w-2xl mx-auto">
+                1989년 팀 버너스리의 제안서에서 시작된 연결의 혁명.<br>
+                비즈니스 영속성을 지탱하는 웹의 기초와 전략적 가치를 탐구합니다.
+            </p>
+        </div>
+    </section>
+
+    <!-- Part 1: 기초 개념 해설서 -->
+    <div class="bg-white">
+        <!-- 1. Internet vs Web -->
+        <section id="infra" class="py-20 px-6">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">1. 인터넷과 웹 : 도로와 자동차 🚗</h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="glass-card p-8 flex flex-col items-center text-center">
+                        <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-500 text-2xl">
+                            <i class="fa-solid fa-road"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">인터넷 (Internet)</h3>
+                        <p class="text-gray-600 mb-4">전 세계 컴퓨터를 연결하는 거대한 물리적 네트워크 인프라</p>
+                        <span class="text-sm bg-pink-50 text-pink-600 px-3 py-1 rounded">비유: 거대한 도로망</span>
+                    </div>
+                    <div class="glass-card p-8 flex flex-col items-center text-center">
+                        <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mb-6 text-pink-500 text-2xl">
+                            <i class="fa-solid fa-car"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-4">웹 (World Wide Web)</h3>
+                        <p class="text-gray-600 mb-4">인터넷 인프라 위에서 동작하는 정보 공유 시스템</p>
+                        <span class="text-sm bg-pink-50 text-pink-600 px-3 py-1 rounded">비유: 도로 위를 달리는 자동차</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Three Pillars -->
+        <section id="pillars" class="py-20 px-6 bg-pink-50/30">
+            <div class="max-w-6xl mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-16 text-gray-800">2. 웹을 지탱하는 세 가지 기둥 🏛️</h2>
+                <div class="grid md:grid-cols-3 gap-8 text-left">
+                    <div class="glass-card p-8 bg-white border-b-4 border-pink-300">
+                        <h3 class="text-2xl font-bold text-pink-500 mb-4">URL</h3>
+                        <p class="text-xs text-pink-400 mb-4 font-mono">Uniform Resource Locator</p>
+                        <p class="text-gray-600">전 세계에 흩어진 웹 자원의 고유한 <b>'주소'</b>입니다. 원하는 자원을 정확히 가리키기 위해 필요합니다.</p>
+                    </div>
+                    <div class="glass-card p-8 bg-white border-b-4 border-pink-300">
+                        <h3 class="text-2xl font-bold text-pink-500 mb-4">HTTP</h3>
+                        <p class="text-xs text-pink-400 mb-4 font-mono">Hypertext Transfer Protocol</p>
+                        <p class="text-gray-600">클라이언트와 서버가 자원을 주고받기 위해 지켜야 할 <b>'규약'</b>입니다. 무상태(Stateless) 통신이 특징입니다.</p>
+                    </div>
+                    <div class="glass-card p-8 bg-white border-b-4 border-pink-300">
+                        <h3 class="text-2xl font-bold text-pink-500 mb-4">HTML</h3>
+                        <p class="text-xs text-pink-400 mb-4 font-mono">Hypertext Markup Language</p>
+                        <p class="text-gray-600">웹 페이지의 <b>'뼈대'</b>와 의미를 정의합니다. 링크를 통해 정보 간의 '항해'를 가능하게 합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 동작 원리 -->
+        <section id="journey" class="py-20 px-6">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">3. 웹의 동작 원리: 맛있는 비유 🍽️</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center space-x-4 p-4 rounded-xl border border-pink-100 hover:bg-pink-50 cursor-pointer" onclick="showDetail('dns')">
+                        <div class="w-10 h-10 bg-pink-400 rounded-full flex items-center justify-center text-white font-bold">1</div>
+                        <div><h4 class="font-bold">DNS 해석</h4><p class="text-xs text-gray-500">전화번호부에서 식당 IP를 확인하는 과정</p></div>
+                    </div>
+                    <div class="flex items-center space-x-4 p-4 rounded-xl border border-pink-100 hover:bg-pink-50 cursor-pointer" onclick="showDetail('tcp')">
+                        <div class="w-10 h-10 bg-pink-400 rounded-full flex items-center justify-center text-white font-bold">2</div>
+                        <div><h4 class="font-bold">TCP 연결 수립</h4><p class="text-xs text-gray-500">통로를 확보하기 위해 신뢰성 있게 인사하는 과정</p></div>
+                    </div>
+                    <div class="flex items-center space-x-4 p-4 rounded-xl border border-pink-100 hover:bg-pink-50 cursor-pointer" onclick="showDetail('req')">
+                        <div class="w-10 h-10 bg-pink-400 rounded-full flex items-center justify-center text-white font-bold">3</div>
+                        <div><h4 class="font-bold">HTTP 요청</h4><p class="text-xs text-gray-500">메뉴판을 보고 주문서를 전달하는 과정</p></div>
+                    </div>
+                    <div class="flex items-center space-x-4 p-4 rounded-xl border border-pink-100 hover:bg-pink-50 cursor-pointer" onclick="showDetail('res')">
+                        <div class="w-10 h-10 bg-pink-400 rounded-full flex items-center justify-center text-white font-bold">4</div>
+                        <div><h4 class="font-bold">서버 응답</h4><p class="text-xs text-gray-500">주방에서 만든 음식을 서빙하는 과정</p></div>
+                    </div>
+                </div>
+                <!-- Detail Box -->
+                <div id="detail-box" class="mt-8 p-6 glass-card bg-white border-2 border-pink-200 hidden">
+                    <h5 id="detail-title" class="text-xl font-bold text-pink-500 mb-2"></h5>
+                    <p id="detail-content" class="text-sm text-gray-700"></p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Part 2: 전략 보고서 (Strategic Report) -->
+    <div class="bg-gray-50 py-10">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-pink-500 font-bold tracking-widest uppercase text-xs">Technical Strategy Report</span>
+                <h2 class="text-4xl font-bold text-gray-900 mt-2">웹 표준 진화와 상호 운용성 전략</h2>
+                <div class="w-20 h-1 bg-pink-400 mx-auto mt-4"></div>
+            </div>
+
+            <!-- Report 1: Intro -->
+            <section id="report-intro" class="mb-20">
+                <div class="report-header">
+                    <h3 class="text-2xl font-bold text-gray-800">1. 현대 웹 표준의 전략적 가치</h3>
+                </div>
+                <p class="text-gray-700 leading-relaxed mb-6">
+                    현대 기업 경영에서 웹은 단순한 채널을 넘어 글로벌 비즈니스를 지탱하는 <span class="highlight-text">필수 인프라</span>입니다. 수석 전략가의 관점에서 <b>상호 운용성(Interoperability)</b>은 기업의 디지털 자산 가치를 보호하고 시장 경쟁력을 결정짓는 전략적 자산입니다.
+                </p>
+                <div class="strategy-box p-6 rounded-r-xl italic text-gray-600">
+                    "플랫폼 주권(Sovereignty) 확보를 위한 웹 표준은 기술적 컴플라이언스를 넘어 비즈니스 거버넌스의 핵심입니다."
+                </div>
+            </section>
+
+            <!-- Report 2: Governance -->
+            <section id="report-governance" class="mb-20">
+                <div class="report-header">
+                    <h3 class="text-2xl font-bold text-gray-800">2. 표준화 주도권의 변천사</h3>
+                </div>
+                <div class="space-y-8">
+                    <div>
+                        <h4 class="text-lg font-bold text-pink-500 mb-3 report-section-title">2.1. XHTML 2.0과 WHATWG의 탄생</h4>
+                        <p class="text-sm text-gray-600 mb-4">2000년대 초 W3C의 XHTML 2.0 시도는 하위 호환성 단절이라는 리스크를 안겼고, 이에 모질라와 오페라는 실용주의 노선인 <b>WHATWG</b>를 결성했습니다.</p>
+                    </div>
+                    <div class="overflow-x-auto shadow-lg rounded-xl">
+                        <table class="w-full text-left bg-white text-xs">
+                            <thead class="bg-pink-100">
+                                <tr>
+                                    <th class="p-3">비교 항목</th>
+                                    <th class="p-3">W3C (Snapshot)</th>
+                                    <th class="p-3">WHATWG (Living Standard)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="p-3 font-bold">&lt;cite&gt;</td><td class="p-3">넓은 인용 허용</td><td class="p-3">창작물 제목 제한</td></tr>
+                                <tr><td class="p-3 font-bold">루비 마크업</td><td class="p-3">&lt;rb&gt; 요소 포함</td><td class="p-3">요소 간소화</td></tr>
+                                <tr><td class="p-3 font-bold">전역 속성</td><td class="p-3">기본 속성 중심</td><td class="p-3">확장 속성 포함 (is, nonce 등)</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="p-6 bg-white rounded-xl border border-pink-200">
+                        <h4 class="text-lg font-bold text-pink-500 mb-2">2.3. 2019년 MoU: 거버넌스 통합</h4>
+                        <p class="text-sm text-gray-700 leading-relaxed">W3C가 <b>'살아있는 표준'</b>을 유일 표준으로 인정한 것은 기술 부채를 점진적으로 관리하고 운영 회복 탄력성을 높이는 중요한 계기가 되었습니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Report 3: HTML5 -->
+            <section id="report-html5" class="mb-20">
+                <div class="report-header">
+                    <h3 class="text-2xl font-bold text-gray-800">3. HTML5: 애플리케이션 플랫폼</h3>
+                </div>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="p-6 glass-card border-l-4 border-pink-400">
+                        <h4 class="font-bold mb-2">플러그인 독립</h4>
+                        <p class="text-xs text-gray-500">Steve Jobs의 "Thoughts on Flash" 이후 개방형 표준의 완전한 승리. &lt;video&gt;, &lt;canvas&gt;의 자립성 확보.</p>
+                    </div>
+                    <div class="p-6 glass-card border-l-4 border-pink-400">
+                        <h4 class="font-bold mb-2">시맨틱 마크업 가치</h4>
+                        <p class="text-xs text-gray-500">기계 가독성 극대화로 검색 엔진 최적화(SEO) 및 웹 접근성 향상, 기업 디지털 자산 가치 증대.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Report 4: Security (Dark) -->
+            <section class="mb-20 bg-gray-900 text-white p-10 rounded-3xl">
+                <h3 class="text-2xl font-bold mb-6 border-b border-gray-700 pb-4">4. 보안과 개방성의 딜레마</h3>
+                <div class="space-y-8 text-sm">
+                    <div>
+                        <h4 class="text-pink-300 font-bold mb-2 italic">HTTPS 신뢰 아키텍처</h4>
+                        <p class="text-gray-400">데이터 무결성과 프라이버시를 보호하는 현대 웹의 필수 인프라로 안착했습니다.</p>
+                    </div>
+                    <div class="p-6 bg-white/5 rounded-2xl border border-white/10">
+                        <h4 class="text-pink-300 font-bold mb-2">EME(DRM) 도입과 전략적 타협</h4>
+                        <p class="text-gray-400">상업적 상호 운용성 확보를 위해 개방성 논란에도 불구하고 주류 미디어 플랫폼으로 생존하기 위한 선택이었습니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Report 5: Strategy Guide -->
+            <section class="mb-20">
+                <div class="report-header">
+                    <h3 class="text-2xl font-bold text-gray-800">5. 상호 운용성 실무 전략 가이드</h3>
+                </div>
+                <div class="grid md:grid-cols-3 gap-4 text-center">
+                    <div class="p-4 bg-pink-50 rounded-xl border border-pink-100">
+                        <div class="text-pink-400 mb-2"><i class="fa-solid fa-gears"></i></div>
+                        <h5 class="font-bold text-sm">엔진 중립성</h5>
+                        <p class="text-[10px] text-gray-500">크로미엄 독점 경계 및 표준 준수</p>
+                    </div>
+                    <div class="p-4 bg-pink-50 rounded-xl border border-pink-100">
+                        <div class="text-pink-400 mb-2"><i class="fa-solid fa-gauge-high"></i></div>
+                        <h5 class="font-bold text-sm">CRP 최적화</h5>
+                        <p class="text-[10px] text-gray-500">DOM/CSSOM 파싱 성능 극대화</p>
+                    </div>
+                    <div class="p-4 bg-pink-50 rounded-xl border border-pink-100">
+                        <div class="text-pink-400 mb-2"><i class="fa-solid fa-code-merge"></i></div>
+                        <h5 class="font-bold text-sm">Polyglot Markup</h5>
+                        <p class="text-[10px] text-gray-500">HTML5와 XML 규칙의 조화로운 설계</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Report 6: Future -->
+            <section id="future" class="py-16 pink-gradient rounded-3xl p-10 text-center">
+                <h3 class="text-3xl font-bold text-gray-800 mb-6">6. 결론: 웹 4.0과 몰입형 환경</h3>
+                <p class="text-gray-600 mb-8 max-w-xl mx-auto">
+                    2026년 이후의 웹은 주변 지능(Ambient Intelligence)과 XR이 결합된 시대로 진입합니다. UI는 AI가 실시간 생성하는 <b>휘발성 인터페이스(Ephemeral UI)</b>가 될 것입니다.
+                </p>
+                <div class="bg-white/80 p-4 rounded-lg inline-block text-xs text-pink-500 font-bold border border-pink-200">
+                    "AI 중심 시대에도 데이터 교환 표준(JSON-LD 등)을 고수하는 것만이 가두리 양식장을 막는 유일한 길입니다."
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 bg-white border-t border-pink-100 text-center">
+        <p class="text-xl font-bold text-pink-400 mb-2" style="font-family: 'Dancing Script', cursive;">Web Tech & Strategy ✨</p>
+        <p class="text-gray-400 text-xs">교육 설계 및 기술 전략 통합 가이드 | © 2026</p>
+    </footer>
+
+    <script>
+        // Sparkle
+        const container = document.getElementById('sparkle-container');
+        document.addEventListener('mousemove', (e) => { if (Math.random() > 0.95) createSparkle(e.clientX, e.clientY); });
+        function createSparkle(x, y) {
+            const s = document.createElement('div');
+            s.className = 'sparkle';
+            const size = Math.random() * 8 + 4 + 'px';
+            s.style.width = size; s.style.height = size;
+            s.style.left = x + 'px'; s.style.top = y + 'px';
+            s.style.backgroundColor = `hsl(${Math.random() * 40 + 330}, 100%, 85%)`;
+            container.appendChild(s);
+            setTimeout(() => s.remove(), 1200);
+        }
+
+        // Modal
+        function openModal() { document.getElementById('imageModal').style.display = "block"; document.body.style.overflow = "hidden"; }
+        function closeModal() { document.getElementById('imageModal').style.display = "none"; document.body.style.overflow = "auto"; }
+
+        // Details
+        const details = {
+            dns: { title: "DNS 해석", content: "도메인 이름을 IP 주소로 변환하는 과정입니다. 전 세계 네트워크의 전화번호부와 같은 역할을 합니다." },
+            tcp: { title: "TCP 연결 수립", content: "데이터 전송 전 신뢰성을 확보하기 위해 '3-Way Handshake' 과정을 거쳐 통신 선로를 확보합니다." },
+            req: { title: "HTTP 요청", content: "브라우저가 서버에 원하는 데이터를 보내달라고 요청 메시지를 전달하는 단계입니다." },
+            res: { title: "서버 응답", content: "서버가 요청을 처리하고 결과 데이터(HTML 등)와 함께 상태 코드를 반환하는 단계입니다." }
+        };
+        function showDetail(id) {
+            const box = document.getElementById('detail-box');
+            document.getElementById('detail-title').innerText = details[id].title;
+            document.getElementById('detail-content').innerText = details[id].content;
+            box.classList.remove('hidden');
+        }
+
+        window.onload = () => { for(let i=0; i<10; i++) setTimeout(() => createSparkle(Math.random()*innerWidth, Math.random()*innerHeight), i*200); };
+    </script>
+</body>
+</html>
