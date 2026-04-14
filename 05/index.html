@@ -27,6 +27,36 @@
             cursor: crosshair;
         }
 
+        /* Home Button Style */
+        .home-nav {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .btn-home {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--glass-border);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.1);
+        }
+
+        .btn-home:hover {
+            background: var(--primary-yellow);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.3);
+        }
+
         .liquid-bg {
             position: fixed;
             top: 0;
@@ -114,6 +144,10 @@
             box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
             border: none;
             cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
         }
 
         .btn-yellow:hover {
@@ -122,8 +156,60 @@
             background: #ffe135;
         }
 
-        h1, h2, h3 {
-            color: #1e293b;
+        .btn-outline {
+            border: 2px solid var(--primary-yellow);
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-yellow);
+            color: #000;
+        }
+
+        /* Modal Styles */
+        #modal-overlay, #video-modal-overlay, #img-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .video-content, .img-content {
+            width: 90%;
+            max-width: 1200px;
+            position: relative;
+            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
         .profile-tag {
@@ -149,37 +235,16 @@
             padding-left: 1.5rem;
             margin-bottom: 2rem;
         }
-
-        /* Modal Styles */
-        #modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            z-index: 10000;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-content {
-            background: white;
-            padding: 40px;
-            border-radius: 30px;
-            max-width: 600px;
-            width: 90%;
-            position: relative;
-            animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        @keyframes modalPop {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
     </style>
 </head>
 <body>
+
+    <nav class="home-nav">
+        <a href="../index.html" class="btn-home">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            홈으로
+        </a>
+    </nav>
 
     <canvas id="particle-canvas"></canvas>
 
@@ -189,27 +254,54 @@
         <div class="blob" style="top: 40%; left: 30%; animation-duration: 15s; width: 300px; height: 300px; opacity: 0.5;"></div>
     </div>
 
-    <!-- Modal Overlay -->
+    <!-- Info Modal Overlay -->
     <div id="modal-overlay">
         <div class="modal-content text-center">
             <button onclick="closeModal()" class="absolute top-4 right-6 text-2xl font-bold text-slate-400 hover:text-slate-600">&times;</button>
             <h3 class="text-3xl font-black mb-6">4차 산업혁명 <span class="highlight">사회복지 인포그래픽</span></h3>
-            <div class="space-y-6 text-left">
-                <div class="bg-yellow-50 p-5 rounded-2xl border-l-4 border-yellow-400 shadow-sm">
+            <div class="space-y-6 text-left mb-8">
+                <div class="bg-yellow-50 p-5 rounded-2xl border-l-4 border-yellow-400 shadow-sm transition-transform hover:scale-[1.02]">
                     <p class="font-bold text-lg mb-1">🤖 AI 대체 가능성 최하위군</p>
                     <p class="text-slate-600 text-sm">감정과 공감이 필요한 사회복지직은 자동화 고위험군에서 제외되는 대표적 직종입니다.</p>
                 </div>
-                <div class="bg-orange-50 p-5 rounded-2xl border-l-4 border-orange-400 shadow-sm">
+                <div class="bg-orange-50 p-5 rounded-2xl border-l-4 border-orange-400 shadow-sm transition-transform hover:scale-[1.02]">
                     <p class="font-bold text-lg mb-1">📈 일자리 성장률 1위</p>
                     <p class="text-slate-600 text-sm">고령화 사회 진입으로 인해 향후 10년간 가장 많은 일자리가 창출될 분야로 손꼽힙니다.</p>
                 </div>
-                <div class="bg-blue-50 p-5 rounded-2xl border-l-4 border-blue-400 shadow-sm">
+                <div class="bg-blue-50 p-5 rounded-2xl border-l-4 border-blue-400 shadow-sm transition-transform hover:scale-[1.02]">
                     <p class="font-bold text-lg mb-1">💻 테크-케어 융합</p>
                     <p class="text-slate-600 text-sm">스마트 기기를 활용한 원격 돌봄 등 기술을 다루는 '스마트 사회복지사'의 가치가 상승합니다.</p>
                 </div>
             </div>
-            <!-- 버튼 텍스트 변경: 확인했습니다 -> 인포그래픽 보기 -->
-            <button onclick="closeModal()" class="mt-8 btn-yellow w-full">인포그래픽 보기</button>
+            <div class="flex flex-col gap-3">
+                <button onclick="openImgModal()" class="btn-outline w-full justify-center">
+                    🖼️ 인포그래픽 이미지 보기
+                </button>
+                <button onclick="closeModal()" class="btn-yellow w-full flex items-center justify-center gap-2">확인</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal Overlay -->
+    <div id="img-modal-overlay">
+        <div class="img-content">
+            <button onclick="closeImgModal()" class="absolute -top-12 right-0 text-3xl font-bold text-white hover:text-yellow-400 transition-colors">&times; 닫기</button>
+            <div class="bg-white rounded-3xl overflow-hidden shadow-2xl p-4 flex items-center justify-center">
+                <img src="./sw_info.png" alt="사회복지 인포그래픽" class="max-w-full max-h-[80vh] object-contain rounded-xl">
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Modal Overlay -->
+    <div id="video-modal-overlay">
+        <div class="video-content">
+            <button onclick="closeVideoModal()" class="absolute -top-12 right-0 text-3xl font-bold text-white hover:text-yellow-400 transition-colors">&times; 닫기</button>
+            <div class="bg-black rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20">
+                <video id="story-video" class="w-full aspect-video" controls>
+                    <source src="./ms.mp4" type="video/mp4">
+                    브라우저가 동영상 재생을 지원하지 않습니다.
+                </video>
+            </div>
         </div>
     </div>
 
@@ -264,10 +356,37 @@
         </div>
     </section>
 
-    <!-- 3. 경험과 강점의 연결고리 -->
+    <!-- 3. Leadership Story -->
+    <section id="leadership-reason">
+        <div class="max-w-4xl w-full">
+            <div class="glass-card p-10 md:p-16 border-l-8 border-l-yellow-400">
+                <div class="mb-6 inline-block bg-yellow-100 px-4 py-1 rounded-full text-sm font-bold text-yellow-600 uppercase tracking-widest">Leadership Story</div>
+                <h2 class="text-4xl font-bold mb-8">학생회장이 된 <span class="highlight">이유</span></h2>
+                <div class="space-y-6 text-slate-700 text-lg leading-relaxed">
+                    <p>
+                        단순히 자리를 지키는 장(長)이 아니라, 사회복지학과의 학우들이 <strong>'전공에 대한 자부심'</strong>을 느낄 수 있는 환경을 만들고 싶었습니다. 
+                    </p>
+                    <p>
+                        우리가 배우는 가치가 강의실 밖에서도 살아 숨 쉬도록, 소통의 창구를 넓히고 모두가 주인공이 되는 학과 문화를 꿈꾸며 도전을 시작했습니다.
+                    </p>
+                </div>
+                
+                <div class="mt-12 flex flex-wrap gap-4">
+                    <a href="./ms_storybook.pdf" target="_blank" class="btn-yellow">
+                        📖 스토리북 보기
+                    </a>
+                    <button onclick="openVideoModal()" class="btn-outline">
+                        🎬 동영상 보기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Connection -->
     <section id="connection">
         <div class="max-w-6xl w-full">
-            <h2 class="text-4xl font-bold mb-12 text-center">경험과 강점의 <span class="highlight">연결고리</span></h2>
+            <h2 class="text-4xl font-bold mb-12 text-center">나와 사회복지의 <span class="highlight">연결고리</span></h2>
             <div class="grid md:grid-cols-2 gap-8">
                 <div class="glass-card p-8 flex flex-col h-full">
                     <div class="flex items-center gap-4 mb-6">
@@ -305,7 +424,7 @@
         </div>
     </section>
 
-    <!-- 4. 나의 진로와 비전 -->
+    <!-- 5. Vision -->
     <section id="vision">
         <div class="max-w-5xl w-full">
             <div class="glass-card p-12 relative overflow-hidden">
@@ -339,7 +458,7 @@
         </div>
     </section>
 
-    <!-- 5. 전공 철학 -->
+    <!-- 6. Philosophy -->
     <section id="major-def">
         <div class="max-w-4xl w-full text-center">
             <div class="mb-6 inline-block bg-white/80 px-4 py-1 rounded-full text-sm font-bold text-orange-500 border border-orange-100 uppercase tracking-widest">Philosophy</div>
@@ -353,13 +472,13 @@
         </div>
     </section>
 
-    <!-- 6. 4차 산업혁명 사회복지 취업 전망 -->
+    <!-- 7. Employment Prospect -->
     <section id="employment-prospect">
         <div class="max-w-6xl w-full">
-            <div class="glass-card p-12 bg-gradient-to-br from-yellow-50 to-white overflow-hidden relative">
+            <div class="glass-card p-12 bg-gradient-to-br from-yellow-50 to-white overflow-hidden relative border-orange-200">
                 <div class="flex flex-col md:flex-row items-center gap-10">
                     <div class="flex-1 space-y-6">
-                        <div class="profile-tag">Trends</div>
+                        <div class="profile-tag">Jobs & Future</div>
                         <h2 class="text-4xl font-black leading-tight">4차 산업혁명 시대, <br><span class="highlight">사회복지 취업 전망</span>은?</h2>
                         <p class="text-lg text-slate-600 leading-relaxed">
                             기술이 발전할수록 역설적으로 인간적인 손길이 필요한 복지 분야의 가치는 더욱 높아지고 있습니다. 부산대학교 사회복지학도로서 준비하는 미래는 단순한 일자리를 넘어 사회의 지속 가능성을 만드는 일입니다.
@@ -369,15 +488,15 @@
                         </button>
                     </div>
                     <div class="flex-1 grid grid-cols-2 gap-4">
-                        <div class="p-6 bg-white rounded-2xl shadow-sm text-center">
+                        <div class="p-6 bg-white rounded-2xl shadow-md text-center border border-yellow-100 transition-all hover:shadow-lg">
                             <p class="text-3xl font-black text-orange-500 mb-1">Top 1</p>
                             <p class="text-sm font-bold text-slate-500">미래 유망 직종</p>
                         </div>
-                        <div class="p-6 bg-white rounded-2xl shadow-sm text-center">
+                        <div class="p-6 bg-white rounded-2xl shadow-md text-center border border-yellow-100 transition-all hover:shadow-lg">
                             <p class="text-3xl font-black text-yellow-500 mb-1">0%</p>
                             <p class="text-sm font-bold text-slate-500">AI 대체 위험</p>
                         </div>
-                        <div class="p-6 bg-white rounded-2xl shadow-sm text-center col-span-2">
+                        <div class="p-6 bg-white rounded-2xl shadow-md text-center col-span-2 border border-yellow-100 transition-all hover:shadow-lg">
                             <p class="text-3xl font-black text-slate-800 mb-1">98.2만</p>
                             <p class="text-sm font-bold text-slate-500">향후 10년 신규 일자리 수요</p>
                         </div>
@@ -387,7 +506,7 @@
         </div>
     </section>
 
-    <!-- 7. AI와 사회복지 인사이트 -->
+    <!-- 8. AI Insights -->
     <section id="ai-insight">
         <div class="max-w-6xl w-full">
             <div class="text-center mb-16">
@@ -430,7 +549,7 @@
         </div>
     </section>
 
-    <!-- 8. 결론 -->
+    <!-- 9. Conclusion -->
     <section id="conclusion">
         <div class="text-center max-w-3xl">
             <h2 class="text-5xl font-black mb-10 leading-tight">기술의 온도가 <br><span class="highlight">우리 공동체를 데울 때</span></h2>
@@ -451,11 +570,41 @@
     </footer>
 
     <script>
-        // Modal Logic
-        const modal = document.getElementById('modal-overlay');
-        function openModal() { modal.style.display = 'flex'; }
-        function closeModal() { modal.style.display = 'none'; }
-        window.onclick = function(event) { if (event.target == modal) closeModal(); }
+        // Modal Selectors
+        const infoModal = document.getElementById('modal-overlay');
+        const imgModal = document.getElementById('img-modal-overlay');
+        const videoModal = document.getElementById('video-modal-overlay');
+        const storyVideo = document.getElementById('story-video');
+
+        // General Info Modal Logic
+        function openModal() { infoModal.style.display = 'flex'; }
+        function closeModal() { infoModal.style.display = 'none'; }
+
+        // Image Modal Logic
+        function openImgModal() {
+            imgModal.style.display = 'flex';
+        }
+        function closeImgModal() {
+            imgModal.style.display = 'none';
+        }
+
+        // Video Modal Logic
+        function openVideoModal() {
+            videoModal.style.display = 'flex';
+            storyVideo.play();
+        }
+        function closeVideoModal() {
+            videoModal.style.display = 'none';
+            storyVideo.pause();
+            storyVideo.currentTime = 0;
+        }
+
+        // Close on clicking overlay
+        window.onclick = function(event) {
+            if (event.target == infoModal) closeModal();
+            if (event.target == videoModal) closeVideoModal();
+            if (event.target == imgModal) closeImgModal();
+        }
 
         // Particle System
         const canvas = document.getElementById('particle-canvas');
@@ -466,14 +615,12 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         }
-
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
         class Particle {
             constructor(x, y) {
-                this.x = x;
-                this.y = y;
+                this.x = x; this.y = y;
                 this.size = Math.random() * 8 + 2;
                 this.speedX = Math.random() * 8 - 4;
                 this.speedY = Math.random() * 8 - 4;
@@ -496,10 +643,8 @@
         }
 
         window.addEventListener('click', (e) => {
-            if (e.target.tagName !== 'BUTTON') {
-                for (let i = 0; i < 15; i++) {
-                    particles.push(new Particle(e.clientX, e.clientY));
-                }
+            if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'A' && e.target.tagName !== 'VIDEO') {
+                for (let i = 0; i < 15; i++) particles.push(new Particle(e.clientX, e.clientY));
             }
         });
 
@@ -523,7 +668,6 @@
                 if (entry.isIntersecting) entry.target.classList.add('visible');
             });
         }, { threshold: 0.1 });
-
         document.querySelectorAll('section').forEach(section => observer.observe(section));
     </script>
 </body>
