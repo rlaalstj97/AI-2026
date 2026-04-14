@@ -176,7 +176,7 @@
         }
 
         /* Modal Styles */
-        #modal-overlay, #video-modal-overlay, #img-modal-overlay {
+        #modal-overlay, #video-modal-overlay, #img-modal-overlay, #pdf-modal-overlay, #slide-modal-overlay {
             display: none;
             position: fixed;
             top: 0;
@@ -200,7 +200,7 @@
             animation: modalPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .video-content, .img-content {
+        .video-content, .img-content, .pdf-content, .slide-content {
             width: 90%;
             max-width: 1200px;
             position: relative;
@@ -305,6 +305,26 @@
         </div>
     </div>
 
+    <!-- PDF Modal Overlay -->
+    <div id="pdf-modal-overlay">
+        <div class="pdf-content h-[90vh]">
+            <button onclick="closePdfModal()" class="absolute -top-12 right-0 text-3xl font-bold text-white hover:text-yellow-400 transition-colors">&times; 닫기</button>
+            <div class="bg-white rounded-3xl overflow-hidden shadow-2xl h-full w-full">
+                <iframe src="./ms_storybook.pdf" class="w-full h-full border-none" title="스토리북 PDF"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide Modal Overlay (New for Necessity Slide) -->
+    <div id="slide-modal-overlay">
+        <div class="slide-content h-[90vh]">
+            <button onclick="closeSlideModal()" class="absolute -top-12 right-0 text-3xl font-bold text-white hover:text-yellow-400 transition-colors">&times; 닫기</button>
+            <div class="bg-white rounded-3xl overflow-hidden shadow-2xl h-full w-full">
+                <iframe src="./The_Warm_Blueprint_of_Child_Welfare.pdf" class="w-full h-full border-none" title="사회복지 슬라이드 PDF"></iframe>
+            </div>
+        </div>
+    </div>
+
     <!-- 1. Intro Section -->
     <section id="intro" class="visible">
         <div class="text-center">
@@ -372,9 +392,9 @@
                 </div>
                 
                 <div class="mt-12 flex flex-wrap gap-4">
-                    <a href="./ms_storybook.pdf" target="_blank" class="btn-yellow">
+                    <button onclick="openPdfModal()" class="btn-yellow">
                         📖 스토리북 보기
-                    </a>
+                    </button>
                     <button onclick="openVideoModal()" class="btn-outline">
                         🎬 동영상 보기
                     </button>
@@ -468,6 +488,47 @@
             <div class="glass-card p-10 text-xl leading-relaxed text-slate-700 italic">
                 "그것이 바로 <span class="font-bold text-slate-900">사회복지</span>입니다."
                 <p class="mt-4 text-base not-italic text-slate-500">사회복지학은 사람의 문제를 이해하고 해결하는 실천 중심 학문입니다.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6-1. Social Work Necessity & Child Welfare -->
+    <section id="sw-necessity">
+        <div class="max-w-5xl w-full">
+            <div class="text-center mb-12">
+                <p class="text-orange-500 font-bold tracking-widest mb-2">INSIGHT</p>
+                <h2 class="text-3xl md:text-4xl font-black">모두를 위한 안전망, <span class="highlight">미래를 위한 약속</span></h2>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Necessity Card -->
+                <div class="glass-card p-8 border-t-8 border-t-yellow-400">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="text-3xl">🛡️</span>
+                        <h3 class="text-2xl font-bold">사회복지의 필요성</h3>
+                    </div>
+                    <div class="space-y-4 text-slate-600 leading-relaxed">
+                        <p>현대 사회의 복잡한 구조 속에서 발생하는 <span class="highlight">사회적 위험(Social Risk)</span>은 개인의 노력만으로 해결하기 어렵습니다.</p>
+                        <p>모든 인간이 존엄성을 유지하며 평등한 기회를 보장받을 수 있도록 돕는 사회적 안전망은 우리 공동체의 지속 가능성을 위한 필수적인 약속입니다.</p>
+                    </div>
+                </div>
+
+                <!-- Child Welfare Card -->
+                <div class="glass-card p-8 border-t-8 border-t-orange-400">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="text-3xl">🎈</span>
+                        <h3 class="text-2xl font-bold">아동복지의 지향점</h3>
+                    </div>
+                    <div class="space-y-4 text-slate-600 leading-relaxed">
+                        <p>아동은 사회의 미래이자, 그 자체로 <span class="highlight">현재의 권리를 가진 주체</span>입니다. 결핍 없는 성장은 한 인간의 생애 전반에 걸친 행복의 토대가 됩니다.</p>
+                        <p>가정과 사회가 협력하여 아동이 안전한 환경에서 잠재력을 꽃피울 수 있도록 돕는 것, 그것이 제가 꿈꾸는 아동복지의 핵심입니다.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <button onclick="openSlideModal()" class="btn-outline">
+                    🎞️ 슬라이드 보기
+                </button>
             </div>
         </div>
     </section>
@@ -574,6 +635,8 @@
         const infoModal = document.getElementById('modal-overlay');
         const imgModal = document.getElementById('img-modal-overlay');
         const videoModal = document.getElementById('video-modal-overlay');
+        const pdfModal = document.getElementById('pdf-modal-overlay');
+        const slideModal = document.getElementById('slide-modal-overlay');
         const storyVideo = document.getElementById('story-video');
 
         // General Info Modal Logic
@@ -581,12 +644,16 @@
         function closeModal() { infoModal.style.display = 'none'; }
 
         // Image Modal Logic
-        function openImgModal() {
-            imgModal.style.display = 'flex';
-        }
-        function closeImgModal() {
-            imgModal.style.display = 'none';
-        }
+        function openImgModal() { imgModal.style.display = 'flex'; }
+        function closeImgModal() { imgModal.style.display = 'none'; }
+
+        // PDF Modal Logic
+        function openPdfModal() { pdfModal.style.display = 'flex'; }
+        function closePdfModal() { pdfModal.style.display = 'none'; }
+
+        // Slide PDF Modal Logic
+        function openSlideModal() { slideModal.style.display = 'flex'; }
+        function closeSlideModal() { slideModal.style.display = 'none'; }
 
         // Video Modal Logic
         function openVideoModal() {
@@ -604,6 +671,8 @@
             if (event.target == infoModal) closeModal();
             if (event.target == videoModal) closeVideoModal();
             if (event.target == imgModal) closeImgModal();
+            if (event.target == pdfModal) closePdfModal();
+            if (event.target == slideModal) closeSlideModal();
         }
 
         // Particle System
@@ -643,7 +712,7 @@
         }
 
         window.addEventListener('click', (e) => {
-            if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'A' && e.target.tagName !== 'VIDEO') {
+            if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'A' && e.target.tagName !== 'VIDEO' && e.target.tagName !== 'IFRAME') {
                 for (let i = 0; i < 15; i++) particles.push(new Particle(e.clientX, e.clientY));
             }
         });
