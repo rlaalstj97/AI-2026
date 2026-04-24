@@ -212,22 +212,42 @@
             to { transform: scale(1); opacity: 1; }
         }
 
-        .profile-tag {
-            background: rgba(255, 215, 0, 0.2);
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-weight: 600;
-            color: var(--accent-orange);
-            display: inline-block;
-            margin-bottom: 8px;
+        /* New Profile Styles */
+        .info-chip {
+            background: white;
+            border: 1px solid var(--glass-border);
+            padding: 10px 18px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            transition: all 0.3s ease;
         }
-
-        .profile-frame {
+        .info-chip:hover {
+            transform: translateX(10px);
+            border-color: var(--primary-yellow);
+            box-shadow: 4px 4px 15px rgba(255, 215, 0, 0.15);
+        }
+        .info-chip span:first-child {
+            font-size: 1.2rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+        .profile-photo-container {
             position: relative;
-            transition: transform 0.5s ease;
+            width: 280px;
+            height: 360px;
         }
-        .profile-frame:hover {
-            transform: scale(1.03);
+        .profile-photo-container::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: -10px;
+            bottom: -10px;
+            border: 2px solid var(--primary-yellow);
+            border-radius: 30px;
+            z-index: 0;
         }
 
         .insight-card {
@@ -338,40 +358,69 @@
         </div>
     </section>
 
-    <!-- 2. Profile Section -->
+    <!-- 2. Profile Section (RE-DESIGNED) -->
     <section id="about">
-        <div class="glass-card max-w-4xl w-full p-10 md:p-16">
-            <h2 class="text-4xl font-bold mb-8">About <span class="highlight">Author</span></h2>
-            <div class="grid md:grid-cols-2 gap-10 items-center">
-                <div class="space-y-4">
-                    <div class="space-y-2">
-                        <div class="profile-tag">이름</div>
-                        <p class="text-2xl font-bold text-slate-800">김민서</p>
-                    </div>
-                    <div class="space-y-2">
-                        <div class="profile-tag">나이</div>
-                        <p class="text-2xl font-bold text-slate-800">22살</p>
-                    </div>
-                    <div class="space-y-2">
-                        <div class="profile-tag">소속</div>
-                        <p class="text-xl font-bold text-slate-800">부산대학교 사회복지학과 24학번</p>
-                    </div>
-                    <div class="space-y-2">
-                        <div class="profile-tag">활동</div>
-                        <p class="text-xl font-bold text-slate-800">2026학년도 부산대 사회복지학과 학생회장</p>
-                    </div>
-                    <p class="mt-6 text-slate-600 leading-relaxed pt-4 border-t border-yellow-200/50">
-                        전공의 가치를 현장에서 실천하며, 학과 구성원들의 목소리를 대변하는 리더로서 활동하고 있습니다.
+        <div class="max-w-6xl w-full">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Title Content -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="inline-block px-4 py-1 rounded-full bg-yellow-100 text-yellow-600 font-bold text-sm tracking-widest uppercase">Author Profile</div>
+                    <h2 class="text-5xl md:text-6xl font-black leading-tight text-slate-900">
+                        변화를 꿈꾸는<br>
+                        <span class="highlight">예비 사회복지사</span>
+                    </h2>
+                    <p class="text-lg text-slate-600 leading-relaxed max-w-md">
+                        따뜻한 기술과 사람의 마음을 융합하여, 소외된 곳 없이 모두가 연결되는 세상을 꿈꾸는 김민서입니다.
                     </p>
                 </div>
-                <div class="flex items-center justify-center">
-                    <div class="profile-frame">
-                        <div class="absolute inset-0 bg-yellow-400 rounded-3xl blur-2xl opacity-20"></div>
-                        <div class="w-64 h-80 rounded-3xl border-4 border-white overflow-hidden shadow-2xl relative z-10 bg-white">
-                            <img src="./profile.jpg" alt="김민서 님 프로필 사진" class="w-full h-full object-cover">
+
+                <!-- Right Profile Card -->
+                <div class="lg:col-span-7">
+                    <div class="glass-card p-8 md:p-12">
+                        <div class="flex flex-col md:flex-row gap-10 items-center">
+                            <!-- Photo Area -->
+                            <div class="profile-photo-container shrink-0">
+                                <div class="w-full h-full rounded-3xl overflow-hidden shadow-xl relative z-10 bg-white">
+                                    <img src="./profile.jpg" alt="김민서 님 프로필 사진" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            
+                            <!-- Detailed Info Chips -->
+                            <div class="flex-grow w-full space-y-4">
+                                <div class="info-chip">
+                                    <span>👤</span>
+                                    <div>
+                                        <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Name</p>
+                                        <p class="text-xl font-black text-slate-800">김민서 (22세)</p>
+                                    </div>
+                                </div>
+                                <div class="info-chip">
+                                    <span>🎓</span>
+                                    <div>
+                                        <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Education</p>
+                                        <p class="text-lg font-bold text-slate-800">부산대 사회복지학과 24학번</p>
+                                    </div>
+                                </div>
+                                <div class="info-chip">
+                                    <span>⭐</span>
+                                    <div>
+                                        <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Position</p>
+                                        <p class="text-lg font-bold text-slate-800">2026학년도 학생회장 당선인</p>
+                                    </div>
+                                </div>
+                                <div class="info-chip">
+                                    <span>💡</span>
+                                    <div>
+                                        <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Main Activity</p>
+                                        <p class="text-lg font-bold text-slate-800">아동가족학과 부전공 / 실천 리더십</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -381,20 +430,21 @@
         <div class="max-w-4xl w-full">
             <div class="glass-card p-10 md:p-16 border-l-8 border-l-yellow-400">
                 <div class="mb-6 inline-block bg-yellow-100 px-4 py-1 rounded-full text-sm font-bold text-yellow-600 uppercase tracking-widest">Leadership Story</div>
-                <h2 class="text-4xl font-bold mb-8">학생회장이 된 <span class="highlight">이유</span></h2>
+                <h2 class="text-4xl font-bold mb-2">학생회장이 된 <span class="highlight">이유</span></h2>
+                <p class="text-xl font-bold text-slate-500 mb-8 italic">"자리가 만드는 사람"</p>
                 <div class="space-y-6 text-slate-700 text-lg leading-relaxed">
                     <p>
-                        단순히 자리를 지키는 장(長)이 아니라, 사회복지학과의 학우들이 <strong>'전공에 대한 자부심'</strong>을 느낄 수 있는 환경을 만들고 싶었습니다. 
+                        처음에는 자신이 없었습니다. 저에게 학생회장이라는 자리는 멀고도 대단한 존재로만 느껴졌기 때문입니다. 하지만 저에게 찾아온 소중한 기회를 놓치고 싶지 않았습니다.
                     </p>
                     <p>
-                        우리가 배우는 가치가 강의실 밖에서도 살아 숨 쉬도록, 소통의 창구를 넓히고 모두가 주인공이 되는 학과 문화를 꿈꾸며 도전을 시작했습니다.
+                        두려움보다는 도전하는 마음을 선택했고, 다행히 주변의 따뜻한 용기와 도움이 있었기에 지금까지 잘 해내고 있습니다. 저는 지금 <strong>회장이라는 자리에 걸맞은 사람으로 성장하는 중</strong>입니다. 어쩌면 저는, 더 넓은 시야를 갖고 성장하기 위해 이 자리에 도전했는지도 모릅니다.
                     </p>
                 </div>
                 
                 <div class="mt-12 flex flex-wrap gap-4">
-                    <button onclick="openPdfModal()" class="btn-yellow">
+                    <a href="https://gemini.google.com/share/398b297cfd7a" target="_blank" class="btn-yellow">
                         📖 스토리북 보기
-                    </button>
+                    </a>
                     <button onclick="openVideoModal()" class="btn-outline">
                         🎬 동영상 보기
                     </button>
@@ -403,41 +453,57 @@
         </div>
     </section>
 
-    <!-- 4. Connection to Social Work -->
+    <!-- 4. Connection to Social Work (RE-STRUCTURED) -->
     <section id="connection">
         <div class="max-w-6xl w-full">
-            <h2 class="text-4xl font-bold mb-12 text-center">나와 사회복지의 <span class="highlight">연결고리</span></h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="glass-card p-8 flex flex-col h-full">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-14 h-14 bg-yellow-400 rounded-2xl flex items-center justify-center text-2xl">🧸</div>
-                        <h3 class="text-2xl font-bold">아동을 향한 따뜻한 시선</h3>
+            <h2 class="text-4xl font-bold mb-4 text-center">나와 사회복지의 <span class="highlight">필연적 연결</span></h2>
+            <p class="text-center text-slate-500 mb-12">강점, 관심사, 그리고 진로가 하나의 선으로 이어집니다.</p>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Strength -->
+                <div class="glass-card p-8 flex flex-col h-full border-b-8 border-b-blue-400">
+                    <div class="mb-6">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-3xl mb-4">🤝</div>
+                        <h3 class="text-2xl font-bold">강점: 공감과 화합</h3>
+                        <p class="text-blue-600 font-bold text-sm">Empathetic Leadership</p>
                     </div>
-                    <p class="text-slate-600 leading-relaxed flex-grow">
-                        지역아동센터 하계 근로를 통해 아이들과 함께하며 보람을 느꼈고, 이는 진로를 아동복지 분야로 구체화하는 계기가 되었습니다. <strong>아동가족학과 부전공</strong> 선택은 이러한 관심을 전문성으로 승화시키기 위한 노력입니다.
+                    <p class="text-slate-600 leading-relaxed">
+                        부드러운 성격과 경청하는 자세는 복합적인 갈등이 존재하는 복지 현장에서 <strong>클라이언트와 라포(Rapport)를 형성</strong>하는 핵심 자산입니다. 학생회장 활동을 통해 증명된 이 소통 역량은 현장에서 '변화를 이끄는 관계'를 만드는 힘이 됩니다.
                     </p>
                 </div>
-                <div class="glass-card p-8 flex flex-col h-full">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-14 h-14 bg-orange-400 rounded-2xl flex items-center justify-center text-2xl">📢</div>
-                        <h3 class="text-2xl font-bold">소통하고 기획하는 리더십</h3>
+
+                <!-- Interest -->
+                <div class="glass-card p-8 flex flex-col h-full border-b-8 border-b-yellow-400">
+                    <div class="mb-6">
+                        <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center text-3xl mb-4">🧸</div>
+                        <h3 class="text-2xl font-bold">관심사: 아동과 가족</h3>
+                        <p class="text-yellow-600 font-bold text-sm">Child & Family Welfare</p>
                     </div>
-                    <p class="text-slate-600 leading-relaxed flex-grow">
-                        과학생회장 활동은 단순한 직책을 넘어, <strong>클라이언트와 신뢰를 형성할 소통 역량</strong>을 기르는 과정입니다. 현장에서 프로그램을 정교하게 설계하는 밑거름이 됩니다.
+                    <p class="text-slate-600 leading-relaxed">
+                        지역아동센터에서의 실무 경험은 저의 관심을 확신으로 바꾸었습니다. <strong>아동가족학 부전공</strong>을 통해 아동의 발달적 특성과 가족 체계를 깊이 탐구하며, 아동이 건강하게 성장할 수 있는 최적의 환경을 설계하는 전문적 기반을 닦고 있습니다.
                     </p>
                 </div>
-                <div class="glass-card p-8 md:col-span-2">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-14 h-14 bg-blue-400 rounded-2xl flex items-center justify-center text-2xl">✨</div>
-                        <h3 class="text-2xl font-bold">부드러운 화합과 책임감</h3>
+
+                <!-- Career Path -->
+                <div class="glass-card p-8 flex flex-col h-full border-b-8 border-b-orange-400">
+                    <div class="mb-6">
+                        <div class="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center text-3xl mb-4">🚀</div>
+                        <h3 class="text-2xl font-bold">진로: 아동복지 전문가</h3>
+                        <p class="text-orange-600 font-bold text-sm">Professional Vision</p>
                     </div>
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <p class="text-slate-600 leading-relaxed">
-                            날카롭지 않고 부드러운 성격은 다양한 이해관계자가 협력하는 복지 현장에서 자연스러운 <strong>화합</strong>을 이끌어내는 힘이 됩니다.
-                        </p>
-                        <p class="text-slate-600 leading-relaxed border-l-2 border-slate-200 pl-6">
-                            자리에 걸맞은 사람이 되기 위해 노력하는 <strong>책임감</strong>과 성실함은 사회복지사로서의 핵심 가치입니다.
-                        </p>
+                    <p class="text-slate-600 leading-relaxed">
+                        저의 최종 목표는 단순한 지원을 넘어 <strong>아동의 권리를 옹호하고 가족의 기능을 회복시키는 전문가</strong>가 되는 것입니다. 따뜻한 마음(공감)과 전문적 지식(아동가족학)을 결합하여, 사각지대에 놓인 아동들에게 실질적인 안전망을 제공할 것입니다.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Connection Insight -->
+            <div class="mt-12 p-8 bg-slate-900 text-white rounded-[40px] shadow-2xl relative overflow-hidden group">
+                <div class="absolute -right-20 -top-20 w-64 h-64 bg-yellow-400/20 rounded-full blur-3xl group-hover:bg-yellow-400/40 transition-all duration-700"></div>
+                <div class="relative z-10 flex flex-col md:flex-row items-center gap-8">
+                    <div class="text-4xl">💡</div>
+                    <div class="text-lg md:text-xl font-medium leading-relaxed">
+                        "저의 <strong>부드러운 리더십</strong>은 아동들에게는 따뜻한 울타리가 되고, <strong>전문적인 학문 탐구</strong>는 그 울타리를 튼튼하게 만드는 기둥이 됩니다. 저는 사람을 향한 진심을 사회복지라는 실천적 기술로 꽃피우겠습니다."
                     </div>
                 </div>
             </div>
