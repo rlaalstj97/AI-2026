@@ -226,8 +226,24 @@
                 longDesc: "본인의 전공인 '사회복지'와 '인공지능' 기술을 결합하여 미래의 비전을 제시하는 인터랙티브 웹페이지를 제작했습니다. AI 리터러시를 통해 전공 지식을 어떻게 확장하고 사회적 가치를 창출할 수 있는지에 대한 스토리를 담았습니다.",
                 link: "./05/index.html" 
             },
-            { id: 5, title: "숫자의 목소리", icon: "fa-chart-bar", color: "from-indigo-400 to-blue-400" },
-            { id: 6, title: "스토리의 탄생", icon: "fa-book-open", color: "from-pink-400 to-rose-400" },
+            { 
+                id: 5, 
+                title: "데이터분석1(고령운전자)", 
+                detailTitle: "공공데이터를 활용한 사회문제 인사이트 도출",
+                icon: "fa-chart-bar", 
+                color: "from-indigo-400 to-blue-400",
+                longDesc: "고령 사회의 주요 이슈인 '고령운전자 교통사고' 데이터를 정밀 분석했습니다. 통계적 데이터를 바탕으로 사고 발생 원인과 패턴을 파악하고, 사회복지적 관점에서 이를 예방하기 위한 정책적 제언과 AI 기술 도입 방안을 모색했습니다.",
+                link: "./06/index.html"
+            },
+            { 
+                id: 6, 
+                title: "데이터분석2(어린이교통사고)", 
+                detailTitle: "취약계층 안전망 확보를 위한 데이터 시각화",
+                icon: "fa-child", 
+                color: "from-pink-400 to-rose-400",
+                longDesc: "어린이 보호구역 내 사고 데이터와 시간대별 사고 빈도를 분석하여 아동 복지 관점에서의 안전망 구축 방안을 연구했습니다. 데이터 시각화를 통해 위험 지역을 식별하고, AI를 활용한 능동형 사고 예방 시스템의 필요성을 역설했습니다.",
+                link: "./07/index.html"
+            },
             { id: 7, title: "인포그래픽 설계", icon: "fa-project-diagram", color: "from-cyan-400 to-teal-400" },
             { id: 8, title: "기술의 윤리", icon: "fa-balance-scale", color: "from-amber-400 to-yellow-400" },
             { id: 9, title: "사회 문제 해결사", icon: "fa-hands-helping", color: "from-violet-400 to-purple-400" },
@@ -244,7 +260,7 @@
                         <div class="w-12 h-12 rounded-xl bg-gradient-to-br ${task.color} flex items-center justify-center text-white text-xl shadow-lg group-hover:rotate-12 transition-transform">
                             <i class="fas ${task.icon}"></i>
                         </div>
-                        <span class="text-3xl font-black opacity-5">0${task.id}</span>
+                        <span class="text-3xl font-black opacity-5">${task.id < 10 ? '0' + task.id : task.id}</span>
                     </div>
                     <h3 class="text-xl font-bold mb-3 group-hover:text-blue-500 transition-colors text-slate-900">과제 ${task.id}</h3>
                     <p class="text-lg font-semibold mb-4 text-slate-700">${task.title}</p>
