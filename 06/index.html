@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>고령운전자 교통사고 통계 분석 인포그래픽</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+.chart-container {
+position: relative;
+width: 100%;
+max-width: 800px;
+margin-left: auto;
+margin-right: auto;
+height: 300px;
+max-height: 450px;
+}
+@media (min-width: 768px) {
+.chart-container {
+height: 400px;
+}
+}
+.material-card {
+background-color: #ffffff;
+border-radius: 0.75rem;
+box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+padding: 1.5rem;
+transition: box-shadow 0.3s ease;
+}
+.material-card:hover {
+box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+.modal-overlay {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(15, 23, 42, 0.8);
+backdrop-filter: blur(4px);
+z-index: 50;
+justify-content: center;
+align-items: center;
+padding: 1rem;
+}
+.modal-content {
+max-width: 800px;
+width: 100%;
+max-height: 90vh;
+overflow-y: auto;
+background: white;
+border-radius: 1rem;
+position: relative;
+}
+.modal-active {
+display: flex;
+}
+</style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased">
+<!-- 
+Palette: Vibrant Alert (Red #ef4444, Blue #3b82f6, Orange #f97316, Slate #1e293b).
+Added: Modal functionality to display the article text within the SPA.
+Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in the output. 
+-->
+
+<!-- 기사 보기 모달 -->
+<div id="articleModal" class="modal-overlay">
+<div class="modal-content shadow-2xl p-8">
+<button onclick="toggleModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-2xl font-bold">&times;</button>
+<article class="prose max-w-none">
+<h2 class="text-3xl font-black text-slate-900 mb-6">[기획] 교통사고 전체 건수는 감소하는데… ‘고령 운전자’ 비중은 5년 새 14%에서 21%로 급증</h2>
+<div class="bg-slate-100 p-4 rounded-lg mb-6 border-l-4 border-red-500 italic text-slate-700">
+- 2024년 교통사고 5건 중 1건은 65세 이상 운전자 사고<br>
+- 고령화 사회 진입에 따른 운전면허 반납제 등 실효성 있는 대책 시급
+</div>
+<p class="mb-4 leading-relaxed">대한민국 도로 위 안전 지형도가 빠르게 변하고 있다. 전체 교통사고 건수는 매년 완만한 감소세를 보이고 있는 반면, 고령 운전자에 의한 사고 비중은 가파르게 상승하며 ‘교통안전의 새로운 변수’로 떠올랐다.</p>
+<h3 class="text-xl font-bold text-slate-800 mt-6 mb-2">■ 5년 만에 사고 비중 1.5배 증가… ‘20% 벽’ 넘었다</h3>
+<p class="mb-4 leading-relaxed">본지가 입수한 ‘연도별 고령 운전자 교통사고 현황’ 자료에 따르면, 지난 2020년 14.8%였던 고령 운전자 사고 비중은 2024년 21.6%를 기록하며 5년 사이 약 1.5배 가까이 급증했다.</p>
+<p class="mb-4 leading-relaxed">주목해야 할 점은 전체 교통사고 건수가 2020년 대비 2024년 약 6.3% 감소하는 동안, 고령 운전자 사고는 오히려 36.3%나 폭증했다는 사실이다. 이는 도로 환경의 개선이나 안전 기준 강화에도 불구하고 인구 고령화에 따른 운전자 연령대 변화가 사고 발생의 핵심 요인으로 작용하고 있음을 시사한다.</p>
+<h3 class="text-xl font-bold text-slate-800 mt-6 mb-2">■ 인지 기능 저하 및 신체 반응 속도 둔화가 원인</h3>
+<p class="mb-4 leading-relaxed">전문가들은 고령 운전자 사고 증가의 주요 원인으로 노화에 따른 신체적 변화를 꼽는다. 고령 운전자의 경우 갑작스러운 상황 발생 시 브레이크를 밟는 반응 속도가 청장년층에 비해 현저히 느려지며, 시야 확보나 공간 지각 능력 또한 저하되기 때문이다.</p>
+<h3 class="text-xl font-bold text-slate-800 mt-6 mb-2">■ ‘운전면허 반납제’ 실효성 논란… 대안은 없나</h3>
+<p class="mb-4 leading-relaxed">정부와 각 지자체는 고령 운전자의 운전면허 자진 반납을 유도하기 위해 인센티브 제도를 시행 중이다. 하지만 대중교통이 열악한 농어촌 지역이나 운전을 생업으로 하는 고령층에게 ‘면허 반납’은 생존권과 직결되는 문제이기에 보다 세분화된 맞춤형 정책이 필요한 시점이다.</p>
+<div class="mt-8 pt-6 border-t border-slate-200 text-center">
+<button onclick="toggleModal()" class="bg-slate-800 text-white px-6 py-2 rounded-lg font-bold hover:bg-slate-700">닫기</button>
+</div>
+</article>
+</div>
+</div>
+
+<header class="bg-slate-900 text-white py-16 px-6 mb-10 shadow-lg">
+<div class="max-w-6xl mx-auto">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div class="flex-grow">
+<div class="inline-block bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full mb-4">
+기획 통계 분석 리포트
+</div>
+<h1 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">
+교통사고 전체 건수는 감소하는데…<br>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-400">‘고령 운전자’ 비중은 급증</span>
+</h1>
+<p class="text-xl text-slate-300 max-w-2xl">
+고령화 사회 진입에 따른 고령 운전자 교통사고 현황을 데이터로 분석하고 실효성 있는 대책을 제안합니다.
+</p>
+</div>
+<div class="flex-shrink-0">
+<button onclick="toggleModal()" class="group flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 px-6 py-4 rounded-xl transition-all duration-300">
+<span class="text-2xl">📰</span>
+<div class="text-left">
+<p class="text-xs text-slate-400 uppercase tracking-wider font-bold">Read Full Report</p>
+<p class="text-lg font-bold text-white">기사 전문 보기</p>
+</div>
+</button>
+</div>
+</div>
+</div>
+</header>
+
+<main class="max-w-6xl mx-auto px-6 pb-20">
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+<div class="material-card border-t-4 border-slate-400 text-center flex flex-col justify-center">
+<p class="text-slate-500 font-semibold mb-2">5년 간 전체 교통사고</p>
+<h2 class="text-4xl font-bold text-slate-700">6.3% ⬇</h2>
+<p class="text-sm text-slate-400 mt-2">2020년 20.9만 건 ➔ 2024년 19.6만 건</p>
+</div>
+<div class="material-card border-t-4 border-red-500 text-center flex flex-col justify-center">
+<p class="text-slate-500 font-semibold mb-2">5년 간 고령운전자 사고</p>
+<h2 class="text-4xl font-bold text-red-500">36.3% ⬆</h2>
+<p class="text-sm text-slate-400 mt-2">2020년 3.1만 건 ➔ 2024년 4.2만 건</p>
+</div>
+<div class="material-card border-t-4 border-orange-500 text-center flex flex-col justify-center bg-orange-50">
+<p class="text-orange-700 font-semibold mb-2">2024년 고령운전자 사고 비중</p>
+<h2 class="text-5xl font-black text-orange-600">21.6%</h2>
+<p class="text-sm text-orange-500 mt-2">사고 5건 중 1건은 65세 이상</p>
+</div>
+</section>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+<section class="material-card flex flex-col">
+<h3 class="text-2xl font-bold text-slate-800 mb-2">2024년 교통사고 발생 현황</h3>
+<p class="text-slate-600 mb-6">전체 교통사고 중 65세 이상 고령 운전자가 차지하는 비중은 21.6%에 달합니다.</p>
+<div class="flex-grow flex items-center justify-center">
+<div class="chart-container">
+<canvas id="donutChart"></canvas>
+</div>
+</div>
+</section>
+<section class="material-card flex flex-col">
+<h3 class="text-2xl font-bold text-slate-800 mb-2">고령 운전자 사고 비중 가속화</h3>
+<p class="text-slate-600 mb-6">5년 만에 사고 발생 비중이 1.5배 가까이 급증하는 추세를 보입니다.</p>
+<div class="flex-grow flex items-center justify-center">
+<div class="chart-container">
+<canvas id="areaChart"></canvas>
+</div>
+</div>
+</section>
+</div>
+
+<section class="material-card mb-12">
+<h3 class="text-2xl font-bold text-slate-800 mb-2">전체 사고 감소 vs 고령 사고 증가의 역설</h3>
+<p class="text-slate-600 mb-6">전체적인 사고 수치는 개선되고 있으나, 고령층의 위험도는 오히려 급격하게 높아지는 추세입니다.</p>
+<div class="chart-container w-full max-w-full">
+<canvas id="mixedChart"></canvas>
+</div>
+</section>
+
+<section class="material-card mb-12 bg-slate-900 text-white">
+<h3 class="text-2xl font-bold text-white mb-6 text-center">사고 원인 분석 및 대안 모색</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+<div class="bg-slate-800 p-6 rounded-lg border border-slate-700">
+<div class="text-4xl mb-4">🧠</div>
+<h4 class="text-xl font-bold text-red-400 mb-2">주요 원인</h4>
+<ul class="text-slate-300 text-sm space-y-2 text-left list-disc list-inside">
+<li>인지 및 반응 속도 저하</li>
+<li>시야 및 공간 지각 능력 감소</li>
+</ul>
+</div>
+<div class="bg-slate-800 p-6 rounded-lg border border-slate-700">
+<div class="text-4xl mb-4">🪪</div>
+<h4 class="text-xl font-bold text-orange-400 mb-2">현재의 한계</h4>
+<ul class="text-slate-300 text-sm space-y-2 text-left list-disc list-inside">
+<li>면허 자진 반납 실효성 부족</li>
+<li>이동권 및 생존권 보장 미비</li>
+</ul>
+</div>
+<div class="bg-slate-800 p-6 rounded-lg border border-slate-700 border-t-4 border-t-blue-500">
+<div class="text-4xl mb-4">💡</div>
+<h4 class="text-xl font-bold text-blue-400 mb-2">필요한 대안</h4>
+<ul class="text-slate-200 text-sm space-y-2 text-left list-disc list-inside">
+<li>조건부 면허제 도입 고려</li>
+<li>첨단 보조 시스템(ADAS) 지원</li>
+</ul>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="bg-slate-200 py-6 text-center text-slate-500 text-sm">
+<p>데이터 출처: 도로교통공단 (2020-2024)</p>
+</footer>
+
+<script>
+function toggleModal() {
+const modal = document.getElementById('articleModal');
+modal.classList.toggle('modal-active');
+document.body.style.overflow = modal.classList.contains('modal-active') ? 'hidden' : 'auto';
+}
+
+const wrapLabel = (label) => {
+if (label.length <= 16) return label;
+const words = label.split(' ');
+const lines = [];
+let currentLine = words[0];
+for (let i = 1; i < words.length; i++) {
+if (currentLine.length + words[i].length + 1 > 16) {
+lines.push(currentLine);
+currentLine = words[i];
+} else {
+currentLine += ' ' + words[i];
+}
+}
+lines.push(currentLine);
+return lines;
+};
+
+const tooltipConfig = {
+tooltip: {
+callbacks: {
+title: function(tooltipItems) {
+const item = tooltipItems[0];
+let label = item.chart.data.labels[item.dataIndex];
+if (Array.isArray(label)) return label.join(' ');
+return label;
+}
+}
+}
+};
+
+const ctxDonut = document.getElementById('donutChart').getContext('2d');
+new Chart(ctxDonut, {
+type: 'doughnut',
+data: {
+labels: ['65세 이상 고령운전자', '기타 연령대'].map(wrapLabel),
+datasets: [{
+data: [42369, 153980],
+backgroundColor: ['#ef4444', '#cbd5e1'],
+hoverBackgroundColor: ['#dc2626', '#94a3b8'],
+borderWidth: 0,
+cutout: '65%'
+}]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+plugins: { ...tooltipConfig, legend: { position: 'bottom' } }
+}
+});
+
+const yearLabels = ['2020년', '2021년', '2022년', '2023년', '2024년'].map(wrapLabel);
+const ctxMixed = document.getElementById('mixedChart').getContext('2d');
+new Chart(ctxMixed, {
+type: 'bar',
+data: {
+labels: yearLabels,
+datasets: [
+{
+type: 'line',
+label: '전체 교통사고 건수',
+data: [209654, 203130, 196836, 198296, 196349],
+borderColor: '#3b82f6',
+backgroundColor: '#3b82f6',
+borderWidth: 3,
+yAxisID: 'y'
+},
+{
+type: 'bar',
+label: '고령 운전자 사고 건수',
+data: [31072, 31841, 34652, 39614, 42369],
+backgroundColor: '#ef4444',
+borderRadius: 4,
+yAxisID: 'y1'
+}
+]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+plugins: { ...tooltipConfig, legend: { position: 'top' } },
+scales: {
+y: { position: 'left', min: 150000, max: 220000 },
+y1: { position: 'right', min: 0, max: 50000, grid: { drawOnChartArea: false } }
+}
+}
+});
+
+const ctxArea = document.getElementById('areaChart').getContext('2d');
+new Chart(ctxArea, {
+type: 'line',
+data: {
+labels: yearLabels,
+datasets: [{
+label: '고령 운전자 사고 비중 (%)',
+data: [14.8, 15.7, 17.6, 20.0, 21.6],
+borderColor: '#f97316',
+backgroundColor: 'rgba(249, 115, 22, 0.2)',
+borderWidth: 3,
+fill: true,
+tension: 0.3
+}]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false,
+plugins: { ...tooltipConfig, legend: { display: false } },
+scales: {
+y: {
+min: 10,
+max: 25,
+ticks: { callback: value => value + '%' }
+}
+}
+}
+});
+</script>
+</body>
+</html>
