@@ -1,0 +1,255 @@
+<!--
+Palette: Vibrant Action (Blue 500, Amber 500, Red 500, Slate 400)
+Plan:
+1. Introduction: Highlight the severity of weekend accidents based on the report.
+2. Core Metric (Inform): Emphasize Saturday's 18.1% accident rate with a large typographic display.
+3. Distribution (Compare): Use a Doughnut chart to contrast weekday vs. weekend total accident proportions.
+4. Temporal Trend (Change/Compare): Use a Bar chart to display the daily accident count.
+5. Article Toggle: Add a button and a hidden section to display the full news article (children_traffic_accident_report.md content).
+6. Conclusion/Action (Organize): Present safety guidelines using structured CSS grids and standard Unicode icons.
+Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in the output.
+-->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>어린이 교통사고 분석 인포그래픽</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #F8FAFC;
+}
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 300px;
+    max-height: 400px;
+}
+@media (min-width: 768px) {
+    .chart-container {
+        height: 350px;
+    }
+}
+.icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 9999px;
+    font-size: 1.5rem;
+}
+.article-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out, opacity 0.5s ease-out;
+    opacity: 0;
+}
+.article-content.show {
+    max-height: 2000px;
+    opacity: 1;
+}
+</style>
+</head>
+<body class="text-slate-800 antialiased p-4 md:p-8">
+
+<div class="max-w-6xl mx-auto">
+    <header class="text-center mb-10">
+        <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">어린이 교통사고, <span class="text-red-500">‘토요일’</span>에 가장 빈번</h1>
+        <p class="text-lg text-slate-600 max-w-2xl mx-auto">최근 5년간 발생한 어린이 교통사고 44,354건의 데이터를 분석한 결과, 주말 야외활동이 늘어나는 토요일과 금요일 오후에 각별한 주의가 필요한 것으로 나타났습니다.</p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8 flex flex-col justify-center items-center text-center lg:col-span-1 transform transition hover:-translate-y-1 hover:shadow-md">
+            <h2 class="text-lg font-bold text-slate-500 mb-2">가장 위험한 요일, 토요일</h2>
+            <div class="text-6xl font-black text-red-500 my-4">18.1%</div>
+            <p class="text-slate-600 text-sm">전체 8,033건의 사고가 토요일에 집중되었습니다. 사고가 가장 적은 화요일 대비 <strong>약 42%</strong> 더 높은 수치입니다.</p>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8 lg:col-span-2">
+            <div class="mb-4">
+                <h2 class="text-xl font-bold text-slate-800">평일 5일 vs 주말 2일 사고 비중</h2>
+                <p class="text-sm text-slate-500 mt-1">단 이틀뿐인 주말이 전체 사고의 약 33%를 차지하며 압도적인 위험성을 보입니다.</p>
+            </div>
+            <div class="chart-container">
+                <canvas id="weekendDonutChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8 mb-8">
+        <div class="mb-6">
+            <h2 class="text-2xl font-bold text-slate-800">요일별 어린이 교통사고 발생 흐름</h2>
+            <p class="text-slate-500 mt-2">금요일부터 사고 건수가 급격히 상승하여 토요일에 정점에 도달하는 패턴을 보입니다.</p>
+        </div>
+        <div class="chart-container">
+            <canvas id="dailyBarChart"></canvas>
+        </div>
+    </div>
+
+    <div class="bg-slate-900 rounded-2xl shadow-lg p-8 text-white mb-8">
+        <h2 class="text-2xl font-bold mb-6 text-center">운전자 및 보호자 필수 행동 수칙</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-slate-800 rounded-xl p-6 flex flex-col items-center text-center border border-slate-700">
+                <div class="icon-box bg-blue-500/20 text-blue-400 mb-4">🚗</div>
+                <h3 class="text-lg font-bold text-blue-400 mb-2">금·토·일 서행 운전</h3>
+                <p class="text-slate-300 text-sm">주말 낯선 여행지나 복잡한 관광지 등 일반 도로에서도 돌발 상황에 대비해 감속 운전을 실천하세요.</p>
+            </div>
+            <div class="bg-slate-800 rounded-xl p-6 flex flex-col items-center text-center border border-slate-700">
+                <div class="icon-box bg-amber-500/20 text-amber-400 mb-4">👨‍👩‍👧‍👦</div>
+                <h3 class="text-lg font-bold text-amber-400 mb-2">밀착 보행 지도</h3>
+                <p class="text-slate-300 text-sm">주차장이나 골목길 등 사각지대에서 아이가 갑자기 튀어나오지 않도록 보호자의 각별한 지도가 필요합니다.</p>
+            </div>
+            <div class="bg-slate-800 rounded-xl p-6 flex flex-col items-center text-center border border-slate-700">
+                <div class="icon-box bg-red-500/20 text-red-400 mb-4">🛑</div>
+                <h3 class="text-lg font-bold text-red-400 mb-2">안전 교육 생활화</h3>
+                <p class="text-slate-300 text-sm">보행 안전 수칙을 반복적으로 교육하여 아이 스스로 위험을 인지할 수 있도록 도와주세요.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mb-12">
+        <button id="toggleArticle" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center mx-auto space-x-2">
+            <span>📄</span>
+            <span>분석 기사 전문 보기</span>
+        </button>
+    </div>
+
+    <div id="articleSection" class="article-content bg-white rounded-2xl shadow-inner border border-slate-200 mb-12">
+        <article class="p-8 md:p-12 prose prose-slate max-w-none">
+            <header class="border-b border-slate-100 pb-6 mb-6">
+                <h2 class="text-3xl font-black text-slate-900 mb-2">[사회] 어린이 교통사고, ‘토요일’에 가장 빈번… 주말 야외활동 각별한 주의 필요</h2>
+                <p class="text-slate-500 text-lg">최근 5년간 통계 분석 결과, 토요일 사고 비중 18.1%로 최고</p>
+            </header>
+            
+            <div class="space-y-6 text-slate-700 leading-relaxed">
+                <p>어린이들의 야외활동이 늘어나는 주말, 부모들의 각별한 주의가 요구된다. 최근 5년간 발생한 어린이 교통사고 통계를 분석한 결과, 일주일 중 토요일에 사고가 가장 많이 집중되는 것으로 나타났다.</p>
+                
+                <div class="bg-slate-50 p-6 rounded-xl border-l-4 border-red-500">
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">■ 토요일, 사고 발생률 압도적 1위</h3>
+                    <p>데이터 분석 결과에 따르면, 지난 5년간 발생한 어린이 교통사고 중 <strong>토요일</strong>에 발생한 사고 건수는 총 8,033건으로 전체의 18.1%를 차지하며 가장 높은 수치를 기록했다. 이는 사고가 가장 적게 발생하는 화요일(5,640건, 12.7%)과 비교했을 때 약 42%나 높은 수치다.</p>
+                    <p class="mt-2">일요일 역시 6,605건(14.9%)으로 평일 평균보다 높은 수치를 보여, 주말 이틀 동안 발생하는 사고가 전체의 3분의 1에 육박하는 것으로 조사됐다.</p>
+                </div>
+
+                <div class="bg-slate-50 p-6 rounded-xl border-l-4 border-amber-500">
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">■ 평일 중에는 ‘금요일’이 가장 위험</h3>
+                    <p>평일 중에서는 주말로 접어드는 길목인 <strong>금요일</strong>의 위험도가 가장 높았다. 금요일에 발생한 사고는 6,725건(15.2%)으로, 일요일보다도 오히려 많은 사고가 발생했다.</p>
+                    <p class="mt-2">통계적으로 평일인 월요일부터 목요일까지는 일정한 비율을 유지하다가, 금요일을 기점으로 사고 건수가 급격히 상승하는 패턴을 보인다. 이는 주말 여행을 위한 이동량 증가와 방과 후 활동이 겹치는 금요일 오후 시간대의 교통량과 연관이 있다.</p>
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">■ 요일별 사고 발생 현황 (최근 5년 합계)</h3>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>토요일</strong>: 8,033건 (18.1%) - <strong>최고</strong></li>
+                        <li><strong>금요일</strong>: 6,725건 (15.2%)</li>
+                        <li><strong>일요일</strong>: 6,605건 (14.9%)</li>
+                        <li><strong>수요일</strong>: 5,889건 (13.3%)</li>
+                        <li><strong>월요일/목요일</strong>: 약 5,730건대 (12.9%)</li>
+                        <li><strong>화요일</strong>: 5,640건 (12.7%) - <strong>최저</strong></li>
+                    </ul>
+                </div>
+
+                <footer class="mt-10 pt-6 border-t border-slate-100 italic text-slate-500">
+                    "주말에는 낯선 여행지나 복잡한 관광지에서의 이동이 많아 아이들이 교통 위험에 노출되기 쉽습니다. 운전자와 보호자 모두 금요일 오후부터 토요일까지의 시간대에 각별한 집중이 필요합니다."
+                </footer>
+            </div>
+        </article>
+    </div>
+</div>
+
+<script>
+const processLabel = (str) => {
+    if (str.length > 16) {
+        const words = str.split(' ');
+        let lines = [];
+        let currentLine = '';
+        words.forEach(word => {
+            if ((currentLine + word).length > 16) {
+                lines.push(currentLine.trim());
+                currentLine = word + ' ';
+            } else {
+                currentLine += word + ' ';
+            }
+        });
+        if (currentLine.trim()) lines.push(currentLine.trim());
+        return lines;
+    }
+    return str;
+};
+
+const tooltipConfig = {
+    callbacks: {
+        title: function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) return label.join(' ');
+            return label;
+        }
+    }
+};
+
+new Chart(document.getElementById('weekendDonutChart'), {
+    type: 'doughnut',
+    data: {
+        labels: [processLabel('평일 누적 사고 발생 비율 (월~금 합계)'), processLabel('주말 누적 사고 발생 비율 (토~일 합계)')],
+        datasets: [{
+            data: [29716, 14638],
+            backgroundColor: ['#3B82F6', '#EF4444'],
+            hoverBackgroundColor: ['#2563EB', '#DC2626'],
+            borderWidth: 0,
+            hoverOffset: 4
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        cutout: '65%',
+        plugins: {
+            legend: { position: 'bottom', labels: { font: { family: 'Pretendard', size: 14 } } },
+            tooltip: tooltipConfig
+        }
+    }
+});
+
+new Chart(document.getElementById('dailyBarChart'), {
+    type: 'bar',
+    data: {
+        labels: ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'].map(processLabel),
+        datasets: [{
+            label: '사고 건수 (건)',
+            data: [5739, 5640, 5889, 5723, 6725, 8033, 6605],
+            backgroundColor: ['#94A3B8', '#94A3B8', '#94A3B8', '#94A3B8', '#F59E0B', '#EF4444', '#F59E0B'],
+            borderRadius: 8,
+            borderSkipped: false
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: tooltipConfig },
+        scales: {
+            y: { beginAtZero: true, grid: { color: '#F1F5F9', drawBorder: false }, ticks: { font: { family: 'Pretendard' } } },
+            x: { grid: { display: false }, ticks: { font: { family: 'Pretendard', weight: 'bold' } } }
+        }
+    }
+});
+
+// Toggle Article Functionality
+const btn = document.getElementById('toggleArticle');
+const section = document.getElementById('articleSection');
+
+btn.addEventListener('click', () => {
+    section.classList.toggle('show');
+    const isShowing = section.classList.contains('show');
+    btn.innerHTML = isShowing ? '<span>🔼</span><span>분석 기사 닫기</span>' : '<span>📄</span><span>분석 기사 전문 보기</span>';
+    if (isShowing) {
+        section.scrollIntoView({ behavior: 'smooth' });
+    }
+});
+</script>
+</body>
+</html>
