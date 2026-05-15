@@ -62,7 +62,7 @@ display: flex;
 <body class="bg-slate-50 text-slate-800 font-sans antialiased">
 <!-- 
 Palette: Vibrant Alert (Red #ef4444, Blue #3b82f6, Orange #f97316, Slate #1e293b).
-Added: Modal functionality to display the article text within the SPA.
+Added: Home button in the top left, Modal functionality for the article.
 Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in the output. 
 -->
 
@@ -91,8 +91,13 @@ Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in the output.
 </div>
 </div>
 
-<header class="bg-slate-900 text-white py-16 px-6 mb-10 shadow-lg">
-<div class="max-w-6xl mx-auto">
+<header class="bg-slate-900 text-white py-12 px-6 mb-10 shadow-lg relative">
+<!-- 홈 버튼 -->
+<a href="../index.html" class="absolute top-4 left-4 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-colors border border-white/10">
+<span>🏠</span> 홈
+</a>
+
+<div class="max-w-6xl mx-auto pt-6">
 <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
 <div class="flex-grow">
 <div class="inline-block bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full mb-4">
