@@ -222,14 +222,28 @@
         .dark .info-detail::before {
             border-color: #1e293b;
         }
+
+        /* Home Button Style */
+        .btn-home {
+            transition: all 0.2s;
+        }
+        .btn-home:hover {
+            color: var(--sky-blue-dark);
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body class="light">
 
     <!-- Navigation Bar -->
     <nav class="fixed top-0 w-full z-50 p-6 flex justify-between items-center bg-opacity-80 backdrop-blur-md">
-        <div class="text-2xl font-extrabold tracking-tight">
-            <span class="text-sky-500">AI</span> 이해
+        <div class="flex items-center gap-4">
+            <a href="../index.html" class="btn-home text-2xl" title="홈으로 이동">
+                <i class="fas fa-home"></i>
+            </a>
+            <div class="text-2xl font-extrabold tracking-tight">
+                <span class="text-sky-500">AI</span> 이해
+            </div>
         </div>
         <div class="flex items-center gap-4">
             <i class="fas fa-sun text-yellow-500"></i>
@@ -417,7 +431,7 @@
             
             <div class="video-container">
                 <video id="main-video" controls>
-                    <source src="02/AI_완전_정복__튜링부터_트랜스포머까지 (1) (1).mp4" type="video/mp4">
+                    <source src="./AI_완전_정복__튜링부터_트랜스포머까지 (1) (1).mp4" type="video/mp4">
                     브라우저가 동영상 태그를 지원하지 않습니다.
                 </video>
             </div>
