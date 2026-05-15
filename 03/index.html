@@ -97,7 +97,8 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <div class="flex items-center space-x-4">
-                    <a href="#" class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-gray-700 hover:bg-blue-800 hover:text-white transition-all duration-300 shadow-sm" title="홈으로 이동">
+                    <!-- 홈 버튼 추가 -->
+                    <a href="../index.html" class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 text-gray-700 hover:bg-blue-800 hover:text-white transition-all duration-300 shadow-sm" title="홈으로 이동">
                         <span class="text-xl">🏠</span>
                     </a>
                     <div class="flex-shrink-0 flex items-center">
@@ -277,20 +278,6 @@
             lines.push(currentLine);
             return lines;
         }
-
-        const commonTooltipConfig = {
-            callbacks: {
-                title: function(tooltipItems) {
-                    const item = tooltipItems[0];
-                    let label = item.chart.data.labels[item.dataIndex];
-                    if (Array.isArray(label)) {
-                        return label.join(' ');
-                    } else {
-                        return label;
-                    }
-                }
-            }
-        };
 
         window.onload = function() {
             Chart.defaults.font.family = "'Noto Sans KR', sans-serif";
