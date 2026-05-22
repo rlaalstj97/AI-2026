@@ -190,14 +190,72 @@
         });
 
         const tasks = [
-            { id: 1, title: "AI의 이해", detailTitle: "AI란 무엇인가? NotebookLM 실습", icon: "fa-robot", color: "from-blue-400 to-cyan-400", longDesc: "구글 노트북LM(NotebookLM)을 활용하여 AI의 정의, 역사, 그리고 생성형 AI의 핵심 개념을 체계적으로 정리했습니다.", link: "#" },
-            { id: 2, title: "데이터 스토리텔링", detailTitle: "Gemini 스토리북 제작", icon: "fa-search", color: "from-purple-400 to-pink-400", longDesc: "공공 데이터를 분석하고 인사이트를 도출하여 시각적으로 설득력 있는 리포트를 작성하고, 이를 Gemini 스토리북으로 구현했습니다.", link: "#" },
-            { id: 3, title: "웹기술의 이해", detailTitle: "HTML/CSS/JS 기초 및 웹 구조 학습", icon: "fa-code", color: "from-green-400 to-emerald-400", longDesc: "현대 웹의 근간이 되는 HTML, CSS, JavaScript의 유기적인 결합 방식을 심도 있게 학습했습니다.", link: "#" },
-            { id: 4, title: "중간고사 대체 과제", detailTitle: "나와 전공을 연결하는 AI 스토리 웹페이지 제작", icon: "fa-link", color: "from-orange-400 to-red-400", longDesc: "본인의 전공인 '사회복지'와 '인공지능' 기술을 결합하여 미래의 비전을 제시하는 인터랙티브 웹페이지를 제작했습니다.", link: "#" },
-            { id: 5, title: "데이터분석1(고령운전자)", detailTitle: "공공데이터를 활용한 사회문제 인사이트 도출", icon: "fa-chart-bar", color: "from-indigo-400 to-blue-400", longDesc: "고령 사회의 주요 이슈인 '고령운전자 교통사고' 데이터를 정밀 분석하여 사회복지적 예방 방안을 모색했습니다.", link: "#" },
-            { id: 6, title: "데이터분석2(어린이교통사고)", detailTitle: "취약계층 안전망 확보를 위한 데이터 시각화", icon: "fa-child", color: "from-pink-400 to-rose-400", longDesc: "어린이 보호구역 내 사고 데이터를 분석하여 아동 복지 관점에서의 안전망 구축 방안을 연구했습니다.", link: "#" },
-            { id: 7, title: "유튜브 댓글 분석 실습", detailTitle: "AI를 활용한 텍스트 마이닝 및 감성 분석", icon: "fa-comments", color: "from-cyan-400 to-teal-400", longDesc: "유튜브 댓글 데이터를 수집하여 AI 언어 모델로 대중의 반응을 분석했습니다. 키워드 추출과 긍/부정 감성 분석을 통해 특정 이슈에 대한 사회적 여론을 파악했습니다.", link: "#" },
-            { id: 8, title: "기술의 윤리", detailTitle: "AI 윤리 가이드라인 및 사례 연구", icon: "fa-balance-scale", color: "from-amber-400 to-yellow-400", longDesc: "인공지능 기술 발전과 함께 고려해야 할 윤리적 문제들을 탐구하고, 사회복지 현장에서의 적용 가능성을 논의합니다.", link: "#" }
+            { 
+                id: 1, 
+                title: "AI의 이해", 
+                detailTitle: "AI란 무엇인가? NotebookLM 실습",
+                icon: "fa-robot", 
+                color: "from-blue-400 to-cyan-400",
+                longDesc: "구글 노트북LM(NotebookLM)을 활용하여 AI의 정의, 역사, 그리고 생성형 AI의 핵심 개념을 체계적으로 정리했습니다.",
+                link: "./02/index.html"
+            },
+            { 
+                id: 2, 
+                title: "데이터 스토리텔링", 
+                detailTitle: "Gemini 스토리북 제작",
+                icon: "fa-search", 
+                color: "from-purple-400 to-pink-400",
+                longDesc: "공공 데이터를 분석하고 인사이트를 도출하여 시각적으로 설득력 있는 리포트를 작성하고, 이를 Gemini 스토리북으로 구현했습니다.",
+                link: "./03/index.html"
+            },
+            { 
+                id: 3, 
+                title: "웹기술의 이해", 
+                detailTitle: "HTML/CSS/JS 기초 및 웹 구조 학습",
+                icon: "fa-code", 
+                color: "from-green-400 to-emerald-400",
+                longDesc: "현대 웹의 근간이 되는 HTML(구조), CSS(디자인), JavaScript(동적 기능)의 유기적인 결합 방식을 심도 있게 학습했습니다.",
+                link: "./04/index.html"
+            },
+            { 
+                id: 4, 
+                title: "중간고사 대체 과제", 
+                detailTitle: "나와 전공을 연결하는 AI 스토리 웹페이지 제작",
+                icon: "fa-link", 
+                color: "from-orange-400 to-red-400",
+                longDesc: "본인의 전공인 '사회복지'와 '인공지능' 기술을 결합하여 미래의 비전을 제시하는 인터랙티브 웹페이지를 제작했습니다.",
+                link: "./05/index.html" 
+            },
+            { 
+                id: 5, 
+                title: "데이터분석1(고령운전자)", 
+                detailTitle: "공공데이터를 활용한 사회문제 인사이트 도출",
+                icon: "fa-chart-bar", 
+                color: "from-indigo-400 to-blue-400",
+                longDesc: "고령 사회의 주요 이슈인 '고령운전자 교통사고' 데이터를 정밀 분석하여 사회복지적 예방 방안을 모색했습니다.",
+                link: "./06/index.html"
+            },
+            { 
+                id: 6, 
+                title: "데이터분석2(어린이교통사고)", 
+                detailTitle: "취약계층 안전망 확보를 위한 데이터 시각화",
+                icon: "fa-child", 
+                color: "from-pink-400 to-rose-400",
+                longDesc: "어린이 보호구역 내 사고 데이터를 분석하여 아동 복지 관점에서의 안전망 구축 방안을 연구했습니다.",
+                link: "./07/index.html"
+            },
+            { 
+                id: 7, 
+                title: "유튜브 댓글 분석", 
+                detailTitle: "AI를 활용한 텍스트 마이닝 및 감성 분석",
+                icon: "fa-comments", 
+                color: "from-cyan-400 to-teal-400",
+                longDesc: "유튜브 댓글 데이터를 수집하여 AI 언어 모델로 대중의 반응을 분석했습니다. 키워드 추출과 긍/부정 감성 분석을 통해 특정 이슈에 대한 사회적 여론을 파악하는 실습을 진행했습니다.",
+                link: "./08/index.html"
+            },
+            { id: 8, title: "기술의 윤리", icon: "fa-balance-scale", color: "from-amber-400 to-yellow-400" },
+            { id: 9, title: "사회 문제 해결사", icon: "fa-hands-helping", color: "from-violet-400 to-purple-400" },
+            { id: 10, title: "최종 마스터피스", icon: "fa-star", color: "from-yellow-400 to-orange-400" }
         ];
 
         const container = document.getElementById('cardContainer');
