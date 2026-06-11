@@ -525,30 +525,10 @@
 
         // Slide Download Logic
         function downloadSlides() {
-            const slideDeckContent = `
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>AI 70년 레벨업 연대기</title>
-    <style>
-        body { margin: 0; padding: 20px; background: #0f172a; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; gap: 40px; }
-        .slide { width: 1200px; height: 675px; background: #020617; border-radius: 12px; color: #f8fafc; padding: 60px; box-sizing: border-box; position: relative; border: 1px solid #38bdf8; }
-        h1 { font-size: 70px; color: #38bdf8; margin-top: 50px; }
-        p { font-size: 24px; color: #94a3b8; }
-    </style>
-</head>
-<body>
-    <div class="slide"><h1>AI 70년<br>레벨업 연대기</h1><p>인간의 흉내에서 주도적 파트너로 진화한 인공지능의 역사</p></div>
-</body>
-</html>`;
-            const blob = new Blob([slideDeckContent], { type: 'text/html' });
-            const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
-            a.download = 'AI_레벨업_연대기.html';
+            a.href = "02/ai70.pdf";
+            a.download = "ai70.pdf";
             a.click();
-            window.URL.revokeObjectURL(url);
         }
 
         // Initialize progress
