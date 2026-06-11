@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>삶의 만족도와 자살률 상관관계 분석 포털</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3c72;
+            --primary-light: #2a5298;
+            --accent: #e74c3c;
+            --neutral-dark: #2c3e50;
+            --neutral-light: #f8f9fa;
+            --border-radius: 16px;
+            --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.05);
+            --shadow-medium: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            
+            /* Quadrant Colors */
+            --q1: #e74c3c;
+            --q2: #9b59b6;
+            --q3: #7f8c8d;
+            --q4: #2ecc71;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #f4f6f9;
+            color: var(--neutral-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+
+        .navbar-brand {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.3rem;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(30, 60, 114, 0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(30, 60, 114, 0.15);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 60, 114, 0.25);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(56, 239, 125, 0.2);
+        }
+
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 239, 125, 0.3);
+        }
+
+        /* Dashboard Mode Layout */
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 100px auto 40px;
+            padding: 0 20px;
+            display: block;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 40px;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-medium);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-header h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        /* Slide Presentation Mode Layout */
+        .slide-container {
+            display: none;
+            position: fixed;
+            top: 70px;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #1a202c;
+            color: #e2e8f0;
+            z-index: 900;
+            overflow: hidden;
+        }
+
+        .slide-stage {
+            width: 100%;
+            height: calc(100% - 60px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            max-width: 1100px;
+            height: 100%;
+            background: #2d3748;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 40px;
+            animation: fadeIn 0.5s ease forwards;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: #232b38;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .slide-navigation {
+            display: flex;
+            gap: 15px;
+        }
+
+        .slide-progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #38ef7d, #11998e);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Grid, Cards & Visuals */
+        .card-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 992px) {
+            .card-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .full-width {
+                grid-column: span 2;
+            }
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-subtle);
+            padding: 30px;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .slide .card {
+            background: #232b38;
+            color: #e2e8f0;
+            border-color: rgba(255,255,255,0.03);
+            box-shadow: none;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .slide .card h3 {
+            color: #63b3ed;
+        }
+
+        .card h3::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 4px;
+            width: 5px;
+            height: 20px;
+            background-color: #3498db;
+            border-radius: 3px;
+        }
+
+        /* Content layouts */
+        .split-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        @media (min-width: 768px) {
+            .split-layout {
+                flex-direction: row;
+                align-items: center;
+            }
+            .split-layout .text-pane {
+                flex: 1;
+            }
+            .split-layout .image-pane {
+                flex: 1.1;
+            }
+        }
+
+        .chart-frame {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-subtle);
+            background: #fafbfc;
+            border: 1px solid #eee;
+            transition: var(--transition);
+        }
+
+        .slide .chart-frame {
+            background: #1a202c;
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .chart-frame:hover {
+            transform: scale(1.02);
+        }
+
+        .chart-frame img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .info-desc {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        /* Callout Boxes */
+        .callout {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            border-left: 4px solid;
+        }
+
+        .callout-info {
+            background-color: #e8f4f8;
+            border-left-color: #3498db;
+            color: #2980b9;
+        }
+
+        .callout-warning {
+            background-color: #fdf2e9;
+            border-left-color: #e67e22;
+            color: #d35400;
+        }
+
+        .callout-danger {
+            background-color: #fdedec;
+            border-left-color: var(--accent);
+            color: #c0392b;
+        }
+
+        .slide .callout-info {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: #90cdf4;
+        }
+        .slide .callout-warning {
+            background-color: rgba(230, 126, 34, 0.1);
+            color: #fbd38d;
+        }
+        .slide .callout-danger {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #feb2b2;
+        }
+
+        /* Quadrant Cards in Presentation and Dashboard */
+        .quadrant-box-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .quadrant-card {
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .slide .quadrant-card {
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .quadrant-card:hover {
+            transform: scale(1.03);
+        }
+
+        .qc-1 { border-left: 4px solid var(--q1); background-color: rgba(231, 76, 60, 0.03); }
+        .qc-2 { border-left: 4px solid var(--q2); background-color: rgba(155, 89, 182, 0.03); }
+        .qc-3 { border-left: 4px solid var(--q3); background-color: rgba(127, 140, 141, 0.03); }
+        .qc-4 { border-left: 4px solid var(--q4); background-color: rgba(46, 204, 113, 0.03); }
+
+        .quadrant-card-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
+        }
+
+        .qc-1 .quadrant-card-title { color: var(--q1); }
+        .qc-2 .quadrant-card-title { color: var(--q2); }
+        .qc-3 .quadrant-card-title { color: #a0aec0; }
+        .qc-4 .quadrant-card-title { color: var(--q4); }
+
+        .quadrant-card-desc {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .slide .quadrant-card-desc {
+            color: #a0aec0;
+        }
+
+        /* Dynamic filter table */
+        .table-section {
+            margin-top: 40px;
+        }
+
+        .table-header-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .table-filter-btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-filter {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: #e2e8f0;
+            color: #4a5568;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-filter.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .table-frame {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            background: white;
+        }
+
+        .slide .table-frame {
+            background: #2d3748;
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #edf2f7;
+            text-align: left;
+        }
+
+        .slide th, .slide td {
+            border-bottom-color: rgba(255, 255, 255, 0.05);
+        }
+
+        th {
+            background-color: #f7fafc;
+            color: #4a5568;
+            font-weight: 700;
+        }
+
+        .slide th {
+            background-color: #1a202c;
+            color: #cbd5e0;
+        }
+
+        tr.filtered-out {
+            display: none;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .slide tr:hover {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        .q-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            font-size: 0.75rem;
+            border-radius: 4px;
+            font-weight: 600;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <a href="#" class="navbar-brand">
+            📊 Satisfaction-Suicide Portal
+        </a>
+        <div class="nav-controls">
+            <a href="https://rlaalstj97.github.io/AI-2026/" class="btn btn-outline">
+                🏠 홈
+            </a>
+            <button class="btn btn-outline" id="toggleModeBtn" onclick="toggleMode()">
+                🖥️ 발표 슬라이드 모드
+            </button>
+            <a href="상관관계_분석_보고서.pdf" download="삶의_만족도_및_자살률_상관관계_분석_보고서.pdf" class="btn btn-download">
+                💾 PDF 보고서 다운로드
+            </a>
+        </div>
+    </div>
+
+    <!-- 1. DASHBOARD MODE CONTAINER -->
+    <div class="dashboard-container" id="dashboardView">
+        <div class="dashboard-header">
+            <h2>삶의 만족도와 자살률 상관관계 분석 결과</h2>
+            <p>2020년부터 2024년까지의 국가 통계를 기반으로 한 주관적 안녕감과 객관적 자살률 간의 다각적 상관분석 포털</p>
+        </div>
+
+        <div class="card-grid">
+            <!-- 전국 추이 -->
+            <div class="card full-width">
+                <h3>1. 전국 삶의 만족도 및 자살률 추이</h3>
+                <div class="split-layout">
+                    <div class="text-pane">
+                        <div class="info-desc">
+                            <p style="margin-bottom: 12px;"><strong>팬데믹 영향(2021년)</strong>: 코로나19가 극심했던 2021년 주관적 삶의 만족도 점수는 3.161점(긍정 만족도 34.0%)으로 5개년 중 최저치를 나타냈습니다.</p>
+                            <p><strong>반등과 괴리(2023-2024년)</strong>: 만족도 점수는 2024년 기준 3.367점으로 반등하며 회복했으나, 전국 자살률은 2022년 25.2명에서 2024년 29.1명으로 오히려 큰 폭으로 올랐습니다.</p>
+                        </div>
+                        <div class="callout callout-info">
+                            <strong>💡 요약:</strong> 주관적 웰빙은 코로나 이후 빠르게 치유되고 있는 반면, 자살률과 같은 객관적 위기 지표는 오히려 악화되는 역설적 갭이 나타나고 있습니다.
+                        </div>
+                    </div>
+                    <div class="image-pane">
+                        <div class="chart-frame">
+                            <img src="images/national_trend.png" alt="전국 삶의 만족도 및 자살률 추이">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 회귀 분석 및 상관계수 -->
+            <div class="card">
+                <h3>2. 시도별 통합 상관관계 분석</h3>
+                <div class="chart-frame" style="margin-bottom: 15px;">
+                    <img src="images/overall_correlation.png" alt="전체 선형 회귀 분석">
+                </div>
+                <div class="info-desc">
+                    피어슨 상관계수 <strong>r = -0.0477 (p-value = 0.6649)</strong>로, 시도별 전체 만족도와 자살률 사이에는 통계적으로 유의미한 선형 상관성이 발견되지 않았습니다.
+                </div>
+                <div class="callout callout-warning">
+                    평균 삶의 만족도가 높은 도시라고 해서 자살률이 낮다고 단순 선형적으로 판단할 수 없음을 나타냅니다.
+                </div>
+            </div>
+
+            <!-- 성별 상관계수 -->
+            <div class="card">
+                <h3>3. 성별 상관관계 비교</h3>
+                <div class="chart-frame" style="margin-bottom: 15px;">
+                    <img src="images/gender_correlation.png" alt="성별 상관관계 비교">
+                </div>
+                <div class="info-desc">
+                    남성(r = -0.0313, p = 0.7765), 여성(r = 0.0141, p = 0.8980) 모두 삶의 만족도와 자살률 간 유의성은 없습니다. 그러나 남성의 자살률(2024년 41.8명)은 여성(16.6명)보다 약 2.5배에 달합니다.
+                </div>
+                <div class="callout callout-info">
+                    남성의 자살은 주관적 정서 이외에 경제적 외적 변수에 더 직접적인 영향을 받음을 유추할 수 있습니다.
+                </div>
+            </div>
+
+            <!-- 세부 항목 및 Heatmap -->
+            <div class="card full-width">
+                <h3>4. 삶의 만족도 세부 항목별 상관관계 열지도 (Heatmap)</h3>
+                <div class="split-layout">
+                    <div class="image-pane">
+                        <div class="chart-frame">
+                            <img src="images/correlation_heatmap.png" alt="상관관계 열지도">
+                        </div>
+                    </div>
+                    <div class="text-pane">
+                        <div class="info-desc">
+                            <p style="margin-bottom: 12px;"><strong>'보통' 응답 비율 vs 자살률 (r = +0.406)</strong>: 매우 독특하게도 "보통"이라고 선택한 중간층이 많은 지역일수록 자살률이 매우 높게 나타납니다.</p>
+                            <p><strong>'매우 만족' 및 '매우 불만족'의 음의 상관성</strong>: 매우 만족(r = -0.223)과 매우 불만족(r = -0.226)은 모두 자살률과 음의 상관을 띱니다.</p>
+                        </div>
+                        <div class="callout callout-danger">
+                            <strong>⚠️ 정서적 체념(Apathy)의 위험:</strong> 적극적으로 불만("매우 불만족")을 표시하는 집단보다, 감정 표출과 만족도가 부재한 채 "보통"의 체념 상태에 고착된 인구가 극단적 선택에 더 취약할 수 있습니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2024년 4사분면 매핑 분석 -->
+            <div class="card full-width">
+                <h3>5. 2024년 기준 17개 시도 4사분면 매핑</h3>
+                <div class="split-layout">
+                    <div class="text-pane">
+                        <div class="info-desc">
+                            2024년 시도별 평균 만족도 점수(3.385점)와 평균 자살률(31.4명)을 축으로 사분면 공간 매핑을 수행하여 지형을 분류했습니다.
+                        </div>
+                        <div class="quadrant-box-grid">
+                            <div class="quadrant-card qc-1" onclick="filterTable('q1')">
+                                <div class="quadrant-card-title">Ⅰ. 행복-자살 역설</div>
+                                <div class="quadrant-card-desc">만족도 높음 ↑ / 자살률 높음 ↑<br><strong>(제주, 충남, 강원)</strong></div>
+                            </div>
+                            <div class="quadrant-card qc-2" onclick="filterTable('q2')">
+                                <div class="quadrant-card-title">Ⅱ. 사회적 고위험</div>
+                                <div class="quadrant-card-desc">만족도 낮음 ↓ / 자살률 높음 ↑<br><strong>(인천, 전남, 전북 등)</strong></div>
+                            </div>
+                            <div class="quadrant-card qc-3" onclick="filterTable('q3')">
+                                <div class="quadrant-card-title">Ⅲ. 보이지 않는 위험</div>
+                                <div class="quadrant-card-desc">만족도 낮음 ↓ / 자살률 낮음 ↓<br><strong>(경기, 대구, 부산)</strong></div>
+                            </div>
+                            <div class="quadrant-card qc-4" onclick="filterTable('q4')">
+                                <div class="quadrant-card-title">Ⅳ. 선순환 안정</div>
+                                <div class="quadrant-card-desc">만족도 높음 ↑ / 자살률 낮음 ↓<br><strong>(세종, 서울, 울산 등)</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-pane">
+                        <div class="chart-frame">
+                            <img src="images/quadrant_analysis_2024.png" alt="2024년 4사분면 매핑 분석">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 시도별 상세 데이터 테이블 -->
+            <div class="card full-width table-section">
+                <div class="table-header-flex">
+                    <h3>6. 2024년 시도별 주요 지표 및 4분면 유형 (클릭 시 사분면 필터링)</h3>
+                    <div class="table-filter-btn-group">
+                        <button class="btn-filter active" id="btn-all" onclick="filterTable('all')">전체</button>
+                        <button class="btn-filter" id="btn-q1" onclick="filterTable('q1')">Ⅰ사분면</button>
+                        <button class="btn-filter" id="btn-q2" onclick="filterTable('q2')">Ⅱ사분면</button>
+                        <button class="btn-filter" id="btn-q3" onclick="filterTable('q3')">Ⅲ사분면</button>
+                        <button class="btn-filter" id="btn-q4" onclick="filterTable('q4')">Ⅳ사분면</button>
+                    </div>
+                </div>
+                <div class="table-frame">
+                    <table id="dataTable">
+                        <thead>
+                            <tr>
+                                <th>행정구역</th>
+                                <th>만족도 가중점수</th>
+                                <th>긍정 만족도 (%)</th>
+                                <th>부정 불만족도 (%)</th>
+                                <th>자살률 (명/10만 명)</th>
+                                <th>4분면 유형</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Q4 -->
+                            <tr data-quadrant="q4">
+                                <td><strong>세종특별자치시</strong></td>
+                                <td>3.351</td>
+                                <td>42.8%</td>
+                                <td>9.9%</td>
+                                <td>23.0</td>
+                                <td><span class="q-badge" style="background-color: var(--q4);">Ⅳ. 선순환 안정</span></td>
+                            </tr>
+                            <tr data-quadrant="q4">
+                                <td><strong>서울특별시</strong></td>
+                                <td>3.442</td>
+                                <td>46.3%</td>
+                                <td>11.9%</td>
+                                <td>24.1</td>
+                                <td><span class="q-badge" style="background-color: var(--q4);">Ⅳ. 선순환 안정</span></td>
+                            </tr>
+                            <tr data-quadrant="q4">
+                                <td><strong>울산광역시</strong></td>
+                                <td>3.425</td>
+                                <td>40.6%</td>
+                                <td>11.1%</td>
+                                <td>29.2</td>
+                                <td><span class="q-badge" style="background-color: var(--q4);">Ⅳ. 선순환 안정</span></td>
+                            </tr>
+                            <tr data-quadrant="q4">
+                                <td><strong>광주광역시</strong></td>
+                                <td>3.415</td>
+                                <td>40.7%</td>
+                                <td>11.8%</td>
+                                <td>29.9</td>
+                                <td><span class="q-badge" style="background-color: var(--q4);">Ⅳ. 선순환 안정</span></td>
+                            </tr>
+                            <tr data-quadrant="q4">
+                                <td><strong>대전광역시</strong></td>
+                                <td>3.521</td>
+                                <td>47.2%</td>
+                                <td>9.2%</td>
+                                <td>31.2</td>
+                                <td><span class="q-badge" style="background-color: var(--q4);">Ⅳ. 선순환 안정</span></td>
+                            </tr>
+                            <tr data-quadrant="q4">
+                                <td><strong>경상남도</strong></td>
+                                <td>3.397</td>
+                                <td>42.9%</td>
+                                <td>12.5%</td>
+                                <td>28.5</td>
+                                <td><span class="q-badge" style="background-color: var(--q4);">Ⅳ. 선순환 안정</span></td>
+                            </tr>
+                            <!-- Q3 -->
+                            <tr data-quadrant="q3">
+                                <td><strong>경기도</strong></td>
+                                <td>3.310</td>
+                                <td>35.7%</td>
+                                <td>12.7%</td>
+                                <td>28.2</td>
+                                <td><span class="q-badge" style="background-color: var(--q3);">Ⅲ. 보이지 않는 위험</span></td>
+                            </tr>
+                            <tr data-quadrant="q3">
+                                <td><strong>대구광역시</strong></td>
+                                <td>3.217</td>
+                                <td>36.1%</td>
+                                <td>21.9%</td>
+                                <td>29.4</td>
+                                <td><span class="q-badge" style="background-color: var(--q3);">Ⅲ. 보이지 않는 위험</span></td>
+                            </tr>
+                            <tr data-quadrant="q3">
+                                <td><strong>부산광역시</strong></td>
+                                <td>3.316</td>
+                                <td>37.5%</td>
+                                <td>15.0%</td>
+                                <td>30.3</td>
+                                <td><span class="q-badge" style="background-color: var(--q3);">Ⅲ. 보이지 않는 위험</span></td>
+                            </tr>
+                            <!-- Q2 -->
+                            <tr data-quadrant="q2">
+                                <td><strong>인천광역시</strong></td>
+                                <td>3.218</td>
+                                <td>28.0%</td>
+                                <td>13.8%</td>
+                                <td>31.2</td>
+                                <td><span class="q-badge" style="background-color: var(--q2);">Ⅱ. 사회적 고위험</span></td>
+                            </tr>
+                            <tr data-quadrant="q2">
+                                <td><strong>경상북도</strong></td>
+                                <td>3.350</td>
+                                <td>40.9%</td>
+                                <td>13.1%</td>
+                                <td>31.6</td>
+                                <td><span class="q-badge" style="background-color: var(--q2);">Ⅱ. 사회적 고위험</span></td>
+                            </tr>
+                            <tr data-quadrant="q2">
+                                <td><strong>충청북도</strong></td>
+                                <td>3.390</td>
+                                <td>40.7%</td>
+                                <td>12.5%</td>
+                                <td>31.8</td>
+                                <td><span class="q-badge" style="background-color: var(--q2);">Ⅱ. 사회적 고위험</span></td>
+                            </tr>
+                            <tr data-quadrant="q2">
+                                <td><strong>전북특별자치도</strong></td>
+                                <td>3.380</td>
+                                <td>44.8%</td>
+                                <td>14.0%</td>
+                                <td>32.3</td>
+                                <td><span class="q-badge" style="background-color: var(--q2);">Ⅱ. 사회적 고위험</span></td>
+                            </tr>
+                            <tr data-quadrant="q2">
+                                <td><strong>전라남도</strong></td>
+                                <td>3.343</td>
+                                <td>40.2%</td>
+                                <td>15.4%</td>
+                                <td>34.5</td>
+                                <td><span class="q-badge" style="background-color: var(--q2);">Ⅱ. 사회적 고위험</span></td>
+                            </tr>
+                            <!-- Q1 -->
+                            <tr data-quadrant="q1">
+                                <td><strong>강원특별자치도</strong></td>
+                                <td>3.427</td>
+                                <td>42.2%</td>
+                                <td>11.0%</td>
+                                <td>34.3</td>
+                                <td><span class="q-badge" style="background-color: var(--q1);">Ⅰ. 행복-자살 역설</span></td>
+                            </tr>
+                            <tr data-quadrant="q1">
+                                <td><strong>충청남도</strong></td>
+                                <td>3.555</td>
+                                <td>47.0%</td>
+                                <td>11.9%</td>
+                                <td>34.8</td>
+                                <td><span class="q-badge" style="background-color: var(--q1);">Ⅰ. 행복-자살 역설</span></td>
+                            </tr>
+                            <tr data-quadrant="q1">
+                                <td><strong>제주특별자치도</strong></td>
+                                <td>3.442</td>
+                                <td>43.4%</td>
+                                <td>10.1%</td>
+                                <td>36.3</td>
+                                <td><span class="q-badge" style="background-color: var(--q1);">Ⅰ. 행복-자살 역설</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. SLIDE PRESENTATION MODE CONTAINER -->
+    <div class="slide-container" id="presentationView">
+        <div class="slide-progress-bar" id="slideProgress"></div>
+        <div class="slide-stage">
+            
+            <!-- Slide 0: 표지 -->
+            <div class="slide active">
+                <div style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100%; text-align:center;">
+                    <h2 style="font-family:'Outfit',sans-serif; font-size:3rem; margin-bottom:20px; color:#63b3ed;">Happiness-Suicide Paradox</h2>
+                    <h3 style="font-size:1.8rem; font-weight:400; margin-bottom:40px; color:#cbd5e0; border:none; padding-left:0;">삶의 만족도와 자살률의 다차원적 분석 보고</h3>
+                    <p style="font-size:1rem; color:#a0aec0;">2020년 ~ 2024년 대한민국 시도별 패널 데이터 분석</p>
+                    <p style="font-size:0.9rem; color:#718096; margin-top:20px;">작성자: Antigravity AI</p>
+                </div>
+            </div>
+
+            <!-- Slide 1: 서론 및 방법론 -->
+            <div class="slide">
+                <h2 style="font-size:1.8rem; margin-bottom:25px; color:#63b3ed; border-bottom:1px solid #4a5568; padding-bottom:10px;">1. 연구 배경 및 방법론</h2>
+                <div class="split-layout">
+                    <div style="flex:1;">
+                        <h4 style="color:#e2e8f0; font-size:1.1rem; margin-bottom:10px;">분석 배경</h4>
+                        <p style="font-size:0.9rem; color:#a0aec0; margin-bottom:20px; line-height:1.7;">
+                            보편적으로 국민 주관적 웰빙(삶의 만족도)이 상승하면 객관적 지표인 자살률은 하락할 것으로 기대됩니다. 
+                            본 연구는 시도별 통계 매칭을 통해 이 기대가 통계적 유의성이 있는지 실증적으로 검토합니다.
+                        </p>
+                        <h4 style="color:#e2e8f0; font-size:1.1rem; margin-bottom:10px;">분석 대상 및 방법</h4>
+                        <ul style="font-size:0.9rem; color:#a0aec0; padding-left:20px; line-height:1.7;">
+                            <li>삶의 만족도 지표(KOSIS 사회조사, 2020~2024년)</li>
+                            <li>자살률 지표(KOSIS 사망원인통계, 2020~2024년)</li>
+                            <li>가중 평균 만족도 점수 산출(5점 만점)</li>
+                            <li>행정명칭 불일치 해결 및 피어슨 선형 상관분석</li>
+                        </ul>
+                    </div>
+                    <div style="flex:1; background:#1a202c; padding:20px; border-radius:12px; border:1px solid rgba(255,255,255,0.05);">
+                        <div class="callout callout-info" style="margin-top:0;">
+                            <strong>데이터 통합:</strong> 17개 시도의 5개년간 결합 데이터를 1대1 매핑하여 총 85개의 통합 패널 데이터셋 구축 완료
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: 전국 추이 -->
+            <div class="slide">
+                <h2 style="font-size:1.8rem; margin-bottom:25px; color:#63b3ed; border-bottom:1px solid #4a5568; padding-bottom:10px;">2. 전국 시계열 추이 분석 (2020-2024)</h2>
+                <div class="split-layout">
+                    <div class="text-pane">
+                        <p style="font-size:0.95rem; color:#cbd5e0; margin-bottom:15px; line-height:1.7;">
+                            <strong>코로나19 팬데믹 충격</strong>:<br>
+                            2021년 전국 만족도는 <strong>3.161점</strong>으로 역대 최저치를 기록, 팬데믹 격리가 대중의 정서적 피로감을 심화시켰음을 보여줍니다.
+                        </p>
+                        <p style="font-size:0.95rem; color:#cbd5e0; margin-bottom:15px; line-height:1.7;">
+                            <strong>포스트 코로나의 역설</strong>:<br>
+                            2022~2024년 만족도는 평균 3.36점 이상으로 빠르게 반등했지만, 자살률은 2022년 25.2명에서 2024년 29.1명으로 오히려 증가했습니다.
+                        </p>
+                        <div class="callout callout-warning">
+                            <strong>해석:</strong> 주관적 힐링 지표와 실제 극단적 선택 위험 지표 간의 시차(Time lag) 혹은 디커플링 현상이 뚜렷이 나타납니다.
+                        </div>
+                    </div>
+                    <div class="image-pane">
+                        <div class="chart-frame">
+                            <img src="images/national_trend.png" alt="전국 추이">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: 선형 회귀 분석 -->
+            <div class="slide">
+                <h2 style="font-size:1.8rem; margin-bottom:25px; color:#63b3ed; border-bottom:1px solid #4a5568; padding-bottom:10px;">3. 시도별 선형 상관분석 결과</h2>
+                <div class="split-layout">
+                    <div style="flex:1;">
+                        <h4 style="color:#e2e8f0; font-size:1.1rem; margin-bottom:10px;">통합 상관관계 결과</h4>
+                        <p style="font-size:0.9rem; color:#a0aec0; margin-bottom:15px;">
+                            시도 통합 상관계수 <strong>r = -0.0477 (p-value: 0.6649)</strong>로, 선형적 음의 상관은 유의하지 않습니다.
+                        </p>
+                        <h4 style="color:#e2e8f0; font-size:1.1rem; margin-bottom:10px;">성별 특징</h4>
+                        <p style="font-size:0.9rem; color:#a0aec0; margin-bottom:15px;">
+                            남성(r = -0.0313), 여성(r = 0.0141) 모두 무상관 양상을 띱니다. 그러나 자살 위험 절댓값은 남성(41.8명)이 여성(16.6명)의 <strong>2.5배</strong>에 달해 취약 계층이 명확합니다.
+                        </p>
+                        <div class="callout callout-danger">
+                            <strong>결론:</strong> 보편적 삶의 만족도를 제고하는 형태의 일괄 정책은 특정 고위험군의 자살을 예방하는 성과로 직접 이어지지 않을 수 있습니다.
+                        </div>
+                    </div>
+                    <div style="flex:1.1; display:flex; flex-direction:column; gap:15px;">
+                        <div class="chart-frame">
+                            <img src="images/overall_correlation.png" alt="전체 회귀">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: 열지도 분석 -->
+            <div class="slide">
+                <h2 style="font-size:1.8rem; margin-bottom:25px; color:#63b3ed; border-bottom:1px solid #4a5568; padding-bottom:10px;">4. 삶의 만족도 답변별 상관성 열지도</h2>
+                <div class="split-layout">
+                    <div class="image-pane">
+                        <div class="chart-frame">
+                            <img src="images/correlation_heatmap.png" alt="열지도">
+                        </div>
+                    </div>
+                    <div class="text-pane">
+                        <h4 style="color:#e2e8f0; font-size:1.1rem; margin-bottom:10px;">정서적 체념(Apathy)의 경고</h4>
+                        <p style="font-size:0.9rem; color:#a0aec0; margin-bottom:15px; line-height:1.7;">
+                            만족도 세부 항목과 자살률 상관성을 분석한 결과, <strong>"보통" 비율이 자살률과 유의한 정(+)의 상관성(r = +0.406)</strong>을 나타냈습니다.
+                        </p>
+                        <p style="font-size:0.9rem; color:#a0aec0; margin-bottom:15px; line-height:1.7;">
+                            반면, 적극적으로 분노나 고충을 나타내는 지표인 "매우 불만족" 비율은 오히려 자살률과 약한 음의 상관성(r = -0.226)을 띱니다.
+                        </p>
+                        <div class="callout callout-danger">
+                            <strong>핵심 발견:</strong> 불만을 드러내기보다 무기력과 고립 속에서 감정을 표현하지 않는 체념적 집단("보통" 응답자)이 더 큰 위기 신호를 안고 있음을 암시합니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: 4사분면 매핑 -->
+            <div class="slide">
+                <h2 style="font-size:1.8rem; margin-bottom:25px; color:#63b3ed; border-bottom:1px solid #4a5568; padding-bottom:10px;">5. 2024년 기준 시도별 4사분면 매핑</h2>
+                <div class="split-layout">
+                    <div class="text-pane">
+                        <p style="font-size:0.9rem; color:#cbd5e0; margin-bottom:15px;">
+                            지역별 만족도 평균(3.385점) 및 자살률 평균(31.4명)을 축으로 사분면 분류를 통해 각 지자체의 위험 지형을 진단했습니다.
+                        </p>
+                        <div class="quadrant-box-grid">
+                            <div class="quadrant-card qc-1">
+                                <div class="quadrant-card-title">Ⅰ. 행복-자살 역설 그룹</div>
+                                <div class="quadrant-card-desc">만족도 높으나 자살률도 높음<br><strong>(제주, 충남, 강원)</strong></div>
+                            </div>
+                            <div class="quadrant-card qc-2">
+                                <div class="quadrant-card-title">Ⅱ. 사회적 취약 그룹</div>
+                                <div class="quadrant-card-desc">만족도 낮고 자살률 높음<br><strong>(인천, 전남, 전북 등)</strong></div>
+                            </div>
+                            <div class="quadrant-card qc-3">
+                                <div class="quadrant-card-title">Ⅲ. 보이지 않는 위험</div>
+                                <div class="quadrant-card-desc">만족도 낮으나 자살률은 낮음<br><strong>(경기, 대구, 부산)</strong></div>
+                            </div>
+                            <div class="quadrant-card qc-4">
+                                <div class="quadrant-card-title">Ⅳ. 선순환 안정 그룹</div>
+                                <div class="quadrant-card-desc">만족도 높고 자살률 낮음<br><strong>(세종, 서울, 울산 등)</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="image-pane">
+                        <div class="chart-frame">
+                            <img src="images/quadrant_analysis_2024.png" alt="사분면 매핑">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 6: 결론 및 시사점 -->
+            <div class="slide">
+                <h2 style="font-size:1.8rem; margin-bottom:25px; color:#63b3ed; border-bottom:1px solid #4a5568; padding-bottom:10px;">6. 정책적 시사점 및 결론</h2>
+                <div style="display:flex; flex-direction:column; gap:20px; font-size:0.95rem; color:#cbd5e0; line-height:1.7;">
+                    <div>
+                        <strong>1. 자살 행동의 다차원성 극복</strong><br>
+                        자살은 주관적 안녕감 증대라는 하나의 요인으로 설명하기 어렵습니다. 경제적 안전망과 지역사회 공동체 붕괴를 보완하는 종합 정책이 결부되어야 합니다.
+                    </div>
+                    <div>
+                        <strong>2. 표적 밀착 케어 중심 정책 전환</strong><br>
+                        만족도 향상 예산을 일괄적으로 지출하기보다 고자살률 위험군인 남성 은둔 중장년층, 고령 독거노인층에 자원을 타겟 배정해야 합니다.
+                    </div>
+                    <div>
+                        <strong>3. 고립 은둔 체념 계층 발굴</strong><br>
+                        "보통" 비율의 상관성을 경계하며, 사회에 불만을 드러내지 않는 은둔형 정서 무감각 집단을 추적 관리할 수 있는 지역 기반의 밀착 모니터링 체계를 설계해야 합니다.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Slide Controls -->
+        <div class="slide-controls">
+            <span id="slideIndexLabel" style="font-size: 0.9rem; color: #cbd5e0;">Slide 1 of 7</span>
+            <div class="slide-navigation">
+                <button class="btn btn-outline" onclick="prevSlide()" style="padding: 6px 15px; font-size: 0.8rem; border-color: #4a5568; color: #cbd5e0;">이전</button>
+                <button class="btn btn-primary" onclick="nextSlide()" style="padding: 6px 15px; font-size: 0.8rem;">다음</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script for Presentation Mode and Filter Table -->
+    <script>
+        // --- 1. Mode Toggling (Dashboard vs Presentation Slide) ---
+        let currentMode = "dashboard"; // "dashboard" or "presentation"
+        let currentSlide = 0;
+        const slides = document.querySelectorAll(".slide");
+        const slideContainer = document.getElementById("presentationView");
+        const dashboardContainer = document.getElementById("dashboardView");
+        const toggleBtn = document.getElementById("toggleModeBtn");
+        const progress = document.getElementById("slideProgress");
+        const slideLabel = document.getElementById("slideIndexLabel");
+
+        function toggleMode() {
+            if (currentMode === "dashboard") {
+                currentMode = "presentation";
+                dashboardContainer.style.display = "none";
+                slideContainer.style.display = "block";
+                toggleBtn.innerText = "📊 대시보드 모드";
+                document.body.style.backgroundColor = "#1a202c";
+                updateSlide();
+            } else {
+                currentMode = "dashboard";
+                slideContainer.style.display = "none";
+                dashboardContainer.style.display = "block";
+                toggleBtn.innerText = "🖥️ 발표 슬라이드 모드";
+                document.body.style.backgroundColor = "#f4f6f9";
+            }
+        }
+
+        // Keyboard navigation for slides
+        document.addEventListener("keydown", function(e) {
+            if (currentMode !== "presentation") return;
+            if (e.key === "ArrowRight" || e.key === "Space") {
+                nextSlide();
+            } else if (e.key === "ArrowLeft") {
+                prevSlide();
+            }
+        });
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        function updateSlide() {
+            slides.forEach((slide, index) => {
+                if (index === currentSlide) {
+                    slide.classList.add("active");
+                } else {
+                    slide.classList.remove("active");
+                }
+            });
+            slideLabel.innerText = `Slide ${currentSlide + 1} of ${slides.length}`;
+            progress.style.width = `${((currentSlide) / (slides.length - 1)) * 100}%`;
+        }
+
+        // --- 2. Table Filtering (Quadrant Interaction) ---
+        function filterTable(quadrant) {
+            // Update table filter buttons active class
+            const filterBtns = document.querySelectorAll(".btn-filter");
+            filterBtns.forEach(btn => {
+                if (btn.id === `btn-${quadrant}`) {
+                    btn.classList.add("active");
+                } else {
+                    btn.classList.remove("active");
+                }
+            });
+
+            // Filter table rows
+            const rows = document.querySelectorAll("#dataTable tbody tr");
+            rows.forEach(row => {
+                const rowQuad = row.getAttribute("data-quadrant");
+                if (quadrant === "all" || rowQuad === quadrant) {
+                    row.classList.remove("filtered-out");
+                } else {
+                    row.classList.add("filtered-out");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
