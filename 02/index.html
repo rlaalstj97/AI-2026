@@ -265,8 +265,8 @@
                     <button onclick="nextSlide()" class="btn-sky px-8 py-4 rounded-xl font-bold text-lg shadow-lg">
                         시작하기 <i class="fas fa-arrow-right ml-2"></i>
                     </button>
-                    <button onclick="downloadSlides()" class="btn-outline-sky px-8 py-4 rounded-xl font-bold text-lg shadow-md bg-white dark:bg-transparent">
-                        <i class="fas fa-download mr-2"></i> 슬라이드 다운로드
+                    <button onclick="viewSlides()" class="btn-outline-sky px-8 py-4 rounded-xl font-bold text-lg shadow-md bg-white dark:bg-transparent">
+                        <i class="fas fa-eye mr-2"></i> 슬라이드 보기
                     </button>
                     <button onclick="openVideoModal()" class="btn-indigo px-8 py-4 rounded-xl font-bold text-lg shadow-lg">
                         <i class="fas fa-play-circle mr-2"></i> 동영상 보기
@@ -523,12 +523,9 @@
             video.pause();
         }
 
-        // Slide Download Logic
-        function downloadSlides() {
-            const a = document.createElement('a');
-            a.href = "02/ai70.pdf";
-            a.download = "ai70.pdf";
-            a.click();
+        // Slide View Logic
+        function viewSlides() {
+            window.open("./02/ai70.pdf", "_blank");
         }
 
         // Initialize progress
