@@ -87,6 +87,10 @@
                 <a href="#report-section" class="bg-white text-sky-700 hover:bg-sky-50 font-semibold px-6 py-3 rounded-xl transition duration-300 shadow-md flex items-center gap-2">
                     <i data-lucide="file-text"></i> 정밀 활성화 보고서
                 </a>
+                <!-- 보고서 보기 버튼 추가 -->
+                <a href="./10/qhrhtj.pdf" target="_blank" rel="noopener noreferrer" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-6 py-3 rounded-xl transition duration-300 shadow-md flex items-center gap-2">
+                    <i data-lucide="file-text"></i> 보고서 보기
+                </a>
                 <!-- Updated "거제 살펴보기" button -->
                 <a href="https://www.youtube.com/watch?v=Gdez_IKDK-I" target="_blank" rel="noopener noreferrer" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold px-6 py-3 rounded-xl transition duration-300 shadow-md flex items-center gap-2">
                     <i data-lucide="map-pin"></i> 거제 살펴보기
@@ -162,135 +166,44 @@
         </div>
     </section>
 
-    <!-- 2. INTERACTIVE DATA SECTION (거제 인구 구조) -->
-    <section id="data-section" class="max-w-7xl mx-auto px-6 py-16">
+    <!-- 1.8 거제 특성 섹션 (New Section) -->
+    <section class="max-w-7xl mx-auto px-6 py-16">
         <div class="text-center mb-12">
-            <span class="text-sky-600 font-bold tracking-wider uppercase text-sm">Real Data Analysis</span>
-            <h2 class="text-3xl font-bold mt-2">거제 활동인구의 오늘과 내일</h2>
-            <p class="text-slate-500 mt-2 max-w-xl mx-auto">거제도 활동인구 중 50대 이상이 약 48.4%에 달하는 현상을 냉철히 분석합니다.</p>
+            <span class="text-sky-600 font-bold tracking-wider uppercase text-sm">Unique Geoje Profile</span>
+            <h2 class="text-3xl font-extrabold mt-2 text-slate-900">거제도만의 특별한 3가지 다면성</h2>
         </div>
-
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            
-            <!-- 왼쪽: 데이터 카드 및 비교 차트 -->
-            <div class="lg:col-span-7 bg-white p-8 rounded-2xl shadow-xl shadow-sky-100 border border-sky-100">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-bold text-xl text-slate-900 flex items-center gap-2">
-                        <i class="text-sky-500" data-lucide="line-chart"></i> 
-                        지역별 활동인구 비교 시각화
-                    </h3>
-                    <span class="text-xs text-slate-400">(단위: %, 전체 활동인구 기준)</span>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- 특성 1 -->
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-sky-100 hover:shadow-xl transition duration-300">
+                <div class="w-14 h-14 bg-sky-100 text-sky-600 rounded-2xl flex items-center justify-center mb-6">
+                    <i data-lucide="anchor" class="w-7 h-7"></i>
                 </div>
-
-                <!-- 차트 렌더링 영역 (HTML/CSS 바) -->
-                <div class="space-y-6">
-                    <!-- 거제시 -->
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="font-bold text-slate-800 flex items-center gap-1.5">
-                                🌊 경남 거제시 <span class="text-xs font-normal text-slate-400">(전체 213,000명)</span>
-                            </span>
-                        </div>
-                        <div class="h-10 w-full rounded-xl overflow-hidden flex text-white text-xs font-bold text-center">
-                            <div class="bg-sky-400 flex items-center justify-center transition-all duration-500 hover:opacity-90" style="width: 14.55%" title="15~29세 (14.55%)">
-                                14.6%
-                            </div>
-                            <div class="bg-sky-600 flex items-center justify-center transition-all duration-500 hover:opacity-90" style="width: 37.09%" title="30~49세 (37.09%)">
-                                37.1%
-                            </div>
-                            <div class="bg-amber-500 flex items-center justify-center transition-all duration-500 hover:opacity-90" style="width: 48.36%" title="50세 이상 (48.36%)">
-                                48.4%
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 서울 종로구 -->
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <span class="font-bold text-slate-800 flex items-center gap-1.5">
-                                🏛️ 서울 종로구 <span class="text-xs font-normal text-slate-400">(전체 360,000명)</span>
-                            </span>
-                        </div>
-                        <div class="h-10 w-full rounded-xl overflow-hidden flex text-white text-xs font-bold text-center">
-                            <div class="bg-sky-300 flex items-center justify-center transition-all duration-500 hover:opacity-90" style="width: 18.06%" title="15~29세 (18.06%)">
-                                18.1%
-                            </div>
-                            <div class="bg-sky-500 flex items-center justify-center transition-all duration-500 hover:opacity-90" style="width: 44.44%" title="30~49세 (44.44%)">
-                                44.4%
-                            </div>
-                            <div class="bg-amber-400 flex items-center justify-center transition-all duration-500 hover:opacity-90" style="width: 37.5%" title="50세 이상 (37.50%)">
-                                37.8%
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 범례 -->
-                <div class="flex flex-wrap gap-4 mt-6 pt-6 border-t border-slate-100 justify-center text-sm">
-                    <span class="flex items-center gap-1.5 text-slate-600">
-                        <span class="h-3.5 w-3.5 rounded bg-sky-400 inline-block"></span> 청년층 (15~29세)
-                    </span>
-                    <span class="flex items-center gap-1.5 text-slate-600">
-                        <span class="h-3.5 w-3.5 rounded bg-sky-600 inline-block"></span> 장년층 (30~49세)
-                    </span>
-                    <span class="flex items-center gap-1.5 text-slate-600">
-                        <span class="h-3.5 w-3.5 rounded bg-amber-500 inline-block"></span> 실버·노년층 (50세 이상)
-                    </span>
-                </div>
+                <h3 class="text-xl font-bold mb-3">강인한 산업의 심장</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">세계 최고의 기술력을 보유한 조선업의 산실입니다. 60대의 숙련된 마이스터부터 기술 자부심까지, 튼튼한 기술 DNA가 이 도시의 뼈대입니다.</p>
             </div>
-
-            <!-- 오른쪽: 고령화 원인 분석 인터랙티브 큐브 -->
-            <div class="lg:col-span-5 space-y-4">
-                <h3 class="text-2xl font-bold text-slate-900 tracking-tight">
-                    왜 50대 이상 인구가 <br>
-                    거제 활동 인구의 <span class="text-amber-500 font-extrabold">절반(48.4%)</span>일까요?
-                </h3>
-                <p class="text-slate-600 text-sm leading-relaxed mb-4">
-                    아래 세부 원인을 클릭하여 거제도 산업의 고유 역사를 탐험해보세요.
-                </p>
-
-                <!-- 원인 1 -->
-                <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-sky-500 cursor-pointer hover:shadow-md transition group" onclick="toggleAnalysis(1)">
-                    <div class="flex justify-between items-center">
-                        <h4 class="font-bold text-slate-900 group-hover:text-sky-600 transition flex items-center gap-2">
-                            <span class="bg-sky-100 text-sky-600 w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span>
-                            조선공학 전성기 세대의 장기 정착
-                        </h4>
-                        <i id="icon-1" data-lucide="chevron-down" class="text-slate-400 transition-transform duration-300"></i>
-                    </div>
-                    <p id="content-1" class="hidden text-slate-600 text-sm mt-3 leading-relaxed pl-8">
-                        80~90년대 거제의 최고 성장기에 입사한 숙련 엔지니어들과 용접, 의장, 설계 분야의 마이스터 장인 세대들이 가정을 꾸리고 장기 정착했습니다. 이 베테랑들이 은퇴 연령에 달했음에도 기술 전수를 위해 현역으로 남아 두터운 활동인구를 구성하고 있습니다.
-                    </p>
+            <!-- 특성 2 -->
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-sky-100 hover:shadow-xl transition duration-300">
+                <div class="w-14 h-14 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mb-6">
+                    <i data-lucide="waves" class="w-7 h-7"></i>
                 </div>
-
-                <!-- 원인 2 -->
-                <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-amber-500 cursor-pointer hover:shadow-md transition group" onclick="toggleAnalysis(2)">
-                    <div class="flex justify-between items-center">
-                        <h4 class="font-bold text-slate-900 group-hover:text-amber-600 transition flex items-center gap-2">
-                            <span class="bg-amber-100 text-amber-600 w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span>
-                            불황에 따른 청년층 엑소더스 효과
-                        </h4>
-                        <i id="icon-2" data-lucide="chevron-down" class="text-slate-400 transition-transform duration-300"></i>
-                    </div>
-                    <p id="content-2" class="hidden text-slate-600 text-sm mt-3 leading-relaxed pl-8">
-                        2015년 이후 불어닥친 세계적인 조선 구조조정 시기 동안 거제의 청년 고용 시장은 얼어붙었습니다. 기성 장년 세대는 가족과 자산을 지키기 위해 거제에 잔류했지만, 고용 안정성이 취약했던 20~30대 청년층이 일자리를 찾아 대도시로 대거 이주하였습니다.
-                    </p>
-                </div>
-
-                <!-- 원인 3 -->
-                <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-teal-500 cursor-pointer hover:shadow-md transition group" onclick="toggleAnalysis(3)">
-                    <div class="flex justify-between items-center">
-                        <h4 class="font-bold text-slate-900 group-hover:text-teal-600 transition flex items-center gap-2">
-                            <span class="bg-teal-100 text-teal-600 w-6 h-6 rounded-full flex items-center justify-center text-xs">3</span>
-                            현대 청년층의 스마트 지식 선호
-                        </h4>
-                        <i id="icon-3" data-lucide="chevron-down" class="text-slate-400 transition-transform duration-300"></i>
-                    </div>
-                    <p id="content-3" class="hidden text-slate-600 text-sm mt-3 leading-relaxed pl-8">
-                        위험하고 육체적 노동 강도가 강한 전통 굴뚝 제조업을 전반적으로 기피하고, 지식 서비스업이나 디지털 크리에이티브 직군을 선호하는 현대 청년층의 직업 가치관 변화가 맞물려 신규 유입이 한계에 직면했습니다.
-                    </p>
-                </div>
+                <h3 class="text-xl font-bold mb-3">치유와 사색의 해양</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">90여 개의 섬과 맑은 바다가 펼쳐진 거제는 그 자체로 자연 치유 센터입니다. 몽돌 파도 소리와 해풍은 도심 속 현대인에게 가장 강력한 휴식 에너지를 전달합니다.</p>
             </div>
+            <!-- 특성 3 -->
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-sky-100 hover:shadow-xl transition duration-300">
+                <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mb-6">
+                    <i data-lucide="sprout" class="w-7 h-7"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-3">청년 성장의 미래 잠재력</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">단순 제조를 넘어 스마트 마린 테크와 감성 로컬 산업으로의 전환이 시작되는 곳입니다. 청년 창업가들에게 무한한 기회의 캔버스가 됩니다.</p>
+            </div>
+        </div>
+        <!-- 인포그래픽 보기 버튼 추가 -->
+        <div class="text-center mt-12">
+            <a href="./10/geogeinfo.png" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-bold px-8 py-4 rounded-xl transition duration-300 shadow-md">
+                <i data-lucide="image" class="w-5 h-5"></i>
+                거제 특성 인포그래픽 보기
+            </a>
         </div>
     </section>
 
