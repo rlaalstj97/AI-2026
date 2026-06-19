@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>거제 리바이벌 (Geoje Revival) - 청량한 로컬의 재발견</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for Korean -->
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Pretendard', sans-serif;
+            background-color: #f0f9ff; /* Light ocean blue */
+        }
+        .ocean-gradient {
+            background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 50%, #38bdf8 100%);
+        }
+        .wave-container {
+            position: relative;
+            height: 70px;
+            width: 100%;
+            background: #e0f2fe;
+            overflow: hidden;
+        }
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,42.4V120H0Z" fill="%23f0f9ff"/></svg>') repeat-x;
+            background-size: 50% 100%;
+            animation: wave-anim 12s linear infinite;
+        }
+        .wave2 {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 80%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,42.4V120H0Z" fill="%23bae6fd" opacity="0.5"/></svg>') repeat-x;
+            background-size: 50% 100%;
+            animation: wave-anim 8s linear infinite reverse;
+        }
+        @keyframes wave-anim {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+    </style>
+</head>
+<body class="text-slate-800 selection:bg-sky-200">
+
+    <!-- 1. HEADER & HERO SECTION -->
+    <header class="ocean-gradient text-white relative overflow-hidden">
+        <!-- Floating bubbles decorative background -->
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(255,255,255,0.15)_0%,transparent_50%)]"></div>
+        <div class="max-w-7xl mx-auto px-6 py-16 md:py-24 relative z-10 flex flex-col items-center text-center">
+            
+            <!-- 리센느 야호 배지 -->
+            <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-sm font-semibold mb-6 animate-bounce">
+                <span class="flex h-2 w-2 rounded-full bg-emerald-400"></span>
+                🌸 거제 야호! 리센느 야호! 원이와 함께 가꾸는 상생의 거제도
+            </div>
+
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
+                내가 거제를 사랑하는 이유<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-200 to-amber-200">
+                    그 한적함 속에 피어날 미래
+                </span>
+            </h1>
+            
+            <p class="text-lg md:text-xl text-sky-50 max-w-2xl font-light mb-8 leading-relaxed">
+                거제 출신 아이돌 <b>리센느 원이</b>가 세상에 거제의 아름다움을 알릴 때, <br class="hidden md:inline">
+                우리는 이 땅에 발을 딛고 거제의 사람들을 따뜻하게 보듬는 <b>상생 복지의 꽃</b>을 피웁니다.
+            </p>
+
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a href="#story-section" class="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold px-6 py-3 rounded-xl transition duration-300 shadow-md flex items-center gap-2">
+                    <i data-lucide="heart"></i> 나의 거제 이야기
+                </a>
+                <a href="#social-welfare-section" class="bg-emerald-500 hover:bg-emerald-400 text-white font-bold px-6 py-3 rounded-xl transition duration-300 shadow-md flex items-center gap-2">
+                    <i data-lucide="users"></i> 미래 사회복지 & 라이프
+                </a>
+                <a href="#report-section" class="bg-white text-sky-700 hover:bg-sky-50 font-semibold px-6 py-3 rounded-xl transition duration-300 shadow-md flex items-center gap-2">
+                    <i data-lucide="file-text"></i> 정밀 활성화 보고서
+                </a>
+                <!-- Updated "거제 살펴보기" button -->
+                <a href="https://www.youtube.com/watch?v=Gdez_IKDK-I" target="_blank" rel="noopener noreferrer" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold px-6 py-3 rounded-xl transition duration-300 shadow-md flex items-center gap-2">
+                    <i data-lucide="map-pin"></i> 거제 살펴보기
+                </a>
+            </div>
+        </div>
+
+        <!-- Wave divider -->
+        <div class="wave-container">
+            <div class="wave2"></div>
+            <div class="wave"></div>
+        </div>
+    </header>
+
+    <!-- 1.5 MY GEOJE STORY SECTION & FATHER'S WORK -->
+    <section id="story-section" class="max-w-5xl mx-auto px-6 py-16">
+        <div class="bg-gradient-to-br from-white to-sky-50 rounded-3xl p-8 md:p-12 shadow-xl border border-sky-100 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-48 h-48 bg-teal-200/20 rounded-full blur-2xl -mr-10 -mt-10"></div>
+            <div class="absolute bottom-0 left-0 w-60 h-60 bg-pink-200/20 rounded-full blur-3xl -ml-20 -mb-20"></div>
+
+            <div class="relative z-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                <div class="md:col-span-8 space-y-6">
+                    <div class="inline-flex items-center gap-2 text-sky-600 font-bold text-sm bg-sky-100/60 px-3 py-1 rounded-full">
+                        <i data-lucide="anchor" class="w-4 h-4"></i> 로컬 청년의 진솔한 에세이
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight leading-snug">
+                        "10분만 걸으면 마주하는 바다, <br>
+                        나에게 안식과 치유를 준 고향 거제를 지키고 싶습니다."
+                    </h2>
+                    <div class="text-slate-600 space-y-4 text-base leading-relaxed font-light font-sans">
+                        <p>
+                            부산과 서울 같이 매일 쉴 틈 없이 흘러가는 메가시티의 속도는 숨 막히는 갑갑함을 주곤 했습니다. 하지만 학교생활과 바쁜 도심에 지쳐 있을 때, 주말이나 종강을 맞아 고향 거제에 내려오는 순간 제 마음은 항상 맑게 정화되었습니다.
+                        </p>
+                        <p>
+                            고요하게 몽돌을 스치는 파도 소리, 10분만 마실을 나가도 가슴이 뻥 뚫리는 푸른 해안선은 저에게 늘 한결같은 <b>'편안함และ 안정감'</b>을 돌려주었습니다. 이렇게 소중한 거제가 최근 리센느(RESCENE) 덕분에 활기를 띠고 널리 알려져 정말 행복하고 기쁩니다.
+                        </p>
+                        <div class="bg-sky-100/50 p-4 rounded-xl border-l-4 border-sky-600 my-4 text-slate-700">
+                            <h4 class="font-bold flex items-center gap-2 text-sky-900 mb-1">
+                                <i data-lucide="user-check" class="w-4 h-4"></i> 우리 아버지를 위한 약속
+                            </h4>
+                            <p class="text-sm font-light">
+                                제 아버지는 지금도 거제의 뜨겁고 무거운 조선소 현장에서 60대의 나이로 묵묵히 땀 흘리며 일하고 계십니다. 50대 이상의 장년들이 힘겹게 노동을 이어가고, 정작 청년들은 일자리를 찾아 수도권으로 모두 떠나는 고령화된 거제의 현실을 바라볼 때 가슴이 아픕니다. 저는 거제에 남고 싶습니다. 그리고 제 고향을 제 손으로 살리고 싶습니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="md:col-span-4 bg-white p-6 rounded-2xl shadow-md border border-sky-100 text-center space-y-4">
+                    <div class="relative inline-block">
+                        <span class="text-6xl">🏡</span>
+                        <span class="absolute bottom-0 right-0 text-2xl">🌊</span>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-900">거제를 사랑하는 청년의 다짐</h4>
+                        <p class="text-xs text-sky-600 mt-1">"한적함은 결핍이 아니라 치유의 에너지입니다."</p>
+                    </div>
+                    <div class="bg-sky-50 p-4 rounded-xl text-left space-y-2">
+                        <div class="flex items-center gap-2 text-xs text-slate-500">
+                            <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+                            바쁘기만 한 대도시의 대안 도시
+                        </div>
+                        <div class="flex items-center gap-2 text-xs text-slate-500">
+                            <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+                            해양 치유 복지 중심지 도약
+                        </div>
+                        <div class="flex items-center gap-2 text-xs text-slate-500">
+                            <span class="w-1.5 h-1.5 rounded-full bg-sky-500"></span>
+                            청년과 어르신의 아름다운 공존
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. INTERACTIVE DATA SECTION (거제 인구 구조) -->
+    <section id="data-section" class="max-w-7xl mx-auto px-6 py-16">
+        <div class="text-center mb-12">
+            <span class="text-sky-600 font-bold tracking-wider uppercase text-sm">Real Data Analysis</span>
+            <h2 class="text-3xl font-bold mt-2">거제 활동인구의 오늘과 내일</h2>
+            <p class="text-slate-500 mt-2 max-w-xl mx-auto">거제도 활동인구 중 50대 이상이 약 48.4%에 달하는 현상을 냉철히 분석합니다.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            
+            <!-- 왼쪽: 데이터 카드 및 비교 차트 -->
+            <div class="lg:col-span-7 bg-white p-8 rounded-2xl shadow-xl shadow-sky-100 border border-sky-100">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-bold text-xl text-slate-900 flex items-center gap-2">
+                        <i class="text-sky-500" data-lucide="line-chart"></i> 
+                        지역별 활동인구 비교 시각화
+                    </h3>
+                    <span class="text-xs text-slate-400">(단위: %, 전체 활동인구 기준)</span>
+                </div>
+
+                <!-- 차트 렌더링 영역 (HTML/CSS 바) -->
+                <div class="space-y-6">
+                    <!-- 거제시 -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-bold text-slate-800 flex items-center gap-1.5">
+                                🌊 경남 거제시 <span class="text-xs font-normal text-slate-400">(전체 213,000명)</span>
+                            </span>
+                        </div>
+                        <div class="h-10 w-full rounded-xl overflow-hidden flex text-white text-xs font-bold text-center">
+                            <div class="bg-sky-400 flex items-center justify-center transition-all duration-500 hover:opacity-90" style="width: 14.55%" title="15~29세 (14.55%)">
+                                14.6%
+                            </div>
+                            <div class="bg-sky-600 flex items-center justify-center transition-all duration-500 hover:opacity-90" style="width: 37.09%" title="30~49세 (37.09%)">
+                                37.1%
+                            </div>
+                            <div class="bg-amber-500 flex items-center justify-center transition-all duration-500 hover:opacity-90" style="width: 48.36%" title="50세 이상 (48.36%)">
+                                48.4%
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 서울 종로구 -->
+                    <div>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-bold text-slate-800 flex items-center gap-1.5">
+                                🏛️ 서울 종로구 <span class="text-xs font-normal text-slate-400">(전체 360,000명)</span>
+                            </span>
+                        </div>
+                        <div class="h-10 w-full rounded-xl overflow-hidden flex text-white text-xs font-bold text-center">
+                            <div class="bg-sky-300 flex items-center justify-center transition-all duration-500 hover:opacity-90" style="width: 18.06%" title="15~29세 (18.06%)">
+                                18.1%
+                            </div>
+                            <div class="bg-sky-500 flex items-center justify-center transition-all duration-500 hover:opacity-90" style="width: 44.44%" title="30~49세 (44.44%)">
+                                44.4%
+                            </div>
+                            <div class="bg-amber-400 flex items-center justify-center transition-all duration-500 hover:opacity-90" style="width: 37.5%" title="50세 이상 (37.50%)">
+                                37.8%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 범례 -->
+                <div class="flex flex-wrap gap-4 mt-6 pt-6 border-t border-slate-100 justify-center text-sm">
+                    <span class="flex items-center gap-1.5 text-slate-600">
+                        <span class="h-3.5 w-3.5 rounded bg-sky-400 inline-block"></span> 청년층 (15~29세)
+                    </span>
+                    <span class="flex items-center gap-1.5 text-slate-600">
+                        <span class="h-3.5 w-3.5 rounded bg-sky-600 inline-block"></span> 장년층 (30~49세)
+                    </span>
+                    <span class="flex items-center gap-1.5 text-slate-600">
+                        <span class="h-3.5 w-3.5 rounded bg-amber-500 inline-block"></span> 실버·노년층 (50세 이상)
+                    </span>
+                </div>
+            </div>
+
+            <!-- 오른쪽: 고령화 원인 분석 인터랙티브 큐브 -->
+            <div class="lg:col-span-5 space-y-4">
+                <h3 class="text-2xl font-bold text-slate-900 tracking-tight">
+                    왜 50대 이상 인구가 <br>
+                    거제 활동 인구의 <span class="text-amber-500 font-extrabold">절반(48.4%)</span>일까요?
+                </h3>
+                <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                    아래 세부 원인을 클릭하여 거제도 산업의 고유 역사를 탐험해보세요.
+                </p>
+
+                <!-- 원인 1 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-sky-500 cursor-pointer hover:shadow-md transition group" onclick="toggleAnalysis(1)">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-bold text-slate-900 group-hover:text-sky-600 transition flex items-center gap-2">
+                            <span class="bg-sky-100 text-sky-600 w-6 h-6 rounded-full flex items-center justify-center text-xs">1</span>
+                            조선공학 전성기 세대의 장기 정착
+                        </h4>
+                        <i id="icon-1" data-lucide="chevron-down" class="text-slate-400 transition-transform duration-300"></i>
+                    </div>
+                    <p id="content-1" class="hidden text-slate-600 text-sm mt-3 leading-relaxed pl-8">
+                        80~90년대 거제의 최고 성장기에 입사한 숙련 엔지니어들과 용접, 의장, 설계 분야의 마이스터 장인 세대들이 가정을 꾸리고 장기 정착했습니다. 이 베테랑들이 은퇴 연령에 달했음에도 기술 전수를 위해 현역으로 남아 두터운 활동인구를 구성하고 있습니다.
+                    </p>
+                </div>
+
+                <!-- 원인 2 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-amber-500 cursor-pointer hover:shadow-md transition group" onclick="toggleAnalysis(2)">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-bold text-slate-900 group-hover:text-amber-600 transition flex items-center gap-2">
+                            <span class="bg-amber-100 text-amber-600 w-6 h-6 rounded-full flex items-center justify-center text-xs">2</span>
+                            불황에 따른 청년층 엑소더스 효과
+                        </h4>
+                        <i id="icon-2" data-lucide="chevron-down" class="text-slate-400 transition-transform duration-300"></i>
+                    </div>
+                    <p id="content-2" class="hidden text-slate-600 text-sm mt-3 leading-relaxed pl-8">
+                        2015년 이후 불어닥친 세계적인 조선 구조조정 시기 동안 거제의 청년 고용 시장은 얼어붙었습니다. 기성 장년 세대는 가족과 자산을 지키기 위해 거제에 잔류했지만, 고용 안정성이 취약했던 20~30대 청년층이 일자리를 찾아 대도시로 대거 이주하였습니다.
+                    </p>
+                </div>
+
+                <!-- 원인 3 -->
+                <div class="bg-white p-5 rounded-xl shadow-sm border-l-4 border-teal-500 cursor-pointer hover:shadow-md transition group" onclick="toggleAnalysis(3)">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-bold text-slate-900 group-hover:text-teal-600 transition flex items-center gap-2">
+                            <span class="bg-teal-100 text-teal-600 w-6 h-6 rounded-full flex items-center justify-center text-xs">3</span>
+                            현대 청년층의 스마트 지식 선호
+                        </h4>
+                        <i id="icon-3" data-lucide="chevron-down" class="text-slate-400 transition-transform duration-300"></i>
+                    </div>
+                    <p id="content-3" class="hidden text-slate-600 text-sm mt-3 leading-relaxed pl-8">
+                        위험하고 육체적 노동 강도가 강한 전통 굴뚝 제조업을 전반적으로 기피하고, 지식 서비스업이나 디지털 크리에이티브 직군을 선호하는 현대 청년층의 직업 가치관 변화가 맞물려 신규 유입이 한계에 직면했습니다.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2.5 REPORT BODY INTEGRATION SECTION (풍부한 보고서 전문 영역) -->
+    <section id="report-section" class="bg-white py-16 border-t border-sky-100">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="border-b border-slate-100 pb-8 mb-12">
+                <span class="text-sky-600 font-bold tracking-wider uppercase text-sm">Industrial Strategy Blueprint</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mt-2">거제도 로컬 특색 융합 산업 부흥 보고서 전문</h2>
+                <p class="text-slate-500 mt-2">자연 환경적 가치와 브랜드 가치를 고부가가치 로컬 비즈니스로 전환하기 위한 로드맵입니다.</p>
+            </div>
+
+            <!-- Report Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 text-slate-700">
+                <!-- Col 1: 로컬 원리 & 시사점 -->
+                <div class="space-y-6">
+                    <div class="bg-sky-50/50 p-6 rounded-2xl border border-sky-100">
+                        <h3 class="font-bold text-lg text-sky-950 mb-3 flex items-center gap-2">
+                            <i data-lucide="help-circle" class="text-sky-600 w-5 h-5"></i>
+                            핵심 시사점 (Implication)
+                        </h3>
+                        <p class="text-sm leading-relaxed text-slate-600 font-light font-sans">
+                            단순히 '공장형 대기업 일자리'를 추가로 늘린다고 청년들이 내려오지 않습니다. 서울, 부산 등 복잡한 인구 밀집 지역에서의 경쟁에 피로감을 호소하는 젊은 지식 노동자들에게 <b>거제만의 여유로운 생활 환경(Life Quality)과 매력적인 문화</b>를 정착의 주 무기로 제시해야 합니다. 한적함은 도시의 지루함이 아닌 치유를 원하는 이들의 가장 강력한 구매 가치입니다.
+                        </p>
+                    </div>
+
+                    <div class="bg-amber-50/30 p-6 rounded-2xl border border-amber-100">
+                        <h3 class="font-bold text-lg text-amber-950 mb-3 flex items-center gap-2">
+                            <i data-lucide="trending-up" class="text-amber-600 w-5 h-5"></i>
+                            세대 융합 상생 원리
+                        </h3>
+                        <p class="text-sm leading-relaxed text-slate-600 font-light font-sans">
+                            퇴직을 목전에 둔 50~60대 초고숙련 마이스터층의 '노하우와 암묵지'를 거제의 신생 로컬 스타트업 및 복지 기술(AAL) 청년층에게 직접 연결합니다. 어르신들은 삶의 주체성과 보람을 지키고, 청년은 지적 자산을 물려받는 세대 상생 생태계가 구축됩니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Col 2: 3대 혁신 전략 내용 -->
+                <div class="space-y-6 lg:col-span-2">
+                    <h3 class="font-extrabold text-xl text-slate-900 flex items-center gap-2 mb-4">
+                        <i data-lucide="compass" class="text-sky-600"></i>
+                        거제의 지속 가능 성장을 이끌 3대 융합 활성화 전략
+                    </h3>
+
+                    <!-- Strategy 1 -->
+                    <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                        <h4 class="font-bold text-lg text-slate-900 flex items-center gap-2 mb-2">
+                            <span class="w-2 h-2 rounded-full bg-pink-500"></span>
+                            전략 [1] Scent & Scene: 리센느 IP 연계 로컬 감성·향기 산업
+                        </h4>
+                        <p class="text-sm text-slate-600 leading-relaxed font-light mb-3 font-sans">
+                            걸그룹 <b>리센느(RESCENE)</b>의 '향기(Scent)'와 거제의 동백, 유자, 맹종죽 등 천연 식물 추출 원료의 가공 산업을 매칭합니다. 지심도 동백 유기농 오일을 활용한 고품격 뷰티 디퓨저 라인업 및 향수 공방 브랜드를 설립하고 전국 매장을 전개하여 청년 조향사, 로컬 파티시에 등 세련된 감성 직군을 대거 확보합니다.
+                        </p>
+                    </div>
+
+                    <!-- Strategy 2 -->
+                    <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                        <h4 class="font-bold text-lg text-slate-900 flex items-center gap-2 mb-2">
+                            <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+                            전략 [2] 사색형 '블루 워케이션(Blue Workation)' 및 예술 타운
+                        </h4>
+                        <p class="text-sm text-slate-600 leading-relaxed font-light mb-3 font-sans">
+                            자갈이 부딪히는 소리가 아름다운 학동 몽돌 해안, 해풍이 산뜻한 구조라 일대 등 조용한 어촌의 폐교와 유휴 어구 창고를 '사색형 스마트 오피스'로 탈바꿈합니다. 복잡한 수도권 IT 지식 노동자들이 10분 바다 산책을 통해 뇌를 정화하고 고효율 업무를 해내는 '워케이션 라이프스타일'의 대중화를 선도합니다.
+                        </p>
+                    </div>
+
+                    <!-- Strategy 3 -->
+                    <div class="p-6 bg-slate-50 rounded-2xl border border-slate-100">
+                        <h4 class="font-bold text-lg text-slate-900 flex items-center gap-2 mb-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            전략 [3] 스마트 마린 테크와 '스마트 아쿠아팜' 및 웰니스 융합
+                        </h4>
+                        <p class="text-sm text-slate-600 leading-relaxed font-light mb-3 font-sans">
+                            거제의 맑고 오염되지 않은 청정 심층 해수를 가두어 육상에서 안전하게 ICT 제어를 받는 '스마트 육상 양식 기지'를 건립합니다. 청년들은 더 이상 거친 파도를 타지 않고 쾌적한 디지털 관제소에서 굴과 특수 해조류 바이오 원료 성장을 조절하며 일하며, 물리 치료와 재활 스포츠 인력을 융합해 고품격 해수 테라피(Thalassotherapy) 복지 지구를 정착시킵니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW SPECIAL SECTION: 거제 미래 사회복지 커리어 시뮬레이터 -->
+    <section id="social-welfare-section" class="bg-gradient-to-br from-indigo-50 via-sky-50 to-emerald-50 py-16 border-t border-sky-100">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-12">
+                <span class="text-indigo-600 font-bold tracking-wider uppercase text-sm">Future Social Welfare Paths</span>
+                <h2 class="text-3xl font-extrabold text-slate-900 mt-2">거제 특화 미래형 사회복지 패스파인더</h2>
+                <p class="text-slate-600 mt-2 max-w-2xl mx-auto">
+                    거제 인구의 48.4%를 차지하는 신노년층과 지친 마음으로 고향을 찾는 청년을 동시에 품는 혁신적인 거제형 복지 커리어를 클릭해 보세요.
+                </p>
+            </div>
+
+            <!-- Welfare Pathfinder Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Welfare Path 1 -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-indigo-100 hover:-translate-y-2 transition duration-300 flex flex-col justify-between" id="card-welfare-1">
+                    <div>
+                        <div class="w-12 h-12 bg-sky-100 text-sky-600 rounded-xl flex items-center justify-center mb-4 text-2xl font-bold">
+                            🌊
+                        </div>
+                        <h3 class="font-bold text-xl text-slate-900 mb-2">해양 사색 치유 복지사</h3>
+                        <p class="text-slate-500 text-xs mb-3">거제의 10분 바다와 평온함을 처방하다</p>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4 font-sans">
+                            대도시의 번아웃을 안고 돌아온 청년들과 퇴직 후 마음의 평안이 필요한 조선업 베테랑들을 대상으로 학동 몽돌의 '자연 치유 소리(ASMR)'와 남부면 숲길을 매칭한 테라피 프로그램을 기획하고 실행합니다.
+                        </p>
+                        <div class="bg-sky-50 p-3.5 rounded-xl space-y-1.5 text-xs text-slate-600 font-sans">
+                            <p><b>주요 역할:</b> 힐링 해안 트레킹 코디네이팅, 아로마 향기 감성 케어</p>
+                            <p><b>일자리 전망:</b> 정부 마린바이오 치유센터 확대에 따른 최첨단 웰니스 전문가 일자리</p>
+                        </div>
+                    </div>
+                    <button onclick="selectWelfarePath('해양 사색 치유 복지사')" class="mt-6 w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-2.5 px-4 rounded-xl transition text-sm flex items-center justify-center gap-1.5">
+                        <i data-lucide="compass" class="w-4 h-4"></i> 이 커리어 탐색하기
+                    </button>
+                </div>
+
+                <!-- Welfare Path 2 -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-pink-100 hover:-translate-y-2 transition duration-300 flex flex-col justify-between" id="card-welfare-2">
+                    <div>
+                        <div class="w-12 h-12 bg-pink-100 text-pink-600 rounded-xl flex items-center justify-center mb-4 text-2xl font-bold">
+                            🤝
+                        </div>
+                        <h3 class="font-bold text-xl text-slate-900 mb-2">세대 상생 로컬 코디네이터</h3>
+                        <p class="text-slate-500 text-xs mb-3">50대 기술 장인과 20대 로컬 크리에이터의 매칭</p>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4 font-sans">
+                            풍부한 조선 노하우를 지닌 고령 인구와 신선한 문화적 아이디어를 가진 청년 팬덤을 이어주는 역할을 담당합니다. 은퇴한 베테랑의 지식을 로컬 스타트업의 자산으로 결합하고, 어르신들에게 사회적 일자리를 제공합니다.
+                        </p>
+                        <div class="bg-pink-50 p-3.5 rounded-xl space-y-1.5 text-xs text-slate-600 font-sans">
+                            <p><b>주요 역할:</b> 세대 통합 일자리 플랫폼 운영, 시니어-청년 멘토링 매칭</p>
+                            <p><b>일자리 전망:</b> 거제시 사회적 경제 육성 센터 및 복지재단 수석 매니저로 성장</p>
+                        </div>
+                    </div>
+                    <button onclick="selectWelfarePath('세대 상생 로컬 코디네이터')" class="mt-6 w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-2.5 px-4 rounded-xl transition text-sm flex items-center justify-center gap-1.5">
+                        <i data-lucide="heart-handshake" class="w-4 h-4"></i> 이 커리어 탐색하기
+                    </button>
+                </div>
+
+                <!-- Welfare Path 3 -->
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-emerald-100 hover:-translate-y-2 transition duration-300 flex flex-col justify-between" id="card-welfare-3">
+                    <div>
+                        <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center mb-4 text-2xl font-bold">
+                            🤖
+                        </div>
+                        <h3 class="font-bold text-xl text-slate-900 mb-2">스마트 웰에이징 가이드</h3>
+                        <p class="text-slate-500 text-xs mb-3">첨단 ICT 제어 기술과 따스한 휴먼 복지케어의 융합</p>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-4 font-sans">
+                            조선 기술의 산실인 거제의 인프라를 활용하여 독거노인이나 시니어 가구에 IoT 스마트케어 홈을 보급하고 지지망을 구축합니다. 양식장의 스마트 수처리 장비처럼 원격 바이탈 모니터링을 통한 생활 안전망을 조율합니다.
+                        </p>
+                        <div class="bg-emerald-50 p-3.5 rounded-xl space-y-1.5 text-xs text-slate-600 font-sans">
+                            <p><b>주요 역할:</b> 스마트 헬스케어 디바이스 설치·분석, 휴먼 케어 네트티켓</p>
+                            <p><b>일자리 전망:</b> 지자체 건강 증진 센터 및 국공립 노인복지 혁신 타운 핵심 요원</p>
+                        </div>
+                    </div>
+                    <button onclick="selectWelfarePath('스마트 웰에이징 가이드')" class="mt-6 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl transition text-sm flex items-center justify-center gap-1.5">
+                        <i data-lucide="shield-check" class="w-4 h-4"></i> 이 커리어 탐색하기
+                    </button>
+                </div>
+            </div>
+
+            <!-- Intergenerational Dream Spotlight Card -->
+            <div class="mt-12 bg-white/70 backdrop-blur-md rounded-3xl p-8 border border-white max-w-4xl mx-auto text-center space-y-4 shadow-md">
+                <h4 class="text-lg font-bold text-slate-950 flex items-center justify-center gap-2">
+                    🌸 <span class="text-pink-600">원이</span>가 노래하는 동안, <span class="text-indigo-600">나</span>는 지친 영혼들을 안아줍니다
+                </h4>
+                <p class="text-slate-600 text-sm leading-relaxed max-w-2xl mx-auto font-light font-sans">
+                    거제 출신 아티스트가 가장 트렌디하고 세련된 매력으로 세상을 뒤흔들고 있을 때, 같은 고향을 지키고 싶은 우리는 어르신들의 지혜로운 장년기를 응원하고 청년들에게 쉴 곳을 마련하는 <b>거제형 복지</b>를 주도합니다. 이 세대 융합이야말로 거제가 지닌 '진짜 로컬의 멋과 아름다움'을 완성할 열쇠입니다.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW POSITION: 나의 미래 거제 라이프 (My Geoje Life 24H) -->
+    <section id="my-future-life" class="bg-gradient-to-br from-teal-500/10 via-sky-500/5 to-white py-20 border-t border-sky-100 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-teal-600 font-bold tracking-wider uppercase text-sm">My Geoje Life 24H</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mt-2">나의 미래 거제 라이프: 사색과 혁신복지의 조화</h2>
+                <p class="text-slate-600 mt-3 max-w-2xl mx-auto">
+                    내가 꿈꾸는 한적한 거제에서의 진정한 휴식, 그리고 사회복지학과 특성을 살려 로컬 부흥 산업과 복지를 완벽하게 결합해 나가는 하루 일과를 만나보세요.
+                </p>
+            </div>
+
+            <!-- 타임라인 & 라이프 스타일 구조 -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+                
+                <!-- 왼쪽: 힐링 및 하루 일과 타임라인 -->
+                <div class="lg:col-span-6 space-y-8">
+                    <h3 class="text-2xl font-bold text-slate-950 flex items-center gap-2">
+                        <i data-lucide="clock" class="text-teal-600"></i>
+                        한적한 휴식과 일과의 밸런스
+                    </h3>
+
+                    <div class="relative border-l-2 border-teal-200 pl-6 space-y-8 ml-4">
+                        <!-- 08:00 AM -->
+                        <div class="relative">
+                            <span class="absolute -left-[31px] top-1 bg-teal-500 text-white rounded-full p-1.5 shadow-md">
+                                <i data-lucide="coffee" class="w-3.5 h-3.5"></i>
+                            </span>
+                            <h4 class="font-bold text-lg text-slate-900">08:00 AM — 바닷바람을 맞이하는 조용한 기상</h4>
+                            <p class="text-slate-600 text-sm leading-relaxed mt-1 font-sans">
+                                부산, 서울의 빼곡한 지하철 소음 대신 문을 열면 바로 맞이하는 상쾌한 거제의 해풍. 단 10분만 가볍게 걸어 몽돌 해변가에 도착해, 하얗게 밀려오는 파도 소리를 들으며 지친 영혼에 영감과 고요함을 가득 채웁니다.
+                            </p>
+                        </div>
+
+                        <!-- 10:00 AM -->
+                        <div class="relative">
+                            <span class="absolute -left-[31px] top-1 bg-sky-500 text-white rounded-full p-1.5 shadow-md">
+                                <i data-lucide="briefcase" class="w-3.5 h-3.5"></i>
+                            </span>
+                            <h4 class="font-bold text-lg text-slate-900">10:00 AM — 로컬 특색 융합형 '사회복지' 업무</h4>
+                            <p class="text-slate-600 text-sm leading-relaxed mt-1 font-sans">
+                                <b>거제시 사회복지 혁신 지원 센터</b>로 출근. 50대 이상 어르신들의 지적 자산을 살리는 시니어 일자리를 로컬 산업과 매칭합니다. 조선소에서 힘든 은퇴 과정을 밟는 우리 아빠 같은 조선공학 마이스터들과 청년 창업가들을 멘토-멘티로 잇는 기술 승계 복지 프로그램을 기획합니다.
+                            </p>
+                        </div>
+
+                        <!-- 03:00 PM -->
+                        <div class="relative">
+                            <span class="absolute -left-[31px] top-1 bg-pink-500 text-white rounded-full p-1.5 shadow-md">
+                                <i data-lucide="flower" class="w-3.5 h-3.5"></i>
+                            </span>
+                            <h4 class="font-bold text-lg text-slate-900">03:00 PM — 리센느 '향기(Scent)' 복지 테라피</h4>
+                            <p class="text-slate-600 text-sm leading-relaxed mt-1 font-sans">
+                                고령 어르신들의 정서 지지를 위해 거제 동백과 유자 에센셜 오일을 활용한 <b>실버 아로마 조향 교실</b>을 운영합니다. 어르신들은 인지 재활 활동을 누리고, 청년 로컬 디자이너들은 이 향기를 입혀 팬덤 디퓨저 상품으로 고부가가치를 탄생시킵니다.
+                            </p>
+                        </div>
+
+                        <!-- 07:00 PM -->
+                        <div class="relative">
+                            <span class="absolute -left-[31px] top-1 bg-emerald-500 text-white rounded-full p-1.5 shadow-md">
+                                <i data-lucide="moon" class="w-3.5 h-3.5"></i>
+                            </span>
+                            <h4 class="font-bold text-lg text-slate-900">07:00 PM — 자연 속에 묻히는 오롯한 휴식과 안식</h4>
+                            <p class="text-slate-600 text-sm leading-relaxed mt-1 font-sans">
+                                퇴근 길, 맹종죽 대나무 숲길에 들러 고요한 산소 마사지를 받으며 복잡했던 마음을 완전히 정돈합니다. 마당이 있는 나의 거제 집에서 아빠와 따스한 유자차를 마시며, 더 이상 아빠가 홀로 힘들게 일하지 않아도 되는 행복한 거제 공동체의 내일을 함께 이야기합니다.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 오른쪽: 나의 로컬 복지 혁신 시뮬레이터 (Interactive Sandbox) -->
+                <div class="lg:col-span-6 bg-white p-8 rounded-3xl shadow-xl border border-teal-100 flex flex-col justify-between h-full relative overflow-hidden">
+                    <div class="absolute -top-10 -right-10 w-32 h-32 bg-teal-300/10 rounded-full blur-xl"></div>
+                    
+                    <div>
+                        <span class="text-xs bg-teal-100 text-teal-700 font-bold px-3 py-1 rounded-md">Interactive Welfare Admin</span>
+                        <h3 class="text-2xl font-bold mt-2 text-slate-900">나의 로컬 산업 복지 기획서</h3>
+                        <p class="text-slate-500 text-sm mt-1 mb-6 font-sans">내가 꿈꾸는 거제 로컬 산업(향기, 워케이션, 아쿠아팜)과 사회복지학을 융합해 최적의 부흥 방안을 조율해 보세요.</p>
+                        
+                        <div class="space-y-6">
+                            <!-- Select 1: 로컬 산업 선택 -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">1. 융합할 거제 로컬 산업 테마</label>
+                                <select id="welfare-industry" class="w-full bg-slate-50 border border-slate-200 p-3.5 rounded-xl text-slate-700 text-sm focus:ring-2 focus:ring-teal-500 outline-none" onchange="runWelfareSimulator()">
+                                    <option value="scent">🌸 1. Scent of Geoje (향기·조향 산업)</option>
+                                    <option value="workation">💻 2. 사색형 블루 워케이션 타운</option>
+                                    <option value="aquafarm">🦐 3. 스마트 아쿠아팜 & 마린 테크</option>
+                                </select>
+                            </div>
+
+                            <!-- Select 2: 복지 지원 대상 선택 -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">2. 집중 복지 대상자</label>
+                                <select id="welfare-target" class="w-full bg-slate-50 border border-slate-200 p-3.5 rounded-xl text-slate-700 text-sm focus:ring-2 focus:ring-teal-500 outline-none" onchange="runWelfareSimulator()">
+                                    <option value="senior">👴 조선업 실버 마이스터 (은퇴 노년 노동자층)</option>
+                                    <option value="youth">👩‍💻 번아웃 극복 귀향 청년 (지쳐서 거제로 내려온 청년)</option>
+                                </select>
+                            </div>
+
+                            <!-- 결과 출력창 -->
+                            <div class="bg-gradient-to-br from-teal-50 to-sky-50 rounded-2xl p-5 border border-teal-100/60 mt-4">
+                                <h4 class="font-bold text-teal-900 text-sm flex items-center gap-1.5">
+                                    <i data-lucide="sparkles" class="w-4 h-4 text-amber-500"></i>
+                                    내가 기획한 <span id="welfare-sim-title">거제 시니어 향기 복지 기획</span>
+                                </h4>
+                                <p id="welfare-sim-desc" class="text-xs text-slate-700 mt-2.5 leading-relaxed font-light font-sans">
+                                    은퇴한 조선소 아버님들의 장기 숙련 노하우와 유기농 동백 향료 추출 기법을 결합하여, 거동이 불편한 어르신들에게 일할 보람을 제공하고 리센느 에디션 뷰티 라인과 콜라보하는 획기적인 로컬 실버 일자리 복지 서비스 모델을 가동합니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="submitWelfarePlan()" class="mt-8 w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-6 rounded-xl transition duration-300 shadow-md text-sm flex items-center justify-center gap-2">
+                        <i data-lucide="send"></i> 기획서 거제시청에 상정하기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. INTERACTIVE CORNER: 3대 스마트 활성화 시뮬레이터 -->
+    <section class="bg-sky-50 py-16 border-y border-sky-100">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="text-emerald-600 font-bold tracking-wider uppercase text-sm">Interactive Sandbox</span>
+                <h2 class="text-3xl font-extrabold text-slate-900 mt-2">거제 로컬 융합 3대 혁신 방안 직접 설계하기</h2>
+                <p class="text-slate-600 mt-2 max-w-xl mx-auto">상상 속 거제의 발전을 실시간 상호작용 기능으로 구현해보세요.</p>
+            </div>
+
+            <!-- TAB CONTROLLER -->
+            <div class="flex flex-wrap justify-center gap-4 mb-10">
+                <button onclick="switchTab('tab-scent')" id="btn-tab-scent" class="px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 shadow-sm flex items-center gap-2 bg-sky-600 text-white">
+                    🌸 전략 1: Scent of Geoje (향기 조향)
+                </button>
+                <button onclick="switchTab('tab-workation')" id="btn-tab-workation" class="px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 shadow-sm flex items-center gap-2 bg-white text-slate-700 hover:bg-sky-100">
+                    💻 전략 2: 사색형 워케이션 설계
+                </button>
+                <button onclick="switchTab('tab-smart')" id="btn-tab-smart" class="px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 shadow-sm flex items-center gap-2 bg-white text-slate-700 hover:bg-sky-100">
+                    🦐 전략 3: 스마트 아쿠아팜 최적화
+                </button>
+            </div>
+
+            <!-- ================= TAB 1: SCENT OF GEOJE ================= -->
+            <div id="tab-scent" class="tab-content block transition-opacity duration-300">
+                <div class="bg-white rounded-3xl p-8 shadow-xl max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Left config -->
+                    <div>
+                        <div class="mb-6">
+                            <span class="text-xs bg-pink-100 text-pink-700 font-bold px-2.5 py-1 rounded-md">리센느(RESCENE) 시너지</span>
+                            <h3 class="text-2xl font-bold mt-2 text-slate-900">나만의 거제 시그니처 뷰티 조향</h3>
+                            <p class="text-slate-500 text-sm mt-1">리센느의 향기(Scent)와 거제의 꽃, 과일, 대나무 원료를 추출해 시그니처 디퓨저를 만들어 보세요.</p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <!-- Base Note -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">1. Base Note (기초 향기)</label>
+                                <select id="scent-base" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl text-slate-700 text-sm focus:ring-2 focus:ring-sky-500 outline-none" onchange="mixScent()">
+                                    <option value="sea">🌊 몽돌 해수 해풍 (청량하고 시원함)</option>
+                                    <option value="forest">🌲 노자산 편백나무 숲 (상쾌하고 차분함)</option>
+                                </select>
+                            </div>
+
+                            <!-- Middle Note -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">2. Middle Note (핵심 향기)</label>
+                                <select id="scent-mid" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl text-slate-700 text-sm focus:ring-2 focus:ring-sky-500 outline-none" onchange="mixScent()">
+                                    <option value="camellia">🌺 지심도 붉은 동백 (화려하고 달콤한 꽃향)</option>
+                                    <option value="bamboo">🎋 하청 맹종죽 대나무 (싱그럽고 청초함)</option>
+                                </select>
+                            </div>
+
+                            <!-- Top Note -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">3. Top Note (첫 인상 향기)</label>
+                                <select id="scent-top" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl text-slate-700 text-sm focus:ring-2 focus:ring-sky-500 outline-none" onchange="mixScent()">
+                                    <option value="yuzu">🍋 덕포 노랑 고유 유자 (상큼하고 톡 쏘는 생동감)</option>
+                                    <option value="breeze">🍃 바람의 언덕 청명한 허브 (은은한 풀내음)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Display -->
+                    <div class="bg-gradient-to-br from-pink-50 to-amber-50 rounded-2xl p-6 flex flex-col justify-between border border-pink-100 text-center relative overflow-hidden">
+                        <!-- Abstract floating shape -->
+                        <div class="absolute -top-10 -right-10 w-32 h-32 bg-pink-300/20 rounded-full blur-xl"></div>
+                        
+                        <div>
+                            <span class="text-xs text-pink-600 font-bold tracking-widest uppercase">EAU DE PARFUM / GEOJE</span>
+                            <div class="my-6 flex justify-center">
+                                <div class="relative w-36 h-36 bg-white/80 rounded-full shadow-lg flex items-center justify-center border-2 border-pink-200">
+                                    <span class="text-6xl animate-pulse" id="scent-emoji">🌺</span>
+                                </div>
+                            </div>
+                            <h4 id="scent-name" class="text-xl font-bold text-pink-900">지심도 동백의 기적</h4>
+                            <p id="scent-desc" class="text-sm text-pink-700/80 mt-2 px-4 font-sans">
+                                거제 지심도 동백꽃의 붉고 달콤한 향에 상큼한 유자가 가미되어, 마치 리센느의 화사한 무대를 마주하는 듯한 환상적인 조화.
+                            </p>
+                        </div>
+
+                        <div class="pt-4 border-t border-pink-100">
+                            <button onclick="claimScent()" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-2.5 px-4 rounded-xl transition duration-300 shadow-md text-sm flex items-center justify-center gap-2">
+                                <i data-lucide="award"></i> 조향 레시피북 발급받기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 2: BLUE WORKATION PLANNER ================= -->
+            <div id="tab-workation" class="tab-content hidden transition-opacity duration-300">
+                <div class="bg-white rounded-3xl p-8 shadow-xl max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Left Setup -->
+                    <div>
+                        <div class="mb-6">
+                            <span class="text-xs bg-sky-100 text-sky-700 font-bold px-2.5 py-1 rounded-md">사색과 휴식이 주는 능률</span>
+                            <h3 class="text-2xl font-bold mt-2 text-slate-900">사색형 워케이션 플래너</h3>
+                            <p class="text-slate-500 text-sm mt-1">한적하고 아름다운 거제만의 스팟을 조합하여 청년 맞춤형 워크 라이프를 기획하세요.</p>
+                        </div>
+
+                        <div class="space-y-4">
+                            <!-- Destination Select -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">🏡 머무를 한적한 어촌마을</label>
+                                <select id="plan-village" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl text-slate-700 text-sm focus:ring-2 focus:ring-sky-500 outline-none" onchange="generateItinerary()">
+                                    <option value="hakdong">🌊 학동 흑진주 몽돌해변 (자갈 구르는 ASMR 청정 마을)</option>
+                                    <option value="gujora">⛵ 구조라 어촌 마을 (감성 가득 벽화와 샌드 비치)</option>
+                                    <option value="nambu">🌳 남부면 수국 지대 (조용하고 깊고 한적한 비경지)</option>
+                                </select>
+                            </div>
+
+                            <!-- Working Style Select -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">💻 나의 원격 업무 스타일</label>
+                                <select id="plan-style" class="w-full bg-slate-50 border border-slate-200 p-3 rounded-xl text-slate-700 text-sm focus:ring-2 focus:ring-sky-500 outline-none" onchange="generateItinerary()">
+                                    <option value="dev">💻 폭풍 몰입형 개발자 (무소음, 초고속 5G 공간 선호)</option>
+                                    <option value="write">✍️ 감성 영감형 기획·글작가 (파도 소리, 유자 차 필수)</option>
+                                    <option value="design">🎨 상상 자극형 크리에이터 (다채로운 로컬 문화 체험형)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Result Plan -->
+                    <div class="bg-gradient-to-br from-sky-50 to-teal-50 rounded-2xl p-6 border border-sky-100 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="bg-sky-600 text-white text-xs px-2.5 py-1 rounded-full font-bold">3-Day Plan</span>
+                                <h4 class="font-bold text-slate-900 text-lg">거제 블루 워케이션 코스</h4>
+                            </div>
+                            
+                            <!-- Day 1-3 Itinerary -->
+                            <div class="space-y-3.5 mt-4 text-xs font-sans">
+                                <div class="flex gap-2.5">
+                                    <div class="flex flex-col items-center">
+                                        <span class="w-5 h-5 rounded-full bg-sky-500 text-white font-extrabold flex items-center justify-center text-[10px]">1</span>
+                                        <span class="w-0.5 h-full bg-sky-200 my-1"></span>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-slate-800" id="day-1-title">오션뷰 오피스 체크인</p>
+                                        <p class="text-slate-500 mt-0.5" id="day-1-desc">학동의 맑고 푸른 바다가 보이는 리모델링 빈집 공유 오피스에 베이스캠프 설치.</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex gap-2.5">
+                                    <div class="flex flex-col items-center">
+                                        <span class="w-5 h-5 rounded-full bg-sky-500 text-white font-extrabold flex items-center justify-center text-[10px]">2</span>
+                                        <span class="w-0.5 h-full bg-sky-200 my-1"></span>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-slate-800" id="day-2-title">지역 주민 교류 및 기획</p>
+                                        <p class="text-slate-500 mt-0.5" id="day-2-desc">거제 해녀들의 숨비소리를 멀리서 들으며 업무 몰입, 오후에는 로컬 디저트 힐링.</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex gap-2.5">
+                                    <div class="flex flex-col items-center">
+                                        <span class="w-5 h-5 rounded-full bg-sky-500 text-white font-extrabold flex items-center justify-center text-[10px]">3</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-slate-800" id="day-3-title">사색형 해안선 아웃도어</p>
+                                        <p class="text-slate-500 mt-0.5" id="day-3-desc">거제 천혜의 숲길 걷기 및 아이디어 최종 정리 및 워크 로그 발행.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 mt-4 border-t border-sky-100 flex gap-2">
+                            <button onclick="clipboardCopied()" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded-xl transition duration-300 text-xs flex items-center justify-center gap-1">
+                                <i data-lucide="copy" class="w-4 h-4"></i> 일정 복사
+                            </button>
+                            <button onclick="claimPlan()" class="w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded-xl transition duration-300 text-xs flex items-center justify-center gap-1">
+                                <i data-lucide="map-pin" class="w-4 h-4"></i> 장소 저장
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= TAB 3: SMART AQUAFARM SIMULATOR ================= -->
+            <div id="tab-smart" class="tab-content hidden transition-opacity duration-300">
+                <div class="bg-white rounded-3xl p-8 shadow-xl max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Left control -->
+                    <div>
+                        <div class="mb-6">
+                            <span class="text-xs bg-emerald-100 text-emerald-700 font-bold px-2.5 py-1 rounded-md">미래 지식기술 청년 일자리</span>
+                            <h3 class="text-2xl font-bold mt-2 text-slate-900">스마트 육상 양식장 제어 시뮬레이터</h3>
+                            <p class="text-slate-500 text-sm mt-1">거제의 청정 해수를 최적 온습도로 정화하여 명품 해산물(굴, 참돔)의 스마트 관제사가 되어 보세요.</p>
+                        </div>
+
+                        <div class="space-y-6">
+                            <!-- Controller 1 -->
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="text-sm font-semibold text-slate-700 flex items-center gap-1">
+                                        <i data-lucide="thermometer" class="w-4 h-4 text-rose-500"></i> 순환 해수 수온
+                                    </label>
+                                    <span id="temp-val" class="text-sm font-bold text-sky-600">14.0 ℃</span>
+                                </div>
+                                <input type="range" id="input-temp" min="5" max="30" value="14" step="0.5" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-sky-500" oninput="updateAquafarm()">
+                                <span class="text-[10px] text-slate-400">최적 범위: 12.0 ℃ ~ 18.0 ℃</span>
+                            </div>
+
+                            <!-- Controller 2 -->
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="text-sm font-semibold text-slate-700 flex items-center gap-1">
+                                        <i data-lucide="droplet" class="w-4 h-4 text-emerald-500"></i> 산소 용해도 (DO)
+                                    </label>
+                                    <span id="ox-val" class="text-sm font-bold text-sky-600">8.0 ppm</span>
+                                </div>
+                                <input type="range" id="input-ox" min="3" max="15" value="8" step="0.5" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-500" oninput="updateAquafarm()">
+                                <span class="text-[10px] text-slate-400">최적 범위: 7.5 ppm 이상</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Display -->
+                    <div class="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-6 border border-emerald-100 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="text-xs text-emerald-700 font-bold tracking-widest uppercase">SMART MONITORING PANEL</span>
+                                <span class="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></span>
+                            </div>
+
+                            <div class="bg-white/70 p-4 rounded-xl border border-emerald-200 text-center mb-4">
+                                <span class="text-5xl" id="aquafarm-icon">🦪</span>
+                                <h4 class="font-bold text-slate-800 text-lg mt-2">거제 명품 스마트 참굴</h4>
+                                <p class="text-xs text-slate-400">상태 모니터링: <span id="aquafarm-status" class="font-bold text-emerald-600">최상의 성장 환경</span></p>
+                            </div>
+
+                            <!-- Health Gauge -->
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between text-xs text-slate-500">
+                                    <span>양식물 활성도</span>
+                                    <span id="aquafarm-percentage" class="font-bold text-emerald-600">95%</span>
+                                </div>
+                                <div class="w-full bg-slate-100 rounded-full h-3.5 overflow-hidden">
+                                    <div id="aquafarm-progress" class="bg-gradient-to-r from-emerald-400 to-teal-500 h-full rounded-full transition-all duration-300" style="width: 95%;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-emerald-100">
+                            <button onclick="diagnoseAquafarm()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl transition duration-300 text-sm flex items-center justify-center gap-2 shadow-md">
+                                <i data-lucide="check-circle"></i> 관제 분석 레포트 제출
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. 로컬 특색 갤러리 (거제 로컬 명소 및 굿즈) -->
+    <section class="max-w-7xl mx-auto px-6 py-16">
+        <div class="text-center mb-12">
+            <span class="text-indigo-600 font-bold tracking-wider uppercase text-sm">Geoje Local Charm</span>
+            <h2 class="text-3xl font-bold mt-2">거제의 로컬 강점 & 매력 포인트</h2>
+            <p class="text-slate-500 mt-2 max-w-xl mx-auto">한적함 속에서 피어나는 가장 독특하고 현대적인 거제의 색깔들.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Card 1 -->
+            <div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 border border-slate-100 flex flex-col justify-between">
+                <div class="p-6">
+                    <div class="w-12 h-12 bg-rose-50 text-rose-500 rounded-xl flex items-center justify-center mb-4">
+                        <i data-lucide="flower-2"></i>
+                    </div>
+                    <h3 class="font-bold text-xl text-slate-900 mb-2">지심도 붉은 동백</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        화려한 상처 같은 동백꽃이 가득한 지심도. 조용히 부서지는 백사장 파도 소리를 들으며 지친 영혼에 영감을 선사하는 조용한 도피처입니다.
+                    </p>
+                </div>
+                <div class="bg-slate-50 px-6 py-4 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-xs font-bold text-rose-600">천연 조향 원료지</span>
+                    <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-400"></i>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 border border-slate-100 flex flex-col justify-between">
+                <div class="p-6">
+                    <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-xl flex items-center justify-center mb-4">
+                        <i data-lucide="citrus"></i>
+                    </div>
+                    <h3 class="font-bold text-xl text-slate-900 mb-2">상큼한 햇살 유자</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed font-sans">
+                        거제의 온화한 해양성 기후를 품고 자란 덕포 유자는 비타민 가득 톡 쏘는 청량감이 가득합니다. 프리미엄 식음료 창업의 최고의 보물입니다.
+                    </p>
+                </div>
+                <div class="bg-slate-50 px-6 py-4 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-xs font-bold text-amber-600">청년 F&B 핵심 자원</span>
+                    <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-400"></i>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 border border-slate-100 flex flex-col justify-between">
+                <div class="p-6">
+                    <div class="w-12 h-12 bg-teal-50 text-teal-500 rounded-xl flex items-center justify-center mb-4">
+                        <i data-lucide="tree-deciduous"></i>
+                    </div>
+                    <h3 class="font-bold text-xl text-slate-900 mb-2">하청 맹종죽 숲</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">
+                        하늘을 찌를 듯 솟아오른 맹종죽 숲길은 대도시가 제공하지 못하는 완벽한 힐링 사운드를 자아냅니다. 사색 워케이션 코스의 핵심 거점입니다.
+                    </p>
+                </div>
+                <div class="bg-slate-50 px-6 py-4 border-t border-slate-100 flex items-center justify-between">
+                    <span class="text-xs font-bold text-teal-600">자연 사운드 힐링</span>
+                    <i data-lucide="arrow-up-right" class="w-4 h-4 text-slate-400"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. VISION BOARD (거제 살리기 한마디) -->
+    <section class="max-w-4xl mx-auto px-6 py-12 mb-16 bg-white rounded-3xl shadow-xl border border-sky-100">
+        <div class="text-center mb-8">
+            <h3 class="text-2xl font-bold text-slate-900 flex items-center justify-center gap-2">
+                <i class="text-sky-500" data-lucide="messages-square"></i> 
+                거제를 향한 응원 한마디
+            </h3>
+            <p class="text-slate-500 text-sm mt-1">청년 일자리와 거제의 산업 발전을 바라는 꿈의 목소리를 적어주세요!</p>
+        </div>
+
+        <div class="flex gap-2.5 mb-6">
+            <input type="text" id="visitor-name" placeholder="닉네임" class="w-1/4 bg-slate-50 border border-slate-200 p-3 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-sky-400 outline-none">
+            <input type="text" id="visitor-msg" placeholder="거제 발전을 바라는 따뜻한 아이디어를 공유해주세요." class="w-3/4 bg-slate-50 border border-slate-200 p-3 rounded-xl text-slate-800 text-sm focus:ring-2 focus:ring-sky-400 outline-none" onkeydown="if(event.key === 'Enter') addMessage()">
+            <button onclick="addMessage()" class="bg-sky-600 hover:bg-sky-700 text-white font-bold px-6 py-3 rounded-xl text-sm transition">
+                남기기
+            </button>
+        </div>
+
+        <div class="max-h-60 overflow-y-auto space-y-3.5 pr-2" id="visitor-wall">
+            <!-- Mock dynamic postit cards -->
+            <div class="bg-sky-50/50 p-4 rounded-xl border border-sky-100/60 flex justify-between items-start">
+                <div>
+                    <p class="text-xs font-bold text-sky-800">지킴이원이팬 🌟</p>
+                    <p class="text-sm text-slate-700 mt-1">리센느 원이 덕분에 거제 오고 싶어졌어요! 몽돌 소리 들으며 워케이션 하고 싶네요.</p>
+                </div>
+                <span class="text-[10px] text-slate-400">방금 전</span>
+            </div>
+            <div class="bg-emerald-50/50 p-4 rounded-xl border border-emerald-100/60 flex justify-between items-start">
+                <div>
+                    <p class="text-xs font-bold text-emerald-800">스타트업꿈나무 💻</p>
+                    <p class="text-sm text-slate-700 mt-1 font-sans">스마트 아쿠아팜 같은 고부가가치 연구직이 생기면 무조건 거제로 취업 이민 가고 싶습니다!</p>
+                </div>
+                <span class="text-[10px] text-slate-400">방금 전</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CUSTOM TOAST MODAL (NO ALERT GUARDRAIL) -->
+    <div id="toast-modal" class="fixed bottom-10 right-10 z-50 transform translate-y-12 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="bg-slate-900/95 text-white backdrop-blur-md px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-3 border border-slate-800">
+            <span id="toast-icon" class="text-2xl">🎉</span>
+            <div>
+                <p id="toast-title" class="font-bold text-sm">성공적으로 완료되었습니다!</p>
+                <p id="toast-body" class="text-xs text-slate-400 font-sans">자세한 레시피 내용이 기록되었습니다.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. FOOTER -->
+    <footer class="bg-slate-900 text-white py-12 text-center text-sm border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-6 space-y-4">
+            <p class="font-bold text-slate-400 tracking-wide uppercase">GEOJE REVIVAL BLUEPRINT</p>
+            <p class="text-slate-500 font-light max-w-md mx-auto font-sans">
+                본 기획은 거제도 고령화 문제 분석 데이터와 글로벌 걸그룹 리센느(RESCENE)의 청량감 넘치는 IP 가치 융합을 기반으로 기획된 가상의 청년 일자리 부흥 전략 시뮬레이션입니다.
+            </p>
+            <div class="pt-6 text-xs text-slate-600 border-t border-slate-800">
+                &copy; 2026 거제 리바이벌 프로젝트. All Rights Reserved. "거제 야호! 리센느 야호!" 🌸🌊
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // 1. Interactive Data Toggle Analysis
+        function toggleAnalysis(id) {
+            const content = document.getElementById(`content-${id}`);
+            const icon = document.getElementById(`icon-${id}`);
+            
+            if(content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                content.classList.add('hidden');
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // 2. Interactive Tab System
+        function switchTab(tabId) {
+            // Hide all contents
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+                tab.classList.remove('block');
+            });
+
+            // Reset buttons style
+            const btns = {
+                'tab-scent': document.getElementById('btn-tab-scent'),
+                'tab-workation': document.getElementById('btn-tab-workation'),
+                'tab-smart': document.getElementById('btn-tab-smart')
+            };
+
+            for (let key in btns) {
+                if (btns[key]) {
+                    btns[key].className = "px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 shadow-sm flex items-center gap-2 bg-white text-slate-700 hover:bg-sky-100";
+                }
+            }
+
+            // Show target
+            const activeTab = document.getElementById(tabId);
+            activeTab.classList.remove('hidden');
+            activeTab.classList.add('block');
+
+            // Set active button style
+            let activeColor = "bg-sky-600 text-white";
+            if (tabId === 'tab-scent') activeColor = "bg-pink-500 text-white";
+            if (tabId === 'tab-smart') activeColor = "bg-emerald-600 text-white";
+
+            btns[tabId].className = `px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 shadow-sm flex items-center gap-2 ${activeColor}`;
+        }
+
+        // 3. Scent Maker Simulator (Strategy 1)
+        const scentRecipes = {
+            'sea-camellia-yuzu': {
+                name: '지심도 동백과 노랑 유자 샤워',
+                emoji: '🌺🍋',
+                desc: '한적한 지심도의 동백꽃 향기에 기분 좋은 신선함을 불어넣는 상큼한 유자 베이스의 프리미엄 향기. 리센느의 생기발랄함이 느껴집니다.'
+            },
+            'sea-camellia-breeze': {
+                name: '바람을 탄 해풍의 동백 향기',
+                emoji: '🌊🌺',
+                desc: '학동 흑진주 해안의 시원한 파도와 지심도 동백 향이 포근하게 만난 사색적인 향. 조용히 영감을 채워줍니다.'
+            },
+            'sea-bamboo-yuzu': {
+                name: '맹종죽 청명한 대숲 유자차',
+                emoji: '🎋🍋',
+                desc: '하청 대나무 숲길의 은은하고 깊은 자연 향 위에 달콤한 유자의 첫 인상이 얹어진 매혹적인 웰빙 디퓨저 브랜딩.'
+            },
+            'sea-bamboo-breeze': {
+                name: '몽돌의 속삭임과 대나무 스파',
+                emoji: '🎋🌊',
+                desc: '청량한 대나무 향에 맑은 바다의 수분을 풍성하게 머금은 상쾌한 아로마 테라피 에센셜.'
+            },
+            'forest-camellia-yuzu': {
+                name: '노자산 편백숲속 유자 꽃 향기',
+                emoji: '🌲🌺',
+                desc: '깊은 편백나무 숲속에서 만나는 따스한 유자와 동백의 조합. 웰니스 리조트에 어울리는 포근하고 안정된 힐링 향.'
+            },
+            'forest-camellia-breeze': {
+                name: '노자산 안개꽃 바람의 정원',
+                emoji: '🌲🍃',
+                desc: '깊은 산림과 푸른 동백이 상쾌하게 어우러지는 사색형 테라피 전용 조향제.'
+            },
+            'forest-bamboo-yuzu': {
+                name: '편백나무 맹종죽 골든 포레스트',
+                emoji: '🎋🌲',
+                desc: '대나무와 편백나무의 진하고 깊은 우디 베이스에 기분 좋은 유자가 맑고 산뜻하게 공간을 정화해줍니다.'
+            },
+            'forest-bamboo-breeze': {
+                name: '한적한 대숲의 휴식 노트',
+                emoji: '🎋🍃',
+                desc: '자연 그 자체의 한적하고 싱그러운 푸르름만을 순도 100%로 정제한 사색형 업무 집중 향기.'
+            }
+        };
+
+        function mixScent() {
+            const base = document.getElementById('scent-base').value;
+            const mid = document.getElementById('scent-mid').value;
+            const top = document.getElementById('scent-top').value;
+
+            const key = `${base}-${mid}-${top}`;
+            const recipe = scentRecipes[key] || {
+                name: '거제 수제 오감 디퓨저',
+                emoji: '🌸',
+                desc: '거제만의 독특한 향의 조화로 피어난 감성 향수.'
+            };
+
+            document.getElementById('scent-name').innerText = recipe.name;
+            document.getElementById('scent-emoji').innerText = recipe.emoji;
+            document.getElementById('scent-desc').innerText = recipe.desc;
+        }
+
+        // 4. Workation Itinerary Creator (Strategy 2)
+        const itineraryTexts = {
+            'hakdong-dev': {
+                d1t: '몽돌 해수 오피스 도킹', d1d: '학동 흑진주 몽돌 해변의 소리가 들리는 초고속 5G 워크존에서 몰입도 높은 첫 코딩 스타트.',
+                d2t: '노이즈 캔슬링 사색 몰입', d2d: '인근 편백나무 숲으로 걷는 고요한 산책을 거치며 메인 설계 작업 마무리.',
+                d3t: '몽돌 구르는 뇌 비우기 및 퇴근', d3d: '몽돌이 자그르락 부서지는 파도 소리 ASMR을 채취하여 복귀 후 개발 능률 극대화.'
+            },
+            'hakdong-write': {
+                d1t: '시인의 해수면 산책 체크인', d1d: '몽돌 부딪히는 자연 교향곡을 가만히 감상하며 머릿속의 아이디어 플롯 정리.',
+                d2t: '유자 감성 로컬 F&B 투어', d2d: '이색 유자 카페에서 유자차와 한정판 정글빵을 곁들이며 원고 혹은 기획안 30페이지 달성.',
+                d3t: '리센느 뮤직 힐링 해안선 집필', d3d: '리센느의 향기 테마 음원을 배경으로 거제에서의 감동 가득한 사색 로컬 여행기 피니시.'
+            },
+            'hakdong-design': {
+                d1t: '오션뷰 컬러 파레트 채집', d1d: '학동 해안가 특유의 청량한 진청색 바다와 부드러운 돌의 형태에서 영감을 받아 시각 초안 설계.',
+                d2t: '로컬 크리에이터 콜라보 세션', d2d: '거제 청년들과 동백 열매나 남해안 조개 껍데기를 활용한 업사이클링 미학 브랜드 협업 논의.',
+                d3t: '바람의 언덕에서 로드 드로잉', d3d: '한적하게 돌아가는 풍차와 깎아지른 바다에서 광활한 우주의 구도를 도화지에 투영하고 체크아웃.'
+            },
+            // Gujarat
+            'gujora-dev': {
+                d1t: '구조라 성곽 오션 체크인', d1d: '한적한 어촌마을 구조라에 자리한 리모델링 공유오피스에서 서버 아키텍처 몰입 구상.',
+                d2t: '바람길 성벽 산책 및 배포', d2d: '구조라성 전망대에 올라 남해 바다의 시야를 만끽하며 스마트 로직 테스트 및 무사 배포 완료.',
+                d3t: '마린 블루 웰니스 회고', d3d: '해안선 서핑이나 요트 정박장을 관망하며 사색적 워케이션의 비즈니스 성과 보고서 정리.'
+            },
+            'gujora-write': {
+                d1t: '감성 구조라 샛바람 소리길', d1d: '대나무가 우거진 소리길을 따라 가볍게 사색하며 머릿속 기획 에세이 아이템 발현.',
+                d2t: '해녀 문화 공간 취재 일기', d2d: '해녀들의 숨비소리를 담은 거제 해녀 기록관을 탐방하여 가장 독특한 거제만의 오리지널 텍스트 발굴.',
+                d3t: '감성 바다 아틀리에 완성', d3d: '한적하고 아늑한 바닷가 카페에서 수제 잼을 맛보며 최종 집필본 완성 후 전송.'
+            },
+            'gujora-design': {
+                d1t: '골목 벽화 예술적 자극', d1d: '알록달록 다정한 벽화가 수놓아진 한적한 구조라 골목을 산책하며 감성 파스텔 톤 가이드라인 스케치.',
+                d2t: '지심도 동백빛 컬러링 연구', d2d: '배를 타고 지심도에 가 꽃잎의 다양한 빨강 스펙트럼을 분석, 캐릭터 브랜딩의 심볼릭 디자인 매칭.',
+                d3t: '청년 네트워킹 및 쇼케이스', d3d: '창조적 성과물들을 로컬 공유 스페이스에 투시하며 다음 시즌 거제 크리에이터 협업 계약 성사.'
+            },
+            // Nambu
+            'nambu-dev': {
+                d1t: '남부면 최남단 무소음 체크인', d1d: '사람 손길이 닿지 않은 울창한 숲과 깊고 푸른 바다가 매칭된 고요한 요새에서 초핵심 테크 작업 몰두.',
+                d2t: '수국빛 알고리즘 리프레시', d2d: '수국이 피어난 남부면 수채화 도로를 사색하며 그간 꼬였던 코드 복잡성 단번에 해결 완료.',
+                d3t: '신선대 오션 뷰 마침표', d3d: '웅장한 신선대의 해안 바위에서 거대한 클라우드 서비스 성공 론칭을 기원하며 여정 완료.'
+            },
+            'nambu-write': {
+                d1t: '신선놀음 사색의 서재 안착', d1d: '바다 한가운데 신선들이 거닐었다는 신선대 언저리의 고요한 공간에서 장편 플롯 첫 집필.',
+                d2t: '동백 아일랜드 깊은 사유', d2d: '고요함의 극치 속에서 들려오는 산새 소리와 바람 소리를 오디오로 채록하며 명상 에세이 구상.',
+                d3t: '완전무결 사색 시퀀스 탈고', d3d: '그 누구의 소음도 방해 없이 한적함을 최대치로 만끽하며 나만의 인생 마스터피스 완성.'
+            },
+            'nambu-design': {
+                d1t: '한적한 절벽 위 자연 추상화', d1d: '다채로운 남부면 절벽의 지층 무늬에서 천연 패턴 무늬를 디자인화하는 텍스처 연구.',
+                d2t: '해금강의 십자 동굴 영감 로드', d2d: '배를 타고 해금강 십자동굴 밑에서 하늘을 올려다보며 자연이 빚어낸 경이로운 우주 기하학 디자인 패턴 발제.',
+                d3t: '거제 야호 미학 컬렉션 완성', d3d: '거제의 오염되지 않은 로컬 원시 자연미를 담은 일러스트 컬렉션 완성 및 로컬 브랜드 런칭 기획.'
+            }
+        };
+
+        function generateItinerary() {
+            const village = document.getElementById('plan-village').value;
+            const style = document.getElementById('plan-style').value;
+            const key = `${village}-${style}`;
+
+            const plan = itineraryTexts[key] || {
+                d1t: '오션 체크인', d1d: '아름다운 거제의 자연 속 한적한 보금자리 체크인.',
+                d2t: '로컬 사색 작업', d2d: '주민들과 소통하며 최고의 기량을 뽐내는 집중 작업 시간.',
+                d3t: '사색 힐링 복귀', d3d: '거제의 청정 정기를 가득 마시고 삶의 에너지를 회복하여 퇴근.'
+            };
+
+            document.getElementById('day-1-title').innerText = plan.d1t;
+            document.getElementById('day-1-desc').innerText = plan.d1d;
+            document.getElementById('day-2-title').innerText = plan.d2t;
+            document.getElementById('day-2-desc').innerText = plan.d2d;
+            document.getElementById('day-3-title').innerText = plan.d3t;
+            document.getElementById('day-3-desc').innerText = plan.d3d;
+        }
+
+        // 5. Smart Aquafarm Optimization Simulator (Strategy 3)
+        function updateAquafarm() {
+            const temp = parseFloat(document.getElementById('input-temp').value);
+            const ox = parseFloat(document.getElementById('input-ox').value);
+
+            // Display values
+            document.getElementById('temp-val').innerText = temp.toFixed(1) + ' ℃';
+            document.getElementById('ox-val').innerText = ox.toFixed(1) + ' ppm';
+
+            // Calculate "Health Score" of oysters based on optimal ranges
+            let tempScore = 100 - Math.abs(15 - temp) * 6.5; 
+            if (tempScore < 10) tempScore = 10;
+
+            let oxScore = ox >= 8 ? 100 : 100 - (8 - ox) * 15;
+            if (oxScore < 10) oxScore = 10;
+
+            const totalScore = Math.round((tempScore + oxScore) / 2);
+
+            // Update UI
+            const progressBar = document.getElementById('aquafarm-progress');
+            progressBar.style.width = totalScore + '%';
+            document.getElementById('aquafarm-percentage').innerText = totalScore + '%';
+
+            const statusText = document.getElementById('aquafarm-status');
+            const icon = document.getElementById('aquafarm-icon');
+
+            if (totalScore >= 90) {
+                statusText.innerText = "최상급 성장 환경 (명품 참굴)";
+                statusText.className = "font-bold text-emerald-600";
+                icon.innerText = "🦪✨";
+                progressBar.className = "bg-gradient-to-r from-emerald-400 to-teal-500 h-full rounded-full transition-all duration-300";
+            } else if (totalScore >= 70) {
+                statusText.innerText = "양호한 발육 상태";
+                statusText.className = "font-bold text-sky-500";
+                icon.innerText = "🦪";
+                progressBar.className = "bg-gradient-to-r from-sky-400 to-blue-500 h-full rounded-full transition-all duration-300";
+            } else if (totalScore >= 40) {
+                statusText.innerText = "환경 관리 및 정수 공급 요망";
+                statusText.className = "font-bold text-amber-500";
+                icon.innerText = "🐚";
+                progressBar.className = "bg-gradient-to-r from-amber-400 to-orange-500 h-full rounded-full transition-all duration-300";
+            } else {
+                statusText.innerText = "⚠️ 경보: 긴급 산소 및 해수 냉각 필요";
+                statusText.className = "font-bold text-rose-500";
+                icon.innerText = "🥀";
+                progressBar.className = "bg-gradient-to-r from-rose-400 to-red-500 h-full rounded-full transition-all duration-300";
+            }
+        }
+
+        // 5.5 Welfare Simulator Logic (Interactive Board)
+        const welfareScenarios = {
+            'scent-senior': {
+                title: '시니어 명품 동백향 오가닉 공방',
+                desc: '우리 아빠와 은퇴한 50~60대 조선업 장인들의 축적된 설계 공학을 추출 증류 기계 설비화에 매칭합니다. 친환경 고농축 동백·유자 아로마 오일을 안전한 생산시설에서 어르신들과 함께 핸드메이드로 양산하여 리센느 에디션 뷰티 브랜드에 고가로 납품하는 일자리 복지를 실현합니다.'
+            },
+            'scent-youth': {
+                title: '번아웃 귀향 청년 조향 테라피 스페이스',
+                desc: '대도시 빌딩 숲에서 번아웃 증후군을 겪고 영혼이 지쳐 돌아온 20대 청년들을 위해 한적한 남부면 수국 숲가에 향기 조향 힐링 센터를 건립합니다. 이들이 로컬 아로마 스파 프로그램을 운영하며 스스로 정서적 안정과 고유한 향기 사업 기반을 구축하도록 창업 바우처 복지 제도를 시행합니다.'
+            },
+            'workation-senior': {
+                title: '시니어-주민 워케이션 홈스테이 연대',
+                desc: '외지 청년들이 머무는 사색형 워케이션 타운 인근의 시니어 장년층 가구와 청년들을 매칭합니다. 어르신들은 따스한 남해안 밥상과 거제의 한적한 도보 길을 안내해주고, 워케이션 청년들은 어르신 가구의 주거 환경 정비 및 스마트기기 교육 등 디지털 가이드를 도우며 세대 상생형 생활 복지 연대를 이룩합니다.'
+            },
+            'workation-youth': {
+                title: '사색 몽돌 ASMR 힐링 휴가제',
+                desc: '대학과 일터에서 심리적 피로도가 극에 달해 돌아온 청년들에게 일정 기간 학동 몽돌 소리 및 지심도 숲속 힐링 등 10분 거리의 자연 안식 공간을 활용한 웰니스 휴양 복지권을 거제시 사회복지 네트워크 차원에서 제공하여 마음 건강을 전폭 회복시킵니다.'
+            },
+            'aquafarm-senior': {
+                title: '조선 숙련공 기술 매칭 스마트 양식 관제',
+                desc: '조선소의 미세 배관 용접과 구조 제어 등에 능숙한 60대 고령 베테랑 근로자들의 손재주를 ICT 아쿠아팜 육상 양식 설비 안전 관리단으로 정식 고용 매칭합니다. 육체적 과로를 덜어내는 동시에 스마트 테크 제어로 거동이 편안한 최상위 복지형 스마트 직군을 신설합니다.'
+            },
+            'aquafarm-youth': {
+                title: '스마트 마린 테크 청년 과학 인큐베이터',
+                desc: '수산물 양식이나 바이오 공학을 전공하고 취업난에 우는 청년들을 선발, 거제의 맑은 바다 해수를 정화하는 육상 아쿠아팜의 안전한 실내 스마트 관제소 연구직으로 우선 특화 채용하여 거제 안에서 첨단 커리어를 개척하도록 전액 복지 장학을 후원합니다.'
+            }
+        };
+
+        function runWelfareSimulator() {
+            const industry = document.getElementById('welfare-industry').value;
+            const target = document.getElementById('welfare-target').value;
+            const key = `${industry}-${target}`;
+
+            const result = welfareScenarios[key] || {
+                title: '거제 상생 로컬 복지 추진안',
+                desc: '거제의 청정 천혜 환경과 산업을 연계하여 사람을 살리는 혁신 복지 솔루션을 설계 중입니다.'
+            };
+
+            document.getElementById('welfare-sim-title').innerText = result.title;
+            document.getElementById('welfare-sim-desc').innerText = result.desc;
+        }
+
+        function submitWelfarePlan() {
+            const title = document.getElementById('welfare-sim-title').innerText;
+            showToast("📝", "거제 복지 기획 상정 완료", `[${title}] 기획서가 거제시 세대 상생 추진 위원회 공식 안건으로 상정 시뮬레이션 되었습니다. 청년 복지사로서의 발돋움을 축하합니다!`);
+        }
+
+        // Toast Notification System
+        function showToast(icon, title, body) {
+            const toast = document.getElementById('toast-modal');
+            document.getElementById('toast-icon').innerText = icon;
+            document.getElementById('toast-title').innerText = title;
+            document.getElementById('toast-body').innerText = body;
+
+            toast.classList.remove('translate-y-12', 'opacity-0', 'pointer-events-none');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-12', 'opacity-0', 'pointer-events-none');
+            }, 3500);
+        }
+
+        // Actions
+        function claimScent() {
+            const name = document.getElementById('scent-name').innerText;
+            showToast("🌸", `[${name}] 레시피 다운로드`, "거제 로컬 청년 창업 인큐베이팅 향수 레시피북이 저장되었습니다.");
+        }
+
+        function claimPlan() {
+            const village = document.getElementById('plan-village').options[document.getElementById('plan-village').selectedIndex].text.split('(')[0];
+            showToast("📍", `${village} 사색 워케이션 스팟`, "거제 워케이션 웰컴 패키지 쿠폰이 시뮬레이션 발급되었습니다.");
+        }
+
+        function clipboardCopied() {
+            const text = "내가 설계한 거제 워케이션 일정 3-Day 플랜을 공유합니다!";
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+            
+            showToast("📋", "일정 클립보드 복사", "한적한 거제 힐링 일정 정보가 클립보드에 무사히 기록되었습니다!");
+        }
+
+        function diagnoseAquafarm() {
+            const val = document.getElementById('aquafarm-percentage').innerText;
+            showToast("📡", "스마트 마린 융합 기술원 전송", `현재 활성도 ${val} 상태의 양식 수조 상태가 관리 서버에 정상 전송되었습니다.`);
+        }
+
+        function selectWelfarePath(pathName) {
+            showToast("🧡", `${pathName} 선택 완료`, `미래의 거제를 바꿀 [${pathName}] 시뮬레이션 지원서가 매칭되었습니다. 거제도가 당신의 꿈을 응원합니다!`);
+        }
+
+        function addMessage() {
+            const nameInput = document.getElementById('visitor-name');
+            const msgInput = document.getElementById('visitor-msg');
+
+            const name = nameInput.value.trim() || "익명의 거제팬";
+            const msg = msgInput.value.trim();
+
+            if (!msg) {
+                showToast("⚠️", "입력 실패", "내용을 입력해 주세요.");
+                return;
+            }
+
+            const wall = document.getElementById('visitor-wall');
+            const newCard = document.createElement('div');
+            newCard.className = "bg-white p-4 rounded-xl border border-sky-100 shadow-sm flex justify-between items-start animate-fade-in";
+            newCard.innerHTML = `
+                <div>
+                    <p class="text-xs font-bold text-sky-800">${name} 🌟</p>
+                    <p class="text-sm text-slate-700 mt-1">${msg}</p>
+                </div>
+                <span class="text-[10px] text-slate-400">방금 전</span>
+            `;
+
+            wall.insertBefore(newCard, wall.firstChild);
+            nameInput.value = '';
+            msgInput.value = '';
+
+            showToast("💬", "의견 등록 완료", "거제 발전을 바라는 따뜻한 한마디가 소셜 월에 게시되었습니다!");
+        }
+
+        // Initialize state
+        mixScent();
+        generateItinerary();
+        updateAquafarm();
+        runWelfareSimulator();
+    </script>
+</body>
+</html>
