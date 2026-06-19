@@ -196,10 +196,10 @@
             </div>
         </div>
         <div class="text-center mt-12">
-            <a href="./10/geogeinfo.png" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-bold px-8 py-4 rounded-xl transition duration-300 shadow-md">
+            <button onclick="document.getElementById('info-modal').showModal()" class="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white font-bold px-8 py-4 rounded-xl transition duration-300 shadow-md cursor-pointer">
                 <i data-lucide="image" class="w-5 h-5"></i>
                 거제 특성 인포그래픽 보기
-            </a>
+            </button>
         </div>
     </section>
 
@@ -526,5 +526,15 @@
         // Initialize
         runWelfareSimulator();
     </script>
+
+    <!-- 인포그래픽 팝업 모달 -->
+    <dialog id="info-modal" class="rounded-2xl shadow-2xl p-0 backdrop:bg-black/60 w-full max-w-4xl border-none outline-none">
+        <div class="relative">
+            <button onclick="document.getElementById('info-modal').close()" class="absolute top-4 right-4 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <img src="./10/geogeinfo.png" alt="거제 특성 인포그래픽" class="w-full h-auto rounded-2xl" onerror="this.src='https://placehold.co/800x600/e2e8f0/64748b?text=이미지를+불러올+수+없습니다'">
+        </div>
+    </dialog>
 </body>
 </html>
